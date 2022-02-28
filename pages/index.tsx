@@ -7,7 +7,7 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useEffect } from "react";
-import { useState } from "react/cjs/react.production.min";
+import { useState } from "react";
 import axios from "axios";
 
 // Your web app's Firebase configuration
@@ -23,7 +23,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-const signInWithGoogle = () => {
+const signInWithGoogle = (setAccessToken) => {
   const provider = new GoogleAuthProvider();
   provider.addScope("https://www.googleapis.com/auth/spreadsheets");
 
@@ -37,6 +37,7 @@ const signInWithGoogle = () => {
       // The signed-in user info.
       const user = result.user;
       console.log({ result, credential, token, user, idToken });
+      setAccessToken(token);
       // ...
     })
     .catch((error) => {
@@ -52,20 +53,19 @@ const signInWithGoogle = () => {
 };
 
 export default function Home() {
+  const [accessToken, setAccessToken] = useState(null);
+
   const handleClick = () => {
     const auth = getAuth();
-    auth.onAuthStateChanged((user) => {
+    auth.onAuthStateChanged(async (user) => {
       if (user) {
-        // User is signed in.
-        console.log("user", user);
         axios
           .post("/api/hello", {
-            idToken: "",
+            token: accessToken, // await (await auth.currentUser.getIdTokenResult()).token,
           })
           .then((res) => console.log("res", res))
           .catch((err) => console.error("err", err));
       } else {
-        // No user is signed in.
         console.log("No user is signed in.");
       }
     });
@@ -73,7 +73,9 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <button onClick={() => signInWithGoogle()}>Click Here</button>
+      <button onClick={() => signInWithGoogle(setAccessToken)}>
+        Click Here
+      </button>
       <button onClick={() => handleClick()}>sdfsd</button>
     </div>
   );

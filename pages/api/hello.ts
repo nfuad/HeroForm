@@ -3,10 +3,9 @@ import { google } from "googleapis";
 const createSheetHandler = async (req, res) => {
   try {
     const auth = new google.auth.OAuth2();
-
+    const token = req.body.token;
+    console.log({ token });
     auth.setCredentials({
-      // id_token: idToken,
-      id_token: idToken,
       access_token: token,
     });
 
@@ -15,8 +14,16 @@ const createSheetHandler = async (req, res) => {
     const createSpreadSheetRes = await sheets.spreadsheets.create({
       requestBody: {
         properties: {
-          title: "Hello World!",
+          title: "Inquire Sheet",
         },
+        sheets: [
+          {
+            properties: {
+              sheetId: 0,
+              title: "Questions",
+            },
+          },
+        ],
       },
     });
 
