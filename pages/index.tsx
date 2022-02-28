@@ -52,7 +52,7 @@ const signInWithGoogle = () => {
 };
 
 export default function Home() {
-  useEffect(() => {
+  const handleClick = () => {
     const auth = getAuth();
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -60,21 +60,21 @@ export default function Home() {
         console.log("user", user);
         axios
           .post("/api/hello", {
-            idToken: user.refreshToken,
+            idToken: "",
           })
           .then((res) => console.log("res", res))
-          .catch((err) => console.log("err", err));
+          .catch((err) => console.error("err", err));
       } else {
         // No user is signed in.
         console.log("No user is signed in.");
       }
     });
-  }, []);
+  };
 
   return (
     <div className={styles.container}>
       <button onClick={() => signInWithGoogle()}>Click Here</button>
-      <button>sdfsd</button>
+      <button onClick={() => handleClick()}>sdfsd</button>
     </div>
   );
 }
