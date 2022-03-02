@@ -64,6 +64,7 @@ export default function Home() {
   // const [textareaHeight, setTextareaHeight] = useState(100);
   const [inputs, setInputs] = useState<any>({});
   const [currentPage, setCurrentPage] = useState(0);
+  console.log("currentPage: ", currentPage);
 
   const handleChange = (e) =>
     setInputs((prevState) => ({
@@ -92,12 +93,14 @@ export default function Home() {
   };
 
   const handleSubmitSurvey = () => {
+    setIsSubmitted(true);
     axios
       .post("/api/add-survey", {
         survey,
       })
       .then((res) => {
         console.log("res: ", res);
+        setCurrentPage((prevState) => prevState + 1);
         // onSuccess();
         // toast.success('Successfully added to waitlist')
       })
@@ -112,7 +115,7 @@ export default function Home() {
       });
   };
 
-  const lastPage = questions.length === currentPage;
+  const [isSubmitted, setIsSubmitted] = useState(false);
   console.log("questions.length: ", questions.length);
 
   const SubmitButton = () => {
@@ -126,9 +129,15 @@ export default function Home() {
     );
   };
 
+  const lastPage = questions.length === currentPage;
+
   const totalPages = questions.length + 1;
   const totalPagesToArray = Array.from({ length: totalPages }, (_, i) => i);
   console.log("totalPagesToArray: ", totalPagesToArray);
+
+  const scrollIndicator = isSubmitted
+    ? 100
+    : (100 / questions.length) * currentPage;
 
   return (
     // <div className={styles.container}>
@@ -139,56 +148,62 @@ export default function Home() {
     <div className="relative">
       <div className="absolute z-50 w-full h-2 bg-gray-200">
         <div
-          className="h-2 transition-all ease-in-out bg-purple-700"
-          style={{ width: `${(100 / questions.length) * currentPage}%` }}
+          className="h-2 transition-all ease-in-out bg-purple-700 duration-1000"
+          style={{ width: `${scrollIndicator}%` }}
         />
       </div>
-      <div className="absolute z-50 flex flex-row border border-gray-400 divide-x-2 divide-gray-300 rounded-lg shadow-md bottom-5 right-5 ">
-        <button
-          disabled={currentPage === 0}
-          onClick={() => {
-            setCurrentPage((prevState) => prevState - 1);
-          }}
-          className="p-3 bg-white disabled:bg-gray-200 disabled:cursor-default disabled:hover:text-black rounded-l-lg cursor-pointer hover:bg-purple-700 hover:text-white"
-        >
-          <Chevron />
-        </button>
-        <button
-          disabled={lastPage}
-          onClick={() => {
-            setCurrentPage((prevState) => prevState + 1);
-          }}
-          className="p-3 bg-white rounded-r-lg disabled:hover:bg-gray-200 disabled:bg-gray-200 disabled:hover:text-black disabled:cursor-default cursor-pointer hover:bg-purple-700 hover:text-white"
-        >
-          <Chevron style="rotate-180" />
-        </button>
-      </div>
 
-      <div
-        style={{ transform: "translateY(-50%)" }}
-        className="absolute z-50 flex flex-col items-center justify-center space-y-3 right-5 top-1/2"
-      >
-        {totalPagesToArray.map((i, index) => {
-          return (
-            <div
-              key={index}
+      {!isSubmitted && (
+        <>
+          <div className="absolute z-50 flex flex-col items-center justify-center space-y-3 right-5 top-1/2 translate-y-[-50%]">
+            {totalPagesToArray.map((i, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={() => {
+                    setCurrentPage(index);
+                  }}
+                  className={`transition-all duration-300 ease-in-out cursor-pointer ${
+                    index === currentPage
+                      ? "bg-purple-700 w-4 h-4"
+                      : "bg-gray-200 w-2 h-2"
+                  } rounded-full`}
+                />
+              );
+            })}
+          </div>
+          <div className="absolute z-50 flex flex-row border border-gray-400 divide-x-2 divide-gray-300 rounded-lg shadow-md bottom-5 right-5 ">
+            <button
+              disabled={currentPage === 0}
               onClick={() => {
-                setCurrentPage(index);
+                setCurrentPage((prevState) => prevState - 1);
               }}
-              className={`transition-all ease-in-out cursor-pointer ${
-                index === currentPage
-                  ? "bg-purple-700 w-4 h-4"
-                  : "bg-gray-200 w-2 h-2"
-              }  rounded-full`}
-            />
-          );
-        })}
-      </div>
+              className="p-3 bg-white disabled:bg-gray-200 disabled:cursor-default disabled:hover:text-black rounded-l-lg cursor-pointer hover:bg-purple-700 hover:text-white"
+            >
+              <Chevron />
+            </button>
+            <button
+              disabled={lastPage}
+              onClick={() => {
+                setCurrentPage((prevState) => prevState + 1);
+              }}
+              className="p-3 bg-white rounded-r-lg disabled:hover:bg-gray-200 disabled:bg-gray-200 disabled:hover:text-black disabled:cursor-default cursor-pointer hover:bg-purple-700 hover:text-white"
+            >
+              <Chevron style="rotate-180" />
+            </button>
+          </div>
+        </>
+      )}
 
       <ReactPageScroller
+        onBeforePageScroll={(nextPageIndex) => {
+          setCurrentPage(nextPageIndex);
+        }}
         pageOnChange={(page) => setCurrentPage(page)}
         transitionTimingFunction="cubic-bezier(0.95, 0.05, 0.08, 1.01)"
         animationTimer={1000}
+        blockScrollUp={isSubmitted}
+        blockScrollDown={isSubmitted}
         customPageNumber={currentPage}
       >
         <Screen
@@ -290,6 +305,21 @@ export default function Home() {
           }
           submitButton={<SubmitButton />}
         />
+        {isSubmitted && (
+          <Screen
+            question={
+              <div className="text-4xl font-bold text-center text-gray-900">
+                Thank you for your time!
+              </div>
+            }
+            questionField={
+              <div className="flex flex-col items-start justify-center border border-gray-300 divide-y rounded-lg shadow-md p-7">
+                Your answer has been submitted!
+              </div>
+            }
+            // submitButton={<SubmitButton />}
+          />
+        )}
       </ReactPageScroller>
     </div>
   );
