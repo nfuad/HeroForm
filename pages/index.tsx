@@ -53,15 +53,16 @@ const signInWithGoogle = (setAccessToken) => {
 };
 
 export default function Home() {
+  const auth = getAuth();
+
   const [accessToken, setAccessToken] = useState(null);
 
   const handleClick = () => {
-    const auth = getAuth();
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         axios
           .post("/api/hello", {
-            token: accessToken, // await (await auth.currentUser.getIdTokenResult()).token,
+            token: accessToken,
           })
           .then((res) => console.log("res", res))
           .catch((err) => console.error("err", err));
