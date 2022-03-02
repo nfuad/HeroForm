@@ -119,7 +119,7 @@ export default function Home() {
     return (
       <button
         onClick={lastPage ? handleSubmitSurvey : handlePageChange}
-        className="px-6 py-4 text-white transition-all ease-in-out bg-purple-600 rounded-md mt-9 focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 disabled:bg-purple-200 hover:bg-purple-700 focus:bg-purple-600"
+        className="px-6 py-3 text-white transition-all ease-in-out bg-purple-600 rounded-md mt-9 focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 disabled:bg-purple-200 hover:bg-purple-700 focus:bg-purple-600"
       >
         {lastPage ? "Submit" : "Next"}
       </button>
