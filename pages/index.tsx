@@ -1,21 +1,16 @@
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
-import useIntersectionObserver from "../hooks/use-intersection-observer";
-import useDynamicRefs from "../hooks/use-dynamic-refs";
 import ReactPageScroller from "react-page-scroller";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useEffect, useRef } from "react";
 import { useState } from "react";
 import axios from "axios";
 import RadioButton, { plans } from "../components/radio-button";
-import { Transition } from "@headlessui/react";
 import Screen from "../components/screen";
 import { questions } from "../constants/questions";
+import EditIcon from "../components/EditIcon";
+import Chevron from "../components/Chevron";
 
 const signInWithGoogle = (setAccessToken) => {
   const provider = new GoogleAuthProvider();
@@ -44,43 +39,6 @@ const signInWithGoogle = (setAccessToken) => {
       const credential = GoogleAuthProvider.credentialFromError(error);
       // ...
     });
-};
-
-const EditIcon = () => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-6 h-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-      />
-    </svg>
-  );
-};
-const Chevron = ({ style }: any) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={`w-6 h-6 ${style}`}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M5 15l7-7 7 7"
-      />
-    </svg>
-  );
 };
 
 export default function Home() {
@@ -120,11 +78,11 @@ export default function Home() {
   const survey = [
     {
       question: questions[0],
-      answer: Object.values(answerObj.input)[0] || "answer 1",
+      answer: Object.values(answerObj.input)[0] || "Type your answer one here",
     },
     {
       question: questions[1],
-      answer: Object.values(answerObj.input)[1] || "answer 2",
+      answer: Object.values(answerObj.input)[1] || "Type your answer two here",
     },
     { question: questions[2], answer: answerObj.radio[0].name },
   ];
@@ -163,7 +121,7 @@ export default function Home() {
         onClick={lastPage ? handleSubmitSurvey : handlePageChange}
         className="px-6 py-4 text-white transition-all ease-in-out bg-purple-600 rounded-md mt-9 focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 disabled:bg-purple-200 hover:bg-purple-700 focus:bg-purple-600"
       >
-        {lastPage ? "Submit" : "Ok"}
+        {lastPage ? "Submit" : "Next"}
       </button>
     );
   };
@@ -186,22 +144,24 @@ export default function Home() {
         />
       </div>
       <div className="absolute z-50 flex flex-row border border-gray-400 divide-x-2 divide-gray-300 rounded-lg shadow-md bottom-5 right-5 ">
-        <div
+        <button
+          disabled={currentPage === 0}
           onClick={() => {
             setCurrentPage((prevState) => prevState - 1);
           }}
-          className="p-3 bg-white rounded-l-lg cursor-pointer hover:bg-purple-700 hover:text-white"
+          className="p-3 bg-white disabled:bg-gray-200 disabled:cursor-default disabled:hover:text-black rounded-l-lg cursor-pointer hover:bg-purple-700 hover:text-white"
         >
           <Chevron />
-        </div>
-        <div
+        </button>
+        <button
+          disabled={lastPage}
           onClick={() => {
             setCurrentPage((prevState) => prevState + 1);
           }}
-          className="p-3 bg-white rounded-r-lg cursor-pointer hover:bg-purple-700 hover:text-white"
+          className="p-3 bg-white rounded-r-lg disabled:hover:bg-gray-200 disabled:bg-gray-200 disabled:hover:text-black disabled:cursor-default cursor-pointer hover:bg-purple-700 hover:text-white"
         >
           <Chevron style="rotate-180" />
-        </div>
+        </button>
       </div>
 
       <div
@@ -211,7 +171,10 @@ export default function Home() {
         {totalPagesToArray.map((i, index) => {
           return (
             <div
-              className={`transition-all ease-in-out ${
+              onClick={() => {
+                setCurrentPage(index);
+              }}
+              className={`transition-all ease-in-out cursor-pointer ${
                 index === currentPage
                   ? "bg-purple-700 w-4 h-4"
                   : "bg-gray-200 w-2 h-2"
@@ -260,18 +223,6 @@ export default function Home() {
           }
           questionField={
             <textarea
-              // style={{
-              //   height: `${textareaHeight}px`,
-              // }}
-              // onKeyPress={(e) => {
-              //   if (e.key === "Enter") {
-              //     if (e.shiftKey) {
-              //       console.log("shift enter was pressed");
-
-              //       setTextareaHeight(textareaHeight + 20);
-              //     }
-              //   }
-              // }}
               name="textarea2"
               value={inputs?.textarea2 || ""}
               onChange={handleChange}
@@ -325,7 +276,7 @@ export default function Home() {
                         <EditIcon />
                       </div>
                     </div>
-                    <div className="flex space-x-1 text-lg">
+                    <div className="flex space-x-1 text-lg mt-2">
                       {/* <span className="font-extralight">A:</span>{" "} */}
                       <p className="font-semibold text-gray-500">
                         {item.answer}
@@ -342,3 +293,18 @@ export default function Home() {
     </div>
   );
 }
+
+// #Todo: Change height on shift enter
+
+// style={{
+//   height: `${textareaHeight}px`,
+// }}
+// onKeyPress={(e) => {
+//   if (e.key === "Enter") {
+//     if (e.shiftKey) {
+//       console.log("shift enter was pressed");
+
+//       setTextareaHeight(textareaHeight + 20);
+//     }
+//   }
+// }}
