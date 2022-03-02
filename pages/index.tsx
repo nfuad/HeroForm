@@ -171,6 +171,7 @@ export default function Home() {
         {totalPagesToArray.map((i, index) => {
           return (
             <div
+              key={index}
               onClick={() => {
                 setCurrentPage(index);
               }}
