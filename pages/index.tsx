@@ -132,6 +132,7 @@ export default function Home() {
   const lastPage = questions.length === currentPage;
 
   const totalPages = questions.length + 1;
+
   const totalPagesToArray = Array.from({ length: totalPages }, (_, i) => i);
   console.log("totalPagesToArray: ", totalPagesToArray);
 
@@ -196,6 +197,7 @@ export default function Home() {
       )}
 
       <ReactPageScroller
+        renderAllPagesOnFirstRender={true}
         onBeforePageScroll={(nextPageIndex) => {
           setCurrentPage(nextPageIndex);
         }}
