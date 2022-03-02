@@ -3,6 +3,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import useIntersectionObserver from "../hooks/use-intersection-observer";
 import useDynamicRefs from "../hooks/use-dynamic-refs";
+import ReactPageScroller from "react-page-scroller";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
@@ -14,6 +15,7 @@ import axios from "axios";
 import RadioButton, { plans } from "../components/radio-button";
 import { Transition } from "@headlessui/react";
 import Screen from "../components/screen";
+import { questions } from "../constants/questions";
 
 const signInWithGoogle = (setAccessToken) => {
   const provider = new GoogleAuthProvider()
@@ -44,6 +46,43 @@ const signInWithGoogle = (setAccessToken) => {
     })
 }
 
+const EditIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-6 h-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+      />
+    </svg>
+  );
+};
+const Chevron = ({ style }: any) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={`w-6 h-6 ${style}`}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M5 15l7-7 7 7"
+      />
+    </svg>
+  );
+};
+
 export default function Home() {
   const auth = getAuth()
 
@@ -66,12 +105,7 @@ export default function Home() {
 
   // const [textareaHeight, setTextareaHeight] = useState(100);
   const [inputs, setInputs] = useState<any>({});
-
-  const questions = [
-    "What do you like the most about the service?",
-    "What is your most pressing problem for selling products through facebook right now?",
-    "How much are you willing to pay for the service?",
-  ];
+  const [currentPage, setCurrentPage] = useState(0);
 
   const handleChange = (e) =>
     setInputs((prevState) => ({
@@ -86,14 +120,57 @@ export default function Home() {
   const survey = [
     {
       question: questions[0],
-      answer: Object.values(answerObj.input)[0] || "",
+      answer: Object.values(answerObj.input)[0] || "answer 1",
     },
     {
       question: questions[1],
-      answer: Object.values(answerObj.input)[1] || "",
+      answer: Object.values(answerObj.input)[1] || "answer 2",
     },
-    { question: questions[2], answer: answerObj.radio[0] },
+    { question: questions[2], answer: answerObj.radio[0].name },
   ];
+
+  const handlePageChange = () => {
+    setCurrentPage((prevState) => prevState + 1);
+  };
+
+  const handleSubmitSurvey = () => {
+    axios
+      .post("/api/add-survey", {
+        survey,
+      })
+      .then((res) => {
+        console.log("res: ", res);
+        // onSuccess();
+        // toast.success('Successfully added to waitlist')
+      })
+      .catch((err) => {
+        console.log("err: ", err);
+        // onError();
+        // toast.error("Error adding to waitlist");
+      })
+      .finally(() => {
+        setInputs("");
+        setSelected(plans[0]);
+      });
+  };
+
+  const lastPage = questions.length === currentPage;
+  console.log("questions.length: ", questions.length);
+
+  const SubmitButton = () => {
+    return (
+      <button
+        onClick={lastPage ? handleSubmitSurvey : handlePageChange}
+        className="px-6 py-4 text-white transition-all ease-in-out bg-purple-600 rounded-md mt-9 focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 disabled:bg-purple-200 hover:bg-purple-700 focus:bg-purple-600"
+      >
+        {lastPage ? "Submit" : "Ok"}
+      </button>
+    );
+  };
+
+  const totalPages = questions.length + 1;
+  const totalPagesToArray = Array.from({ length: totalPages }, (_, i) => i);
+  console.log("totalPagesToArray: ", totalPagesToArray);
 
   return (
     // <div className={styles.container}>
@@ -101,98 +178,167 @@ export default function Home() {
     //   <button onClick={() => handleClick()}>sdfsd</button>
     // </div>
 
-    <div className="w-screen h-screen overflow-x-hidden overflow-y-scroll">
-      <Screen
-        question={
-          <div className="text-4xl font-bold">
-            <span className="text-2xl text-gray-400">1.</span> What do you like
-            the most about the service?
-          </div>
-        }
-        questionField={
-          <textarea
-            name="textarea1"
-            value={inputs?.textarea1 || ""}
-            onChange={handleChange}
-            className={`bg-gray-50 border-t-orange-100 focus:bg-white rounded-md resize-y min-h-[15rem] min-w-[30rem] border-gray-300 p-4 border focus:border-blue-500 focus:outline-none focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 transition ease-in-out`}
-            placeholder="Type your answer here"
-          />
-        }
-      />
-      <Screen
-        style="border border-t-gray-300 border-b-gray-300"
-        question={
-          <div className="text-4xl font-bold leading-[3rem] text-center">
-            <span className="text-2xl text-gray-400">2.</span> What is your most
-            pressing problem for selling <br className="hidden md:block" />{" "}
-            products through facebook right now?
-          </div>
-        }
-        questionField={
-          <textarea
-            // style={{
-            //   height: `${textareaHeight}px`,
-            // }}
-            // onKeyPress={(e) => {
-            //   if (e.key === "Enter") {
-            //     if (e.shiftKey) {
-            //       console.log("shift enter was pressed");
+    <div className="relative">
+      <div className="absolute z-50 w-full h-2 bg-gray-200">
+        <div
+          className="h-2 transition-all ease-in-out bg-purple-700"
+          style={{ width: `${(100 / questions.length) * currentPage}%` }}
+        />
+      </div>
+      <div className="absolute z-50 flex flex-row border border-gray-400 divide-x-2 divide-gray-300 rounded-lg shadow-md bottom-5 right-5 ">
+        <div
+          onClick={() => {
+            setCurrentPage((prevState) => prevState - 1);
+          }}
+          className="p-3 bg-white rounded-l-lg cursor-pointer hover:bg-purple-700 hover:text-white"
+        >
+          <Chevron />
+        </div>
+        <div
+          onClick={() => {
+            setCurrentPage((prevState) => prevState + 1);
+          }}
+          className="p-3 bg-white rounded-r-lg cursor-pointer hover:bg-purple-700 hover:text-white"
+        >
+          <Chevron style="rotate-180" />
+        </div>
+      </div>
 
-            //       setTextareaHeight(textareaHeight + 20);
-            //     }
-            //   }
-            // }}
-            name="textarea2"
-            value={inputs?.textarea2 || ""}
-            onChange={handleChange}
-            className={`rounded-md resize-y bg-gray-50 focus:bg-white border-gray-300 min-h-[15rem] min-w-[30rem] p-4 border focus:border-blue-500 focus:outline-none focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 transition ease-in-out`}
-            placeholder="Type your answer here"
-          />
-        }
-      />
-      <Screen
-        transitionStyle="w-full"
-        style="w-full"
-        question={
-          <div className="text-4xl font-bold text-center text-gray-900">
-            <span className="text-2xl text-gray-400">3.</span> How much are you
-            willing to pay for the service?
-          </div>
-        }
-        questionField={
-          <div className="flex flex-col items-center justify-center">
-            <RadioButton selected={selected} setSelected={setSelected} />
+      <div
+        style={{ transform: "translateY(-50%)" }}
+        className="absolute z-50 flex flex-col items-center justify-center space-y-3 right-5 top-1/2"
+      >
+        {totalPagesToArray.map((i, index) => {
+          return (
+            <div
+              className={`transition-all ease-in-out ${
+                index === currentPage
+                  ? "bg-purple-700 w-4 h-4"
+                  : "bg-gray-200 w-2 h-2"
+              }  rounded-full`}
+            />
+          );
+        })}
+      </div>
 
-            <button
-              onClick={async () => {
-                const axios = await (await import("axios")).default;
+      <ReactPageScroller
+        pageOnChange={(page) => setCurrentPage(page)}
+        transitionTimingFunction="cubic-bezier(0.95, 0.05, 0.08, 1.01)"
+        animationTimer={1000}
+        customPageNumber={currentPage}
+      >
+        <Screen
+          submitButton={<SubmitButton />}
+          question={
+            <div className="text-4xl font-bold">
+              <span className="text-2xl text-gray-400">1.</span> What do you
+              like the most about the service?
+            </div>
+          }
+          questionField={
+            <>
+              <textarea
+                name="textarea1"
+                value={inputs?.textarea1 || ""}
+                onChange={handleChange}
+                className={`bg-gray-50 focus:bg-white rounded-md resize-y min-h-[15rem] min-w-[30rem] border-gray-300 p-4 border focus:border-blue-500 focus:outline-none focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 transition ease-in-out`}
+                placeholder="Type your answer here"
+              />
+            </>
+          }
+        />
 
-                axios
-                  .post("/api/add-survey", {
-                    survey,
-                  })
-                  .then((res) => {
-                    console.log("res: ", res);
-                    // onSuccess();
-                    // toast.success('Successfully added to waitlist')
-                  })
-                  .catch((err) => {
-                    console.log("err: ", err);
-                    // onError();
-                    // toast.error("Error adding to waitlist");
-                  })
-                  .finally(() => {
-                    setInputs("");
-                    setSelected(plans[0]);
-                  });
-              }}
-              className="px-6 py-4 text-white transition-all ease-in-out bg-purple-600 rounded-md mt-9 focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 disabled:bg-purple-200 hover:bg-purple-700 focus:bg-purple-600"
-            >
-              Submit
-            </button>
-          </div>
-        }
-      />
+        <Screen
+          submitButton={<SubmitButton />}
+          question={
+            <div className="text-4xl font-bold leading-[3rem] text-center">
+              <span className="text-2xl text-gray-400">2.</span> What is your
+              most pressing problem for selling{" "}
+              <br className="hidden md:block" /> products through facebook right
+              now?
+            </div>
+          }
+          questionField={
+            <textarea
+              // style={{
+              //   height: `${textareaHeight}px`,
+              // }}
+              // onKeyPress={(e) => {
+              //   if (e.key === "Enter") {
+              //     if (e.shiftKey) {
+              //       console.log("shift enter was pressed");
+
+              //       setTextareaHeight(textareaHeight + 20);
+              //     }
+              //   }
+              // }}
+              name="textarea2"
+              value={inputs?.textarea2 || ""}
+              onChange={handleChange}
+              className={`rounded-md resize-y bg-gray-50 focus:bg-white border-gray-300 min-h-[15rem] min-w-[30rem] p-4 border focus:border-blue-500 focus:outline-none focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 transition ease-in-out`}
+              placeholder="Type your answer here"
+            />
+          }
+        />
+
+        <Screen
+          submitButton={<SubmitButton />}
+          transitionStyle="w-full"
+          style="w-full"
+          question={
+            <div className="text-4xl font-bold text-center text-gray-900">
+              <span className="text-2xl text-gray-400">3.</span> How much are
+              you willing to pay for the service?
+            </div>
+          }
+          questionField={
+            <div className="flex flex-col items-center justify-center">
+              <RadioButton selected={selected} setSelected={setSelected} />
+            </div>
+          }
+        />
+
+        <Screen
+          question={
+            <div className="text-4xl font-bold text-center text-gray-900">
+              Summary
+            </div>
+          }
+          questionField={
+            <div className="flex flex-col items-start justify-center border border-gray-300 divide-y rounded-lg shadow-md p-7">
+              {survey.map((item, index) => {
+                const even = index % 2 !== 0;
+                return (
+                  <div
+                    key={index}
+                    className={`flex flex-col justify-center w-[592px] align-center p-5`}
+                  >
+                    <div className="relative flex space-x-1 text-xl">
+                      {/* <span className="font-extralight">Q:</span>{" "} */}
+                      <p className="font-semibold">{item.question}</p>{" "}
+                      <div
+                        onClick={() => {
+                          setCurrentPage(index);
+                        }}
+                        className="absolute top-0 right-0 text-gray-400 transition-all ease-in-out cursor-pointer hover:text-black"
+                      >
+                        <EditIcon />
+                      </div>
+                    </div>
+                    <div className="flex space-x-1 text-lg">
+                      {/* <span className="font-extralight">A:</span>{" "} */}
+                      <p className="font-semibold text-gray-500">
+                        {item.answer}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          }
+          submitButton={<SubmitButton />}
+        />
+      </ReactPageScroller>
     </div>
   );
 }
