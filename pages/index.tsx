@@ -12,54 +12,53 @@ import { questions } from "../constants/questions";
 import EditIcon from "../components/EditIcon";
 import Chevron from "../components/Chevron";
 
-const signInWithGoogle = (setAccessToken) => {
-  const provider = new GoogleAuthProvider();
-  provider.addScope("https://www.googleapis.com/auth/spreadsheets");
+// const signInWithGoogle = () => {
+//   const provider = new GoogleAuthProvider();
+//   provider.addScope("https://www.googleapis.com/auth/spreadsheets");
 
-  const auth = getAuth();
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      const credential = GoogleAuthProvider.credentialFromResult(result);
-      const token = credential.accessToken;
-      const idToken = credential.idToken;
-      // The signed-in user info.
-      const user = result.user;
-      console.log({ result, credential, token, user, idToken });
-      setAccessToken(token);
-      // ...
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // The email of the user's account used.
-      const email = error.email;
-      // The AuthCredential type that was used.
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      // ...
-    });
-};
+//   const auth = getAuth();
+//   signInWithPopup(auth, provider)
+//     .then((result) => {
+//       // This gives you a Google Access Token. You can use it to access the Google API.
+//       const credential = GoogleAuthProvider.credentialFromResult(result);
+//       const token = credential.accessToken;
+//       const idToken = credential.idToken;
+//       // The signed-in user info.
+//       const user = result.user;
+//       console.log({ result, credential, token, user, idToken });
+//       // ...
+//     })
+//     .catch((error) => {
+//       // Handle Errors here.
+//       const errorCode = error.code;
+//       const errorMessage = error.message;
+//       // The email of the user's account used.
+//       const email = error.email;
+//       // The AuthCredential type that was used.
+//       const credential = GoogleAuthProvider.credentialFromError(error);
+//       // ...
+//     });
+// };
 
 export default function Home() {
-  const auth = getAuth();
-
-  const [accessToken, setAccessToken] = useState(null);
-
-  const handleClick = () => {
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        axios
-          .post("/api/hello", {
-            token: accessToken,
-          })
-          .then((res) => console.log("res", res))
-          .catch((err) => console.error("err", err));
-      } else {
-        console.log("No user is signed in.");
-      }
-    });
-  };
+  // const handleClick = () => {
+  //   const auth = getAuth();
+  //   auth.onAuthStateChanged((user) => {
+  //     if (user) {
+  //       // User is signed in.
+  //       console.log("user", user);
+  //       axios
+  //         .post("/api/hello", {
+  //           idToken: "",
+  //         })
+  //         .then((res) => console.log("res", res))
+  //         .catch((err) => console.error("err", err));
+  //     } else {
+  //       // No user is signed in.
+  //       console.log("No user is signed in.");
+  //     }
+  //   });
+  // };
 
   // const [textareaHeight, setTextareaHeight] = useState(100);
   const [inputs, setInputs] = useState<any>({});
@@ -149,7 +148,7 @@ export default function Home() {
     <div className="relative">
       <div className="absolute z-50 w-full h-2 bg-gray-200">
         <div
-          className="h-2 transition-all ease-in-out bg-purple-700 duration-1000"
+          className="h-2 transition-all duration-1000 ease-in-out bg-purple-700"
           style={{ width: `${scrollIndicator}%` }}
         />
       </div>
@@ -179,7 +178,7 @@ export default function Home() {
               onClick={() => {
                 setCurrentPage((prevState) => prevState - 1);
               }}
-              className="p-3 bg-white disabled:bg-gray-200 disabled:cursor-default disabled:hover:text-black rounded-l-lg cursor-pointer hover:bg-purple-700 hover:text-white"
+              className="p-3 bg-white rounded-l-lg cursor-pointer disabled:bg-gray-200 disabled:cursor-default disabled:hover:text-black hover:bg-purple-700 hover:text-white"
             >
               <Chevron />
             </button>
@@ -188,7 +187,7 @@ export default function Home() {
               onClick={() => {
                 setCurrentPage((prevState) => prevState + 1);
               }}
-              className="p-3 bg-white rounded-r-lg disabled:hover:bg-gray-200 disabled:bg-gray-200 disabled:hover:text-black disabled:cursor-default cursor-pointer hover:bg-purple-700 hover:text-white"
+              className="p-3 bg-white rounded-r-lg cursor-pointer disabled:hover:bg-gray-200 disabled:bg-gray-200 disabled:hover:text-black disabled:cursor-default hover:bg-purple-700 hover:text-white"
             >
               <Chevron style="rotate-180" />
             </button>
@@ -294,7 +293,7 @@ export default function Home() {
                         <EditIcon />
                       </div>
                     </div>
-                    <div className="flex space-x-1 text-lg mt-2">
+                    <div className="flex mt-2 space-x-1 text-lg">
                       {/* <span className="font-extralight">A:</span>{" "} */}
                       <p className="font-semibold text-gray-500">
                         {item.answer}
