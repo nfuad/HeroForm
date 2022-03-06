@@ -1,3 +1,5 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -5,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        heading: ["Cal Sans", ...defaultTheme.fontFamily.sans],
+        body: ["Nunito", ...defaultTheme.fontFamily.sans],
+      },
       boxShadow: {
         "3xl": "0 13.6301px 35.58px -6.81507px rgba(77, 71, 254, 0.36)",
       },
