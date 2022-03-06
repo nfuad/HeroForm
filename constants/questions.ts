@@ -42,6 +42,7 @@ export const testQuestions = [
       { name: "Pro", checked: false },
       { name: "Custom", checked: false },
     ],
+    answer: "",
     others: true,
   },
 ];
