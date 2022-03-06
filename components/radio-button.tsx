@@ -3,22 +3,16 @@ import { RadioGroup } from "@headlessui/react";
 
 export const plans = [
   {
-    name: "Startup",
-    ram: "12GB",
-    cpus: "6 CPUs",
-    disk: "160 GB SSD disk",
+    name: "বেসিক",
+    description: "সবসমই ফ্রি",
   },
   {
-    name: "Business",
-    ram: "16GB",
-    cpus: "8 CPUs",
-    disk: "512 GB SSD disk",
+    name: "প্রো",
+    description: "১000৳ - ৩000৳",
   },
   {
-    name: "Enterprise",
-    ram: "32GB",
-    cpus: "12 CPUs",
-    disk: "1024 GB SSD disk",
+    name: "কাস্টম",
+    description: "আপনার বিজনেস অনুযায়ী",
   },
 ];
 
@@ -72,8 +66,10 @@ function MyRadioGroup({ selected, setSelected }) {
                       <div className="text-sm">
                         <RadioGroup.Label
                           as="p"
-                          className={`font-medium text-left ${
-                            checked ? "text-white" : "text-gray-900"
+                          className={`text-left ${
+                            checked
+                              ? "text-white font-bold"
+                              : "text-gray-900 font-medium "
                           }`}
                         >
                           {plan.name}
@@ -81,14 +77,10 @@ function MyRadioGroup({ selected, setSelected }) {
                         <RadioGroup.Description
                           as="span"
                           className={`inline ${
-                            checked ? "text-sky-100" : "text-gray-500"
+                            checked ? "text-gray-50" : "text-gray-500"
                           }`}
                         >
-                          <span>
-                            {plan.ram}/{plan.cpus}
-                          </span>{" "}
-                          <span aria-hidden="true">&middot;</span>{" "}
-                          <span>{plan.disk}</span>
+                          <span>{plan.description}</span>{" "}
                         </RadioGroup.Description>
                       </div>
                     </div>
