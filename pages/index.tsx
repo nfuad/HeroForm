@@ -157,6 +157,8 @@ export default function Home() {
         backgroundImage: `url('/background.svg')`,
         width: "100%",
         height: "100%",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
       }}
       className="relative"
     >
