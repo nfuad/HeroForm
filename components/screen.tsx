@@ -30,6 +30,7 @@ function Screen({
         leaveTo="opacity-0"
       >
         <div className=" lg:leading-[3.5rem] text-2xl md:text-3xl lg:text-4xl font-bold text-center max-w-4xl ">
+          <span className="text-base text-gray-400">QUESTION 1</span>
           {question}
         </div>
       </Transition>

@@ -1,4 +1,5 @@
 import ReactPageScroller from "react-page-scroller";
+import NextImage from "next/image";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
@@ -12,6 +13,8 @@ import { banglaIndex, questions } from "../constants/questions";
 import EditIcon from "../components/EditIcon";
 import Chevron from "../components/Chevron";
 import { showConfettiAnimation } from "../lib/show-confetti-animation";
+import { allToppings } from "../constants/checkbox";
+import Checkbox from "../components/checkbox";
 
 // const signInWithGoogle = () => {
 //   const provider = new GoogleAuthProvider();
@@ -118,13 +121,12 @@ export default function Home() {
   };
 
   const [isSubmitted, setIsSubmitted] = useState(false);
-  console.log("questions.length: ", questions.length);
 
   const SubmitButton = () => {
     return (
       <button
         onClick={lastPage ? handleSubmitSurvey : handlePageChange}
-        className="px-6 py-3 text-white transition-all ease-in-out bg-purple-600 rounded-md focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 disabled:bg-purple-200 hover:bg-purple-700 focus:bg-purple-600"
+        className="px-6 py-3 text-white transition-all ease-in-out rounded-md shadow-3xl bg-gradient-to-r to-gradient-blue-one from-gradient-blue-two focus:ring-offset-0 focus:ring-4"
       >
         {lastPage ? "সাবমিট" : "নেক্সট"}
       </button>
@@ -142,16 +144,25 @@ export default function Home() {
     ? 100
     : (100 / questions.length) * currentPage;
 
+  const [checkboxes, setCheckboxes] = useState(allToppings);
+
   return (
     // <div className={styles.container}>
     //   <button onClick={() => signInWithGoogle()}>Click Here</button>
     //   <button onClick={() => handleClick()}>sdfsd</button>
     // </div>
 
-    <div className="relative">
+    <div
+      style={{
+        backgroundImage: `url('/background.svg')`,
+        width: "100%",
+        height: "100%",
+      }}
+      className="relative"
+    >
       <div className="absolute z-50 w-full h-2 bg-gray-200">
         <div
-          className="h-2 transition-all duration-1000 ease-in-out bg-purple-700"
+          className="h-2 transition-all duration-1000 ease-in-out bg-gradient-to-r to-gradient-blue-one from-gradient-blue-two"
           style={{ width: `${scrollIndicator}%` }}
         />
       </div>
@@ -168,7 +179,7 @@ export default function Home() {
                   }}
                   className={`transition-all duration-300 ease-in-out cursor-pointer ${
                     index === currentPage
-                      ? "bg-purple-700 w-4 h-4"
+                      ? "bg-gradient-blue-one w-4 h-4"
                       : "bg-gray-200 w-2 h-2"
                   } rounded-full`}
                 />
@@ -181,7 +192,7 @@ export default function Home() {
               onClick={() => {
                 setCurrentPage((prevState) => prevState - 1);
               }}
-              className="p-3 bg-white rounded-l-lg cursor-pointer disabled:bg-gray-200 disabled:cursor-default disabled:hover:text-black hover:bg-purple-700 hover:text-white"
+              className="p-3 bg-white rounded-l-lg cursor-pointer disabled:bg-gray-200 disabled:cursor-default disabled:hover:text-black hover:bg-gradient-to-r hover:to-gradient-blue-one hover:from-gradient-blue-two hover:text-white"
             >
               <Chevron />
             </button>
@@ -190,7 +201,7 @@ export default function Home() {
               onClick={() => {
                 setCurrentPage((prevState) => prevState + 1);
               }}
-              className="p-3 bg-white rounded-r-lg cursor-pointer disabled:hover:bg-gray-200 disabled:bg-gray-200 disabled:hover:text-black disabled:cursor-default hover:bg-purple-700 hover:text-white"
+              className="p-3 bg-white rounded-r-lg cursor-pointer disabled:hover:bg-gray-200 disabled:bg-gray-200 disabled:hover:text-black disabled:cursor-default hover:bg-gradient-to-r hover:to-gradient-blue-one hover:from-gradient-blue-two hover:text-white"
             >
               <Chevron style="rotate-180" />
             </button>
@@ -212,7 +223,7 @@ export default function Home() {
         blockScrollDown={isSubmitted}
         customPageNumber={currentPage}
       >
-        <Screen
+        {/* <Screen
           transitionStyle="w-full flex justify-center items-center"
           submitButton={<SubmitButton />}
           question={
@@ -232,9 +243,25 @@ export default function Home() {
               />
             </>
           }
-        />
+        /> */}
 
         <Screen
+          transitionStyle="w-full flex justify-center items-center"
+          submitButton={<SubmitButton />}
+          question={
+            <div className="">
+              {/* <span className="text-2xl text-gray-400">{banglaIndex[0]}.</span>{" "} */}
+              <span>{questions[0]}</span>
+            </div>
+          }
+          questionField={
+            <>
+              <Checkbox checkboxes={checkboxes} setCheckboxes={setCheckboxes} />
+            </>
+          }
+        />
+
+        {/* <Screen
           transitionStyle="w-full flex justify-center items-center"
           submitButton={<SubmitButton />}
           question={
@@ -252,6 +279,21 @@ export default function Home() {
               placeholder="Type your answer here"
             />
           }
+        /> */}
+        <Screen
+          transitionStyle="w-full flex justify-center items-center"
+          submitButton={<SubmitButton />}
+          question={
+            <div className="text-center">
+              {/* <span className="text-2xl text-gray-400">{banglaIndex[1]}.</span> */}
+              <span>{questions[1]}</span>
+            </div>
+          }
+          questionField={
+            <>
+              <Checkbox checkboxes={checkboxes} setCheckboxes={setCheckboxes} />
+            </>
+          }
         />
 
         <Screen
@@ -260,7 +302,7 @@ export default function Home() {
           style="w-full"
           question={
             <div className="text-center text-gray-900 ">
-              <span className="text-2xl text-gray-400">{banglaIndex[2]}.</span>
+              {/* <span className="text-2xl text-gray-400">{banglaIndex[2]}.</span> */}
               <span>{questions[2]}</span>
             </div>
           }
@@ -275,7 +317,7 @@ export default function Home() {
           transitionStyle="w-full flex justify-center items-center"
           question={<div className="text-center text-gray-900">Summary</div>}
           questionField={
-            <div className="flex flex-col items-start w-[91%] md:w-[592px] justify-center border border-gray-300 divide-y rounded-lg shadow-md p-7">
+            <div className="flex flex-col items-start w-[91%] md:w-[592px] justify-center bg-white border border-gray-300 divide-y rounded-lg shadow-md p-7">
               {survey.map((item, index) => {
                 const even = index % 2 !== 0;
                 return (
