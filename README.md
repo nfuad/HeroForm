@@ -1,52 +1,122 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<ReactPageScroller
+containerHeight="100vh"
+// containerWidth={window.innerWidth}
+renderAllPagesOnFirstRender={true}
+onBeforePageScroll={(nextPageIndex) => {
+setCurrentPage(nextPageIndex);
+}}
+pageOnChange={(page) => setCurrentPage(page)}
+transitionTimingFunction="cubic-bezier(0.95, 0.05, 0.08, 1.01)"
+animationTimer={1000}
+blockScrollUp={isSubmitted}
+blockScrollDown={isSubmitted}
+customPageNumber={currentPage} >
+<Screen
+transitionStyle="w-full flex justify-center items-center"
+submitButton={<SubmitButton />}
+question={
+<div className="">
+{/_ <span className="text-2xl text-gray-400">{banglaIndex[0]}.</span>{" "} _/}
+<span>{questions[0]}</span>
+</div>
+}
+questionField={
+<>
+<Checkbox checkboxes={checkboxes} setCheckboxes={setCheckboxes} />
+</>
+}
+/>
 
-## Getting Started
+        <Screen
+          transitionStyle="w-full flex justify-center items-center"
+          submitButton={<SubmitButton />}
+          question={
+            <div className="text-center">
+              {/* <span className="text-2xl text-gray-400">{banglaIndex[1]}.</span> */}
+              <span>{questions[1]}</span>
+            </div>
+          }
+          questionField={
+            <>
+              <Checkbox checkboxes={checkboxes} setCheckboxes={setCheckboxes} />
+            </>
+          }
+        />
 
-First, run the development server:
+        <Screen
+          submitButton={<SubmitButton />}
+          transitionStyle="w-full"
+          style="w-full"
+          question={
+            <div className="text-center text-gray-900 ">
+              {/* <span className="text-2xl text-gray-400">{banglaIndex[2]}.</span> */}
+              <span>{questions[2]}</span>
+            </div>
+          }
+          questionField={
+            <div className="flex flex-col items-center justify-center">
+              <RadioButton selected={selected} setSelected={setSelected} />
+            </div>
+          }
+        />
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+        <Screen
+          transitionStyle="w-full flex justify-center items-center"
+          question={<div className="text-center text-gray-900">Summary</div>}
+          questionField={
+            <div className="flex flex-col items-start w-[91%] md:w-[592px] justify-center bg-white border border-gray-300 divide-y rounded-lg shadow-md p-7">
+              {survey.map((item, index) => {
+                const even = index % 2 !== 0;
+                return (
+                  <div
+                    key={index}
+                    className={`flex flex-row justify-center align-center space-x-2 p-5`}
+                  >
+                    <div>
+                      <div className="relative flex space-x-1 text-base sm:text-lg md:text-xl">
+                        {/* <span className="font-extralight">Q:</span>{" "} */}
+                        <p className="font-semibold">{item.question}</p>{" "}
+                      </div>
+                      <div className="flex mt-2 space-x-1 text-sm sm:text-base md:text-lg">
+                        {/* <span className="font-extralight">A:</span>{" "} */}
+                        <p className="font-semibold text-gray-500">
+                          {item.answer}
+                        </p>
+                      </div>
+                    </div>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-apiKey: "AIzaSyA0no2UGDmcxWjToqfmBQwvjph0k5GqLQo",
-authDomain: "inquire-dev-dbd89.firebaseapp.com",
-projectId: "inquire-dev-dbd89",
-storageBucket: "inquire-dev-dbd89.appspot.com",
-messagingSenderId: "537616956281",
-appId: "1:537616956281:web:4100dbfb4c1533ae0c0da8"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+                    <div
+                      onClick={() => {
+                        setCurrentPage(index);
+                      }}
+                      className="text-gray-400 transition-all ease-in-out cursor-pointer hover:text-black"
+                    >
+                      <EditIcon />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          }
+          submitButton={<SubmitButton />}
+        />
+        {isSubmitted && (
+          <Screen
+            question={
+              <div className="space-y-6">
+                <div className="text-6xl text-center">🎉</div>
+                <div className="text-center text-gray-900">
+                  Thank you for your time!
+                </div>
+              </div>
+            }
+            questionField={
+              <div className="flex flex-col items-start justify-center border border-gray-300 divide-y rounded-lg shadow-md p-7">
+                Your answer has been submitted! You can safely close this window
+                now.
+              </div>
+            }
+            // submitButton={<SubmitButton />}
+          />
+        )}
+      </ReactPageScroller>
