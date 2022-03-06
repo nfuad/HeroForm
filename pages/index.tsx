@@ -88,7 +88,9 @@ const Screen = ({ id, currentScreen, setCurrentScreen }) => {
   return (
     <div
       id={id}
-      className={`h-screen w-screen bg-red-500 text-center flex justify-center items-center ${
+      className={`h-screen w-screen ${
+        id === 2 ? "bg-red-500" : "bg-blue-500"
+      } text-center flex justify-center items-center snap-start snap-always ${
         isCurrent ? "translate-y-0" : "translate-y-100"
       }`}
     >
