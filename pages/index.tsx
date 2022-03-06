@@ -72,6 +72,8 @@ export default function Home() {
     });
   };
 
+  const [currentScreen, setCurrentScreen] = useState(1);
+
   return (
     <div className={styles.container}>
       <button onClick={() => signInWithGoogle(setAccessToken)}>
@@ -81,3 +83,25 @@ export default function Home() {
     </div>
   );
 }
+
+const Screen = ({ id, currentScreen, setCurrentScreen }) => {
+  const isCurrent = currentScreen === id;
+  return (
+    <div
+      id={id}
+      className={`h-screen w-screen bg-red-500 text-center flex justify-center items-center ${
+        isCurrent ? "translate-y-0" : "translate-y-100"
+      }`}
+    >
+      <button
+        onClick={() => {
+          window.document.getElementById("2").scrollIntoView({
+            behavior: "smooth",
+          });
+        }}
+      >
+        Click meh {id}
+      </button>
+    </div>
+  );
+};
