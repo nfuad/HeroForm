@@ -8,9 +8,10 @@ import { useState } from "react";
 import axios from "axios";
 import RadioButton, { plans } from "../components/radio-button";
 import Screen from "../components/screen";
-import { questions } from "../constants/questions";
+import { banglaIndex, questions } from "../constants/questions";
 import EditIcon from "../components/EditIcon";
 import Chevron from "../components/Chevron";
+import { showConfettiAnimation } from "../lib/show-confetti-animation";
 
 // const signInWithGoogle = () => {
 //   const provider = new GoogleAuthProvider();
@@ -100,6 +101,8 @@ export default function Home() {
       .then((res) => {
         console.log("res: ", res);
         setCurrentPage((prevState) => prevState + 1);
+        showConfettiAnimation();
+
         // onSuccess();
         // toast.success('Successfully added to waitlist')
       })
@@ -121,9 +124,9 @@ export default function Home() {
     return (
       <button
         onClick={lastPage ? handleSubmitSurvey : handlePageChange}
-        className="px-6 py-3 text-white transition-all ease-in-out bg-purple-600 rounded-md mt-9 focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 disabled:bg-purple-200 hover:bg-purple-700 focus:bg-purple-600"
+        className="px-6 py-3 text-white transition-all ease-in-out bg-purple-600 rounded-md focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 disabled:bg-purple-200 hover:bg-purple-700 focus:bg-purple-600"
       >
-        {lastPage ? "Submit" : "Next"}
+        {lastPage ? "সাবমিট" : "নেক্সট"}
       </button>
     );
   };
@@ -196,6 +199,8 @@ export default function Home() {
       )}
 
       <ReactPageScroller
+        containerHeight="100vh"
+        // containerWidth={window.innerWidth}
         renderAllPagesOnFirstRender={true}
         onBeforePageScroll={(nextPageIndex) => {
           setCurrentPage(nextPageIndex);
@@ -208,11 +213,12 @@ export default function Home() {
         customPageNumber={currentPage}
       >
         <Screen
+          transitionStyle="w-full flex justify-center items-center"
           submitButton={<SubmitButton />}
           question={
-            <div className="text-4xl font-bold">
-              <span className="text-2xl text-gray-400">1.</span> What do you
-              like the most about the service?
+            <div className="">
+              <span className="text-2xl text-gray-400">{banglaIndex[0]}.</span>{" "}
+              <span>{questions[0]}</span>
             </div>
           }
           questionField={
@@ -221,7 +227,7 @@ export default function Home() {
                 name="textarea1"
                 value={inputs?.textarea1 || ""}
                 onChange={handleChange}
-                className={`bg-gray-50 focus:bg-white rounded-md resize-y min-h-[15rem] min-w-[30rem] border-gray-300 p-4 border focus:border-blue-500 focus:outline-none focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 transition ease-in-out`}
+                className={`bg-gray-50 focus:bg-white rounded-md resize-y min-w-[91%] min-h-[15rem] md:min-w-[30rem] border-gray-300 p-4 border focus:border-blue-500 focus:outline-none focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 transition ease-in-out`}
                 placeholder="Type your answer here"
               />
             </>
@@ -229,13 +235,12 @@ export default function Home() {
         />
 
         <Screen
+          transitionStyle="w-full flex justify-center items-center"
           submitButton={<SubmitButton />}
           question={
-            <div className="text-4xl font-bold leading-[3rem] text-center">
-              <span className="text-2xl text-gray-400">2.</span> What is your
-              most pressing problem for selling{" "}
-              <br className="hidden md:block" /> products through facebook right
-              now?
+            <div className="text-center">
+              <span className="text-2xl text-gray-400">{banglaIndex[1]}.</span>
+              <span>{questions[1]}</span>
             </div>
           }
           questionField={
@@ -243,7 +248,7 @@ export default function Home() {
               name="textarea2"
               value={inputs?.textarea2 || ""}
               onChange={handleChange}
-              className={`rounded-md resize-y bg-gray-50 focus:bg-white border-gray-300 min-h-[15rem] min-w-[30rem] p-4 border focus:border-blue-500 focus:outline-none focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 transition ease-in-out`}
+              className={`rounded-md resize-y bg-gray-50 focus:bg-white border-gray-300 min-w-[91%] min-h-[15rem] md:min-w-[30rem] p-4 border focus:border-blue-500 focus:outline-none focus:ring-offset-0 focus:ring-4 focus:ring-purple-200 transition ease-in-out`}
               placeholder="Type your answer here"
             />
           }
@@ -254,9 +259,9 @@ export default function Home() {
           transitionStyle="w-full"
           style="w-full"
           question={
-            <div className="text-4xl font-bold text-center text-gray-900">
-              <span className="text-2xl text-gray-400">3.</span> How much are
-              you willing to pay for the service?
+            <div className="text-center text-gray-900 ">
+              <span className="text-2xl text-gray-400">{banglaIndex[2]}.</span>
+              <span>{questions[2]}</span>
             </div>
           }
           questionField={
@@ -267,37 +272,37 @@ export default function Home() {
         />
 
         <Screen
-          question={
-            <div className="text-4xl font-bold text-center text-gray-900">
-              Summary
-            </div>
-          }
+          transitionStyle="w-full flex justify-center items-center"
+          question={<div className="text-center text-gray-900">Summary</div>}
           questionField={
-            <div className="flex flex-col items-start justify-center border border-gray-300 divide-y rounded-lg shadow-md p-7">
+            <div className="flex flex-col items-start w-[91%] md:w-[592px] justify-center border border-gray-300 divide-y rounded-lg shadow-md p-7">
               {survey.map((item, index) => {
                 const even = index % 2 !== 0;
                 return (
                   <div
                     key={index}
-                    className={`flex flex-col justify-center w-[592px] align-center p-5`}
+                    className={`flex flex-row justify-center align-center space-x-2 p-5`}
                   >
-                    <div className="relative flex space-x-1 text-xl">
-                      {/* <span className="font-extralight">Q:</span>{" "} */}
-                      <p className="font-semibold">{item.question}</p>{" "}
-                      <div
-                        onClick={() => {
-                          setCurrentPage(index);
-                        }}
-                        className="absolute top-0 right-0 text-gray-400 transition-all ease-in-out cursor-pointer hover:text-black"
-                      >
-                        <EditIcon />
+                    <div>
+                      <div className="relative flex space-x-1 text-base sm:text-lg md:text-xl">
+                        {/* <span className="font-extralight">Q:</span>{" "} */}
+                        <p className="font-semibold">{item.question}</p>{" "}
+                      </div>
+                      <div className="flex mt-2 space-x-1 text-sm sm:text-base md:text-lg">
+                        {/* <span className="font-extralight">A:</span>{" "} */}
+                        <p className="font-semibold text-gray-500">
+                          {item.answer}
+                        </p>
                       </div>
                     </div>
-                    <div className="flex mt-2 space-x-1 text-lg">
-                      {/* <span className="font-extralight">A:</span>{" "} */}
-                      <p className="font-semibold text-gray-500">
-                        {item.answer}
-                      </p>
+
+                    <div
+                      onClick={() => {
+                        setCurrentPage(index);
+                      }}
+                      className="text-gray-400 transition-all ease-in-out cursor-pointer hover:text-black"
+                    >
+                      <EditIcon />
                     </div>
                   </div>
                 );
@@ -309,13 +314,17 @@ export default function Home() {
         {isSubmitted && (
           <Screen
             question={
-              <div className="text-4xl font-bold text-center text-gray-900">
-                Thank you for your time!
+              <div className="space-y-6">
+                <div className="text-6xl text-center">🎉</div>
+                <div className="text-center text-gray-900">
+                  Thank you for your time!
+                </div>
               </div>
             }
             questionField={
               <div className="flex flex-col items-start justify-center border border-gray-300 divide-y rounded-lg shadow-md p-7">
-                Your answer has been submitted!
+                Your answer has been submitted! You can safely close this window
+                now.
               </div>
             }
             // submitButton={<SubmitButton />}

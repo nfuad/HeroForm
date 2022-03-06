@@ -1,5 +1,7 @@
 export const questions = [
-  "What do you like the most about the service?",
-  "What is your most pressing problem for selling products through facebook right now?",
-  "How much are you willing to pay for the service?",
+  "এই সার্ভিসের কোন জিনিসটি আপনার সবচেয়ে ভালো লেগেছে?",
+  "ফেসবুকের মাদ্ধমে প্রোডাক্ট বিক্রি করার প্রধান সমস্যা কি বলে মনে করেন?",
+  "এই সার্ভিসের জন্য আপনি কত পেমেন্ট করতে রাজি আছেন?",
 ];
+
+export const banglaIndex = ["১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "১০"];

@@ -16,7 +16,9 @@ function Screen({
   return (
     <div
       ref={ref}
-      className={`flex flex-col w-full items-center justify-center h-screen space-y-12 align-center ${style}`}
+      // overflow="auto"
+      // py-6
+      className={`flex flex-col w-full px-4 md:px-0 h-full items-center justify-center space-y-12 align-center ${style}`}
     >
       <Transition
         show={isVisible}
@@ -27,7 +29,7 @@ function Screen({
         leaveFrom="opacity-100 scale-100 translate-y-0"
         leaveTo="opacity-0"
       >
-        <div className="text-4xl font-bold leading-[3rem] text-center">
+        <div className=" lg:leading-[3.5rem] text-2xl md:text-3xl lg:text-4xl font-bold text-center max-w-4xl ">
           {question}
         </div>
       </Transition>
