@@ -4,7 +4,19 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      boxShadow: {
+        "3xl": "0 13.6301px 35.58px -6.81507px rgba(77, 71, 254, 0.36)",
+      },
+      transitionProperty: {
+        width: "width",
+        height: "height",
+      },
+      colors: {
+        "gradient-blue-one": "#3A38FB",
+        "gradient-blue-two": "#7471FF",
+      },
+    },
   },
   plugins: [],
 };
