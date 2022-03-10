@@ -1,5 +1,13 @@
-const Admin = () => {
-  return <div>this is admin</div>;
-};
+import Editor from '../components/admin/editor'
+import Header from '../components/admin/header'
 
-export default Admin;
+const AdminPage = () => {
+  return (
+    <div className='flex flex-col h-screen max-h-screen'>
+      <Header />
+      <Editor />
+    </div>
+  )
+}
+
+export default AdminPage
