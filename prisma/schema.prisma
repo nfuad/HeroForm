@@ -1,14 +1,3 @@
-// generator client {
-//   provider = "prisma-client-js"
-//   previewFeatures = ["referentialIntegrity"]
-// }
-
-// datasource db {
-//   provider = "mysql"
-//   url = env("DATABASE_URL")
-//   referentialIntegrity = "prisma"
-// }
-
 generator client {
     provider        = "prisma-client-js"
     previewFeatures = ["referentialIntegrity"]
@@ -21,9 +10,9 @@ datasource db {
 }
 
 model User {
-    id              Int       @id @default(autoincrement())
-    uid             String
-    email           String
-    refresh_token   String
-    spreadsheet_id  String
+    id             Int    @id @default(autoincrement())
+    uid            String
+    email          String
+    refresh_token  String
+    spreadsheet_id String
 }
