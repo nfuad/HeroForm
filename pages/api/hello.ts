@@ -10,22 +10,19 @@ const createSheetHandler = async (req, res) => {
     })
 
     const sheets = google.sheets({ version: 'v4', auth })
+// import { google } from "googleapis";
 
-    // const createSpreadSheetRes = await sheets.spreadsheets.create({
-    //   requestBody: {
-    //     properties: {
-    //       title: "Inquire Sheet",
-    //     },
-    //     sheets: [
-    //       {
-    //         properties: {
-    //           sheetId: 0,
-    //           title: "Questions",
-    //         },
-    //       },
-    //     ],
-    //   },
-    // });
+// const createSheetHandler = async (req, res) => {
+//   try {
+//     const auth = new google.auth.OAuth2();
+
+//     auth.setCredentials({
+//       // id_token: idToken,
+//       id_token: idToken,
+//       access_token: token,
+//     });
+
+//     const sheets = google.sheets({ version: "v4", auth });
 
     // const updateSpreadSheetRes = await sheets.spreadsheets.values.append({
     //   spreadsheetId: "1HQaO_WJFlTU1j94iYxNWRUfmY3FudfHBPG9JonjxVjg", // createSpreadSheetRes.data.spreadsheetId,
@@ -63,3 +60,26 @@ const createSheetHandler = async (req, res) => {
 }
 
 export default createSheetHandler
+//     const createSpreadSheetRes = await sheets.spreadsheets.create({
+//       requestBody: {
+//         properties: {
+//           title: "Hello World!",
+//         },
+//       },
+//     });
+
+//     return res.status(200).json({
+//       message: "success",
+//       error: null,
+//       data: createSpreadSheetRes.data,
+//     });
+//   } catch (error) {
+//     return res.status(200).json({
+//       message: "There was an error",
+//       error,
+//       response: null,
+//     });
+//   }
+// };
+
+// export default createSheetHandler;
