@@ -5,20 +5,23 @@ import useIntersectionObserver from "../hooks/use-intersection-observer";
 const TransitionWrapper = ({
   isVisible,
   children,
-  enterFrom,
-  enterTo,
-  leaveTo,
-}: any) => {
+  enter = "transform transition duration-[400ms]",
+  enterFrom = "opacity-0",
+  enterTo = "opacity-100 translate-y-0",
+  leave = "transform duration-200 transition ease-in-out",
+  leaveFrom = "opacity-100 scale-100 translate-y-0",
+  leaveTo = "opacity-0",
+}) => {
   return (
     <Transition
       className={"w-full flex justify-center items-center"}
       show={isVisible}
-      enter="transform transition duration-[400ms]"
-      enterFrom={enterFrom || "opacity-0"}
-      enterTo={enterTo || "opacity-100 translate-y-0"}
-      leave="transform duration-200 transition ease-in-out"
-      leaveFrom="opacity-100 scale-100 translate-y-0"
-      leaveTo={leaveTo || "opacity-0"}
+      enter={enter}
+      enterFrom={enterFrom}
+      enterTo={enterTo}
+      leave={leave}
+      leaveFrom={leaveFrom}
+      leaveTo={leaveTo}
     >
       {children}
     </Transition>
@@ -44,13 +47,13 @@ function Screen({ question, index, handleNext }: any) {
 
       <TransitionWrapper
         isVisible={isVisible}
-        enterFrom="opacity-0 scale-[0.9] translate-y-12"
-        enterTo="opacity-100 rotate-0 scale-100 translate-y-0"
+        enterFrom="opacity-0 scale-90 translate-y-12"
+        enterTo="opacity-100 scale-100 translate-y-0"
         leaveTo="opacity-0 scale-95 translate-y-6"
       >
         <input
           className="w-full max-w-3xl text-2xl px-7 py-7 font-heading rounded-3xl placeholder:text-gray-300 placeholder:font-body"
-          placeholder="andrew@pepek.com"
+          placeholder={question.placeholder}
           type="text"
           style={{
             boxShadow: "0px 14px 39px 10px rgba(235, 145, 145, 0.2)",
