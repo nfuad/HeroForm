@@ -25,6 +25,7 @@ const questions = {
     options: [],
     answer: "",
     isRequired: true,
+    placeholder: "werdna@521.com",
   },
   [uuidv4()]: {
     prompt: "This is question 2 for you?",
@@ -111,26 +112,24 @@ const DotIndicators = ({ totalPages, currentPage, setCurrentPage }) => {
   );
 };
 
-const ArrowNavigator = ({ currentPage, setCurrentPage, totalPages }) => {
-  const isFirstPage = currentPage === 0;
-  const isLastPage = currentPage === totalPages; //total.length - 1;
-
+const ArrowNavigator = ({
+  handleNext,
+  handlePrev,
+  isFirstPage,
+  isLastPage,
+}) => {
   return (
-    <div className="absolute z-50 flex flex-row border border-gray-400 divide-x-2 divide-gray-300 rounded-lg shadow-md bottom-5 right-5 ">
+    <div className="absolute z-50 flex flex-row divide-x-2 divide-gray-300 rounded-lg shadow-3xl bottom-5 right-5">
       <button
         disabled={isFirstPage}
-        onClick={() => {
-          setCurrentPage((prevState) => prevState - 1);
-        }}
+        onClick={handlePrev}
         className="p-3 bg-white rounded-l-lg cursor-pointer disabled:bg-gray-200 disabled:cursor-default disabled:hover:text-black hover:bg-gradient-to-r hover:to-gradient-blue-one hover:from-gradient-blue-two hover:text-white"
       >
         <Chevron />
       </button>
       <button
         disabled={isLastPage}
-        onClick={() => {
-          setCurrentPage((prevState) => prevState + 1);
-        }}
+        onClick={handleNext}
         className="p-3 bg-white rounded-r-lg cursor-pointer disabled:hover:bg-gray-200 disabled:bg-gray-200 disabled:hover:text-black disabled:cursor-default hover:bg-gradient-to-r hover:to-gradient-blue-one hover:from-gradient-blue-two hover:text-white"
       >
         <Chevron style="rotate-180" />
@@ -147,6 +146,7 @@ export default function Home() {
 
   const totalPages = Object.keys(questions).length;
   const lastQuestion = totalPages === currentPage + 1;
+  const firstQuestion = currentPage === 0;
 
   const scrollIndicator = ((currentPage + 1) / totalPages) * 100;
 
@@ -154,15 +154,25 @@ export default function Home() {
 
   const handleNext = () => {
     if (lastQuestion) return;
-    setCurrentPage((prev) => prev + 1);
+    setCurrentPage((st) => st + 1);
+  };
+  const handlePrev = () => {
+    if (firstQuestion) return;
+    setCurrentPage((st) => st - 1);
   };
 
   return (
     <Container>
       <ProgressBar scrollIndicator={scrollIndicator} />
       <DotIndicators {...{ totalPages, currentPage, setCurrentPage }} />
-      <ArrowNavigator {...{ totalPages, currentPage, setCurrentPage }} />
-
+      <ArrowNavigator
+        {...{
+          handlePrev,
+          handleNext,
+          isFirstPage: firstQuestion,
+          isLastPage: lastQuestion,
+        }}
+      />
       <ReactPageScroller
         renderAllPagesOnFirstRender={true}
         onBeforePageScroll={(nextPageIndex) => {
