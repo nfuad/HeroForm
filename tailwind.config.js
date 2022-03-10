@@ -6,6 +6,9 @@ module.exports = {
     './components/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
+    transitionDuration: {
+      DEFAULT: '300ms',
+    },
     extend: {
       fontFamily: {
         heading: ['Cal Sans', ...defaultTheme.fontFamily.sans],
@@ -24,5 +27,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/line-clamp')],
 }
