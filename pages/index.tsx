@@ -1,61 +1,61 @@
-import ReactPageScroller from "react-page-scroller";
-import NextImage from "next/image";
+import ReactPageScroller from 'react-page-scroller'
+import NextImage from 'next/image'
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { useState } from "react";
-import axios from "axios";
-import RadioButton, { plans } from "../components/radio-button";
-import Screen from "../components/screen";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import RadioButton, { plans } from '../components/radio-button'
+import Screen from '../components/screen'
 // import { banglaIndex, questions } from "../constants/questions";
-import EditIcon from "../components/EditIcon";
-import Chevron from "../components/Chevron";
-import { showConfettiAnimation } from "../lib/show-confetti-animation";
-import { allToppings } from "../constants/checkbox";
-import Checkbox from "../components/checkbox";
-import prisma from "../lib/prisma";
-import { v4 as uuidv4 } from "uuid";
+import EditIcon from '../components/EditIcon'
+import Chevron from '../components/Chevron'
+import { showConfettiAnimation } from '../lib/show-confetti-animation'
+import { allToppings } from '../constants/checkbox'
+import Checkbox from '../components/checkbox'
+import prisma from '../lib/prisma'
+import { v4 as uuidv4 } from 'uuid'
 
 const questions = {
   [uuidv4()]: {
-    prompt: "This is question 1 for you?",
-    type: "input",
+    prompt: 'This is question 1 for you?',
+    type: 'input',
     options: [],
-    answer: "",
+    answer: '',
     isRequired: true,
-    placeholder: "werdna@521.com",
+    placeholder: 'werdna@521.com',
   },
   [uuidv4()]: {
-    prompt: "This is question 2 for you?",
-    type: "input",
+    prompt: 'This is question 2 for you?',
+    type: 'input',
     options: [],
-    answer: "",
-    isRequired: true,
-  },
-  [uuidv4()]: {
-    prompt: "This is question 3 for you?",
-    type: "input",
-    options: [],
-    answer: "",
+    answer: '',
     isRequired: true,
   },
   [uuidv4()]: {
-    prompt: "This is question 4 for you?",
-    type: "input",
+    prompt: 'This is question 3 for you?',
+    type: 'input',
     options: [],
-    answer: "",
+    answer: '',
     isRequired: true,
   },
   [uuidv4()]: {
-    prompt: "This is question 5 for you?",
-    type: "input",
+    prompt: 'This is question 4 for you?',
+    type: 'input',
     options: [],
-    answer: "",
+    answer: '',
     isRequired: true,
   },
-};
+  [uuidv4()]: {
+    prompt: 'This is question 5 for you?',
+    type: 'input',
+    options: [],
+    answer: '',
+    isRequired: true,
+  },
+}
 
 const ProgressBar = ({ scrollIndicator }) => (
   <div className="absolute z-50 w-full h-2 bg-gray-200">
@@ -64,7 +64,7 @@ const ProgressBar = ({ scrollIndicator }) => (
       style={{ width: `${scrollIndicator}%` }}
     />
   </div>
-);
+)
 
 const SubmitButton = ({ handleClick, lastPage }) => {
   return (
@@ -72,10 +72,10 @@ const SubmitButton = ({ handleClick, lastPage }) => {
       onClick={handleClick}
       className="px-6 py-3 text-white transition-all ease-in-out rounded-md shadow-3xl bg-gradient-to-r to-gradient-blue-one from-gradient-blue-two focus:ring-offset-0 focus:ring-4"
     >
-      {lastPage ? "submit" : "next"}
+      {lastPage ? 'submit' : 'next'}
     </button>
-  );
-};
+  )
+}
 
 const Container = ({ children }) => {
   return (
@@ -87,8 +87,8 @@ const Container = ({ children }) => {
     >
       {children}
     </div>
-  );
-};
+  )
+}
 
 const DotIndicators = ({ totalPages, currentPage, setCurrentPage }) => {
   return (
@@ -98,19 +98,19 @@ const DotIndicators = ({ totalPages, currentPage, setCurrentPage }) => {
           <div
             key={index}
             onClick={() => {
-              setCurrentPage(index);
+              setCurrentPage(index)
             }}
             className={`transition-all duration-300 ease-in-out cursor-pointer ${
               index === currentPage
-                ? "bg-gradient-blue-one w-4 h-4"
-                : "bg-gray-200 w-2 h-2"
+                ? 'bg-gradient-blue-one w-4 h-4'
+                : 'bg-gray-200 w-2 h-2'
             } rounded-full`}
           />
-        );
+        )
       })}
     </div>
-  );
-};
+  )
+}
 
 const ArrowNavigator = ({
   handleNext,
@@ -135,31 +135,31 @@ const ArrowNavigator = ({
         <Chevron style="rotate-180" />
       </button>
     </div>
-  );
-};
+  )
+}
 
 export default function Home() {
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [currentPage, setCurrentPage] = useState(0)
 
-  const [selected, setSelected] = useState(plans[0]);
+  const [selected, setSelected] = useState(plans[0])
 
-  const totalPages = Object.keys(questions).length;
-  const lastQuestion = totalPages === currentPage + 1;
-  const firstQuestion = currentPage === 0;
+  const totalPages = Object.keys(questions).length
+  const lastQuestion = totalPages === currentPage + 1
+  const firstQuestion = currentPage === 0
 
-  const scrollIndicator = ((currentPage + 1) / totalPages) * 100;
+  const scrollIndicator = ((currentPage + 1) / totalPages) * 100
 
-  const [checkboxes, setCheckboxes] = useState(allToppings);
+  const [checkboxes, setCheckboxes] = useState(allToppings)
 
   const handleNext = () => {
-    if (lastQuestion) return;
-    setCurrentPage((st) => st + 1);
-  };
+    if (lastQuestion) return
+    setCurrentPage((st) => st + 1)
+  }
   const handlePrev = () => {
-    if (firstQuestion) return;
-    setCurrentPage((st) => st - 1);
-  };
+    if (firstQuestion) return
+    setCurrentPage((st) => st - 1)
+  }
 
   return (
     <Container>
@@ -176,7 +176,7 @@ export default function Home() {
       <ReactPageScroller
         renderAllPagesOnFirstRender={true}
         onBeforePageScroll={(nextPageIndex) => {
-          setCurrentPage(nextPageIndex);
+          setCurrentPage(nextPageIndex)
         }}
         transitionTimingFunction="cubic-bezier(0.95, 0.05, 0.08, 1.01)"
         animationTimer={1000}
@@ -192,11 +192,11 @@ export default function Home() {
               question={question}
               handleNext={handleNext}
             />
-          );
+          )
         })}
       </ReactPageScroller>
     </Container>
-  );
+  )
 }
 
 export async function getStaticProps(context) {
@@ -215,7 +215,7 @@ export async function getStaticProps(context) {
   // };
   return {
     props: {},
-  };
+  }
 }
 
 /**
