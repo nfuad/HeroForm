@@ -15,6 +15,7 @@ import Chevron from "../components/Chevron";
 import { showConfettiAnimation } from "../lib/show-confetti-animation";
 import { allToppings } from "../constants/checkbox";
 import Checkbox from "../components/checkbox";
+import prisma from "../lib/prisma";
 
 // const signInWithGoogle = () => {
 //   const provider = new GoogleAuthProvider();
@@ -393,3 +394,20 @@ export default function Home() {
 //     }
 //   }
 // }}
+
+export async function getStaticProps(context) {
+  const data = await prisma.product.findMany({
+    include: {
+      category: true,
+    },
+  });
+
+  //convert decimal value to string to pass through as json
+  const products = data.map((product) => ({
+    ...product,
+    price: product.price.toString(),
+  }));
+  return {
+    props: { products },
+  };
+}
