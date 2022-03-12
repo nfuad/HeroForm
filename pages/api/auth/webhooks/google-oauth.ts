@@ -32,18 +32,17 @@ const googleOAuthWebhookHandler = async (
     // TODO: store the token anywhere :)
     console.log({ tokens })
 
-    const dataRes = await axios.get(
+    const publicInfo = await axios.get(
       `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${tokens.access_token}`,
     )
 
-    console.log({ data: JSON.stringify(dataRes.data) })
-
     await axios.post('/api/create-user', {
-      refresh_token: '',
-      email: '',
-      name: '',
+      refresh_token: tokens.refresh_token,
+      email: publicInfo.data.email,
+      name: publicInfo.data.name,
       spreadsheet_id: '',
     })
+
     // TODO: redirect like a pro, maybe even take it from the query params
     return res.redirect('/')
   } catch (error) {

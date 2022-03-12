@@ -1,23 +1,21 @@
 import prisma from '../../lib/prisma'
 
 export default async function handler(req, res) {
-  // if (req.method === "POST") {
-  //   try {
-  //     const data = await prisma.user.findMany({});
-  //     return res.status(200).json({ data });
-  //   } catch (err) {
-  //     console.error(err);
-  //     return res.status(500).json({ msg: "Something went wrong" });
-  //   }
-  // } else {
-  //   return res.status(405).json({ msg: "Method not allowed" });
-  // }
-  const user = await prisma.user.create({
-    data: {
-      email: 'elsa@prisma.io',
-      // name: 'Elsa Prisma',
-    },
-  })
+  try {
+    const { refresh_token, name, email, spreadsheet_id } = req.body
+    console.log({ refresh_token, name, email, spreadsheet_id })
+    const user = await prisma.user.create({
+      data: {
+        refresh_token,
+        name,
+        email,
+        spreadsheet_id,
+      },
+    })
 
-  return res.status(200).json({ user })
+    return res.status(200).json({ user })
+  } catch (error) {
+    console.log('there was an error', error)
+    console.log({ email: req.query.email })
+  }
 }
