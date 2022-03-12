@@ -31,7 +31,7 @@ const QuestionTypeSelection: FC<Props> = ({ className = '', selected }) => {
       return (
         <button
           key={`question-type-${label}`}
-          className={`px-2 py-2.5 font-medium text-left text-gray-800 font-body rounded-lg focus:ring-2 focus:ring-blue-200 transition ${
+          className={`w-full px-2 py-2.5 font-medium text-left text-gray-800 font-body rounded-lg focus:ring-2 focus:ring-blue-200 transition ${
             isSelected ? 'bg-blue-100' : 'hover:bg-blue-50'
           }`}
           type="button"
@@ -56,7 +56,7 @@ const QuestionTypeSelection: FC<Props> = ({ className = '', selected }) => {
         <Dropdown size="w-3.5 h-3.5" color="text-gray-800" />
       </button>
       <div
-        className={`absolute z-10 max-h-60 overflow-y-scroll flex flex-col items-stretch w-full px-2 py-4 translate-y-full bg-stone-50 gap-y-px shadow-md -bottom-2 rounded-xl transform-gpu transition ease-in-out origin-top ${
+        className={`absolute z-10 max-h-60 flex flex-col items-center w-full px-2 py-4 translate-y-full bg-stone-50 gap-y-px shadow-md -bottom-2 rounded-xl transform-gpu transition ease-in-out origin-top ${
           open ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'
         }`}
       >

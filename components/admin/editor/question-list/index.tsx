@@ -13,7 +13,7 @@ const QuestionList: FC = () => {
   }
 
   return (
-    <div className="flex flex-col w-full max-w-xs px-3 py-8 bg-white rounded-2xl">
+    <div className="flex flex-col w-full max-w-xs px-3 py-8 bg-white rounded-2xl shadow-spread">
       <div className="flex items-center justify-between w-full px-3">
         <h2 className="text-lg">Questions</h2>
         <Button padding="p-2" borderRadius="rounded-md">

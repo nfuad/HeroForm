@@ -16,6 +16,8 @@ module.exports = {
       },
       boxShadow: {
         '3xl': '0 13.6301px 35.58px -6.81507px rgba(77, 71, 254, 0.36)',
+        top: '0px 0px 16 0px rgba(0, 0, 0, 0.08)',
+        spread: '0px 3px 80px 5px rgba(0, 0, 0, 0.05)',
       },
       transitionProperty: {
         width: 'width',
