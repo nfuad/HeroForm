@@ -10,9 +10,11 @@ datasource db {
 }
 
 model User {
-    id             Int    @id @default(autoincrement())
-    uid            String
-    email          String
-    refresh_token  String
-    spreadsheet_id String
+    id             Int    @id @default(autoincrement()) @unique
+    email          String @unique
+    name           String @default("")
+    refresh_token  String @default("")
+    spreadsheet_id String @default("")
+    created_at     DateTime @default(now())
+    updated_at     DateTime @updatedAt
 }

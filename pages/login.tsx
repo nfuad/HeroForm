@@ -3,7 +3,7 @@ import axios from 'axios'
 const Login = () => {
   return (
     <div className="flex justify-center items-center h-screen w-full flex-col gap-y-5">
-      <h1 className="text-xl tracking-wide">Connect To Sheets</h1>
+      <h1 className="text-4xl tracking-normal">Connect To Sheets</h1>
       <p className="max-w-sm text-center text-gray-600 tracking-wide text-lg font-heading mb-3">
         Authenticate with your google account to connect your Google Sheets and
         start creating forms &amp; surveys.
@@ -22,7 +22,7 @@ const Login = () => {
           // redirect to the google generated auth consent page.
           window.location.href = oauthURL
         }}
-        className="flex justify-center items-center border-1 shadow-3xl border-b-2 border-gray-200 rounded-lg text-gray-600 gap-x-4 font-medium px-3 py-3"
+        className="flex justify-center items-center border shadow-3xl border-gray-200 rounded-lg text-gray-600 gap-x-4 font-medium px-6 py-3"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +47,7 @@ const Login = () => {
             d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"
           />
         </svg>
-        <span>Continue with Google</span>
+        <span className="ml-3">Continue with Google</span>
       </button>
     </div>
   )

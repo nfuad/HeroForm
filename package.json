@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx}' .",
-    "seed": "node prisma/seed.js"
+    "seed": "node prisma/seed.js",
+    "db:push": "npx prisma db push"
   },
   "dependencies": {
     "@headlessui/react": "^1.5.0",
