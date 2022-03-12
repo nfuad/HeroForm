@@ -1,23 +1,33 @@
 import { FC, useState } from 'react'
 import { Dropdown } from '../../../../icons'
+import { QuestionType } from '../../types'
 
 type Props = {
   className?: string
-  selected: string
+  selected: QuestionType
+  onChange: (type: QuestionType) => void
 }
 
 const options = [
   {
-    id: 'short-text',
+    id: QuestionType.SHORT_TEXT,
     label: 'Short Text',
   },
   {
-    id: 'long-text',
+    id: QuestionType.LONG_TEXT,
     label: 'Long Text',
+  },
+  {
+    id: QuestionType.MULTI_SELECT,
+    label: 'Multi Select',
   },
 ]
 
-const QuestionTypeSelection: FC<Props> = ({ className = '', selected }) => {
+const QuestionTypeSelection: FC<Props> = ({
+  className = '',
+  selected,
+  onChange,
+}) => {
   const [open, setOpen] = useState(false)
   const selectedLabel = options.find(({ id }) => id === selected)?.label
 
@@ -26,18 +36,24 @@ const QuestionTypeSelection: FC<Props> = ({ className = '', selected }) => {
   const renderOptions = () => {
     return options.map(({ label, id }) => {
       const isSelected = selected === id
-      const handleSelect = () => setOpen(false)
+      const handleSelect = () => {
+        onChange(id)
+        setOpen(false)
+      }
 
       return (
         <button
           key={`question-type-${label}`}
-          className={`w-full px-2 py-2.5 font-medium text-left text-gray-800 font-body rounded-lg focus:ring-2 focus:ring-blue-200 transition ${
+          className={`flex items-center gap-x-2 w-full px-2 py-2.5 rounded-lg focus:ring-2 focus:ring-blue-200 transition ${
             isSelected ? 'bg-blue-100' : 'hover:bg-blue-50'
           }`}
           type="button"
           onClick={handleSelect}
         >
-          {label}
+          <div className="flex-shrink-0 w-6 h-6 bg-gray-100 rounded-md" />
+          <span className="flex-grow font-medium text-left text-gray-800 font-body">
+            {label}
+          </span>
         </button>
       )
     })
@@ -46,11 +62,12 @@ const QuestionTypeSelection: FC<Props> = ({ className = '', selected }) => {
   return (
     <div className={`relative min-h-[42px] ${className}`}>
       <button
-        className="flex items-center justify-between w-full px-4 py-2 transition border cursor-pointer rounded-xl focus:ring-2 focus:ring-stone-200 hover:border-stone-300"
+        className="flex items-center w-full py-2 pl-2 pr-3 transition border cursor-pointer rounded-xl focus:ring-2 focus:ring-stone-200 hover:border-stone-300 gap-x-2"
         type="button"
         onClick={handleClick}
       >
-        <span className="font-medium text-gray-800 font-body">
+        <div className="flex-shrink-0 w-6 h-6 bg-gray-100 rounded-md" />
+        <span className="flex-grow font-medium text-left text-gray-800 font-body">
           {selectedLabel}
         </span>
         <Dropdown size="w-3.5 h-3.5" color="text-gray-800" />

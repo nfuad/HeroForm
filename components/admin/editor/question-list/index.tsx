@@ -1,22 +1,49 @@
-import { FC } from 'react'
+import { Dispatch, FC, SetStateAction } from 'react'
 import Button from '../../../button'
-import Question from './question'
+import { Question } from '../types'
+import { createQuestion } from './helpers'
+import QuestionItem from './question-item'
 
-const QuestionList: FC = () => {
+type Props = {
+  questions: Question[]
+  selectedID: string
+  setQuestions: Dispatch<SetStateAction<Question[]>>
+  setSelectedID: Dispatch<SetStateAction<string>>
+}
+
+const QuestionList: FC<Props> = ({
+  questions,
+  selectedID,
+  setQuestions,
+  setSelectedID,
+}) => {
   const renderQuestions = () => {
-    return (
-      <>
-        <Question />
-        <Question selected />
-      </>
-    )
+    return questions.map((question) => {
+      const selected = selectedID === question.id
+      const handleSelect = () => setSelectedID(question.id)
+
+      return (
+        <QuestionItem
+          key={question.id}
+          question={question}
+          selected={selected}
+          onClick={handleSelect}
+        />
+      )
+    })
+  }
+
+  const handleAdd = () => {
+    const newQuestion = createQuestion()
+    setQuestions((prevState) => [...prevState, newQuestion])
+    setSelectedID(newQuestion.id)
   }
 
   return (
     <div className="flex flex-col w-full max-w-xs px-3 py-8 bg-white rounded-2xl shadow-spread">
       <div className="flex items-center justify-between w-full px-3">
         <h2 className="text-lg">Questions</h2>
-        <Button padding="p-2" borderRadius="rounded-md">
+        <Button padding="p-2" borderRadius="rounded-md" onClick={handleAdd}>
           <svg
             className="w-2.5 h-2.5 fill-current text-white"
             viewBox="0 0 1000 1000"
