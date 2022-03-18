@@ -1,7 +1,12 @@
 export enum QuestionType {
   SHORT_TEXT = 'short-text',
   LONG_TEXT = 'long-text',
-  MULTI_SELECT = 'multi-select',
+  MULTI_CHOICE = 'multi-choice',
+}
+
+export type Option = {
+  id: string
+  value: string
 }
 
 export type Question = {
@@ -9,6 +14,6 @@ export type Question = {
   prompt: string
   type: QuestionType
   isRequired: boolean
-  options?: string[]
+  options?: Option[]
   placeholder?: string
 }
