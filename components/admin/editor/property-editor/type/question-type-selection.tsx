@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
-import { Dropdown } from '../../../../icons'
-import { QuestionType } from '../../types'
+import { Dropdown } from '@components/icons'
+import { QuestionType } from '@components/admin/editor/types'
 
 type Props = {
   className?: string
@@ -18,7 +18,7 @@ const options = [
     label: 'Long Text',
   },
   {
-    id: QuestionType.MULTI_SELECT,
+    id: QuestionType.MULTI_CHOICE,
     label: 'Multi Select',
   },
 ]

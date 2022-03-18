@@ -1,4 +1,5 @@
 import { FC } from 'react'
+import { createOption } from '../helpers'
 import { Question, QuestionType } from '../types'
 import Properties from './properties'
 import Type from './type'
@@ -10,10 +11,18 @@ type Props = {
 
 const PropertyEditor: FC<Props> = ({ question, updateSelectedQuestion }) => {
   const handleTypeUpdate = (type: QuestionType) => {
-    updateSelectedQuestion({
-      ...question,
-      type,
-    })
+    const isMultiChoice = type === QuestionType.MULTI_CHOICE
+
+    if (isMultiChoice) {
+      updateSelectedQuestion({
+        ...question,
+        type,
+        options: [createOption(), createOption()],
+      })
+      return
+    }
+
+    updateSelectedQuestion({ ...question, type })
   }
 
   return (

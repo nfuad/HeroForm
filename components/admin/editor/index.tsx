@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import PropertyEditor from './property-editor'
 import QuestionEditor from './question-editor'
 import QuestionList from './question-list'

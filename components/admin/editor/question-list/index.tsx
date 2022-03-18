@@ -1,7 +1,7 @@
 import { Dispatch, FC, SetStateAction } from 'react'
-import Button from '../../../button'
-import { Question } from '../types'
-import { createQuestion } from './helpers'
+import Button from '@components/button'
+import { Question, QuestionType } from '../types'
+import { createQuestion } from '../helpers'
 import QuestionItem from './question-item'
 
 type Props = {
@@ -34,7 +34,7 @@ const QuestionList: FC<Props> = ({
   }
 
   const handleAdd = () => {
-    const newQuestion = createQuestion()
+    const newQuestion = createQuestion(QuestionType.SHORT_TEXT)
     setQuestions((prevState) => [...prevState, newQuestion])
     setSelectedID(newQuestion.id)
   }
