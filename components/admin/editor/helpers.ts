@@ -4,7 +4,7 @@ import { Option, Question, QuestionType } from './types'
 
 export const createOption = (): Option => ({
   id: nanoid(),
-  value: 'Option',
+  value: '',
 })
 
 export const createQuestion = (type: QuestionType): Question => {

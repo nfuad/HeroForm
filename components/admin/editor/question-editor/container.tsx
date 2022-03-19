@@ -2,7 +2,7 @@ import { FC } from 'react'
 
 const Container: FC = ({ children }) => {
   return (
-    <div className="flex flex-col self-stretch justify-center flex-grow p-24 bg shadow-spread rounded-2xl">
+    <div className="flex flex-col flex-grow p-24 overflow-x-hidden overflow-y-scroll bg shadow-spread rounded-2xl aspect-video">
       <style jsx>{`
         .bg {
           background-image: url('/background.svg');
@@ -11,7 +11,7 @@ const Container: FC = ({ children }) => {
           background-size: cover;
         }
       `}</style>
-      {children}
+      <div className="flex flex-col items-center w-full m-auto">{children}</div>
     </div>
   )
 }

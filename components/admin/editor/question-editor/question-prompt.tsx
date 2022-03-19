@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from 'react'
+import { FC } from 'react'
 import Editable from './editable'
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
 const QuestionPrompt: FC<Props> = ({ prompt, onChange }) => {
   return (
     <Editable
-      className="w-full text-4xl text-center text-gray-700 placeholder-gray-300 font-heading"
+      className="flex-shrink-0 w-full text-4xl text-center text-gray-700 placeholder-gray-300 font-heading"
       placeholder="Enter Question..."
       value={prompt}
       onChange={onChange}
