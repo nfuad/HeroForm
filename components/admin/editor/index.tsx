@@ -1,11 +1,14 @@
-import { FC, useMemo, useState } from 'react'
+import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react'
 import PropertyEditor from './property-editor'
 import QuestionEditor from './question-editor'
 import QuestionList from './question-list'
 import type { Question } from './types'
 
-const Editor: FC = () => {
-  const [questions, setQuestions] = useState<Question[]>([])
+type Props = {
+  questions: Question[]
+  setQuestions: Dispatch<SetStateAction<Question[]>>
+}
+const Editor: FC<Props> = ({ questions, setQuestions }) => {
   const [selectedID, setSelectedID] = useState<string>('')
 
   const selectedQuestion = useMemo(
