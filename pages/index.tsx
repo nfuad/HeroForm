@@ -8,6 +8,7 @@ const HomePage = () => {
 
     jsConfetti.addConfetti({
       emojis: ['❤️', '😘', '🤯', '🔥'],
+      emojiSize: 150,
     })
   }
 
@@ -21,15 +22,23 @@ const HomePage = () => {
         </div>
       </header>
       <main className="mt-10">
-        <h1 className="text-6xl leading-tight text-center">
+        <h1 className="text-4xl xl:text-6xl leading-tight text-center">
           <span className="text-black">
             Create{' '}
-            <span
-              className="text-indigo-500 border-b-4 border-gray-300"
-              onMouseOver={onHover}
-            >
-              Free
-            </span>{' '}
+            <div className="relative inline">
+              <span
+                className="text-indigo-500 border-b-4 border-gray-300 cursor-help"
+                onMouseOver={onHover}
+                onClick={() =>
+                  alert(
+                    'Yes! It is. Now keep this a secret and don’t tell anyone 🙏',
+                  )
+                }
+              >
+                Free
+              </span>{' '}
+              <FreeAnimations />
+            </div>
             Forms &amp; Surveys In Minutes.
           </span>
           <br />
@@ -37,7 +46,7 @@ const HomePage = () => {
             With Stunning Designs &amp; Zero Coding.
           </span>
         </h1>
-        <p className="max-w-3xl mx-auto mt-8 text-2xl leading-snug tracking-wide text-center text-gray-900 font-heading mb-9">
+        <p className="max-w-xl xl:max-w-3xl mx-auto mt-8 text-lg xl:text-2xl leading-snug tracking-wide text-center text-gray-900 font-heading mb-9">
           Asking questions with good looking forms should’ve never been{' '}
           <em>pricey</em>, <em>bloated</em> or <em>heavily branded</em>. Not
           Anymore.
@@ -79,7 +88,7 @@ export default HomePage
 
 const GetStartedButton = () => {
   return (
-    <button className="bg-[#2c2c2c] text-white rounded-lg px-5 py-3 font-heading tracking-wider text-sm">
+    <button className="bg-[#2c2c2c] text-white rounded-lg px-5 py-3 font-heading tracking-wider text-xs xl:text-sm">
       Get Started - It's Free
       <style jsx>{`
         button {
@@ -113,7 +122,7 @@ const HappyEmojiIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="w-6 h-6"
+      className="w-4 h-4 xl:w-6 xl:h-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -132,7 +141,7 @@ const EyeOffIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="w-6 h-6"
+      className="w-4 h-4 xl:w-6 xl:h-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -150,7 +159,7 @@ const HeartIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="w-6 h-6"
+      className="w-4 h-4 xl:w-6 xl:h-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -169,7 +178,7 @@ const LightningBoltIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="w-6 h-6"
+      className="w-4 h-4 xl:w-6 xl:h-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -188,7 +197,7 @@ const CodeIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="w-6 h-6"
+      className="w-4 h-4 xl:w-6 xl:h-6"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -213,7 +222,7 @@ const QuickFactItem = ({ renderIcon, children }) => {
 }
 const QuickFacts = () => {
   return (
-    <ul className="flex items-center justify-center mx-auto text-sm tracking-wide font-heading gap-x-6">
+    <ul className="flex items-center justify-center mx-auto text-xs xl:text-sm tracking-wide font-heading gap-x-6">
       <QuickFactItem renderIcon={HeartIcon}>Free Forever</QuickFactItem>
       <QuickFactItem renderIcon={LightningBoltIcon}>
         Ultra Fast (100ms)
@@ -226,8 +235,109 @@ const QuickFacts = () => {
 
 const SeeDemoButton = () => {
   return (
-    <button className="flex items-center justify-center mx-auto my-10 text-xl tracking-wide text-center text-indigo-600 font-heading">
+    <button className="flex items-center justify-center mx-auto my-10 text-lg xl:text-xl tracking-wide text-center text-indigo-600 font-heading">
       See It In Action &gt;
     </button>
+  )
+}
+
+const FreeAnimations = () => {
+  return (
+    <>
+      <span className="emoji" id="one">
+        🔥
+      </span>
+      <span className="emoji" id="two">
+        🎉
+      </span>
+      <span className="emoji" id="three">
+        😍
+      </span>
+      <style jsx>{`
+        @keyframes emoji-one-anim {
+          from {
+            top: -20px;
+            left: 0px;
+            opacity: 0;
+            transform: scale(0.2);
+          }
+          50% {
+            opacity: 50%;
+            left: -20%;
+            transform: scale(0.4);
+          }
+          to {
+            left: 10%;
+            top: -60px;
+            opacity: 0;
+            transform: scale(0.5);
+          }
+        }
+        @keyframes emoji-two-anim {
+          from {
+            top: -30px;
+            left: 50%;
+            opacity: 0;
+            transform: scale(0.1);
+          }
+          30% {
+            opacity: 50%;
+            left: 10%;
+            transform: scale(0.5);
+          }
+          60% {
+            opacity: 30%;
+            left: 20%;
+          }
+          to {
+            left: -10%;
+            top: -50px;
+            opacity: 0;
+            transform: scale(0.1);
+          }
+        }
+        @keyframes emoji-three-anim {
+          0% {
+            top: -25px;
+            right: 0px;
+            opacity: 0.1;
+            transform: scale(0);
+          }
+          10% {
+            transform: scale(0.7);
+          }
+          30% {
+            opacity: 50%;
+            right: -20%;
+            transform: scale(0.9);
+          }
+          70% {
+            opacity: 30%;
+            right: 0%;
+            transform: scale(0.7);
+          }
+          100% {
+            right: -10%;
+            top: -70px;
+            opacity: 0;
+            transform: scale(0.2);
+          }
+        }
+
+        .emoji {
+          position: absolute;
+        }
+
+        #one {
+          animation: emoji-one-anim 1.5s infinite forwards ease-in-out;
+        }
+        #two {
+          animation: emoji-two-anim 1.5s infinite forwards ease-in-out;
+        }
+        #three {
+          animation: emoji-three-anim 1.5s infinite forwards ease-in-out;
+        }
+      `}</style>
+    </>
   )
 }
