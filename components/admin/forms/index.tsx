@@ -17,7 +17,9 @@ const Forms: FC = () => {
   if (error) return <p>Data just won&apos;t load</p>
 
   return (
-    <div className="flex flex-wrap items-center gap-4">{renderForms()}</div>
+    <div className="flex flex-wrap items-center gap-y-4 gap-x-12">
+      {renderForms()}
+    </div>
   )
 }
 
