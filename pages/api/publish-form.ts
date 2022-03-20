@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { google } from 'googleapis'
 import { getSession } from 'next-auth/react'
 import prisma from '@lib/prisma'
-import { Account } from '@prisma/client'
 import type { Question } from '@components/admin/editor/types'
 
 const sheets = google.sheets('v4')
@@ -31,15 +30,16 @@ const parseQuestions = (questions: Question[]): string[][] => {
 }
 
 type Body = {
+  id: string
   questions: Question[]
 }
 const publishFormHandler = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ) => {
-  const { questions }: Body = req.body
+  const { questions, id }: Body = req.body
 
-  if (!questions) {
+  if (!questions || !id) {
     return res.status(422).json({
       success: false,
       message: 'Unprocessable Entity',
@@ -57,13 +57,29 @@ const publishFormHandler = async (
       })
     }
 
-    const accounts: Account[] = await prisma.user
-      .findUnique({
-        where: {
-          email,
-        },
+    const form = await prisma.form.findUnique({
+      where: {
+        id,
+      },
+    })
+    if (!form) {
+      return res.status(404).json({
+        success: false,
+        message: 'Not Found',
       })
-      .accounts()
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
+        accounts: true,
+      },
+    })
+
+    const { accounts } = user
     const account = accounts[0]
     const refreshToken = account.refresh_token
 
@@ -76,31 +92,38 @@ const publishFormHandler = async (
       refresh_token: refreshToken,
     })
 
-    const response = await sheets.spreadsheets.create({
-      requestBody: {
-        properties: {
-          title: 'please workkkkkkkkkkkkkkkkkk',
-        },
-        sheets: [
-          {
-            properties: {
-              title: 'Questions',
-            },
-          },
-          {
-            properties: {
-              title: 'Responses',
-            },
-          },
-        ],
-      },
-      auth,
-    })
-    const { spreadsheetId } = response.data
+    // const response = await sheets.spreadsheets.create({
+    //   requestBody: {
+    //     properties: {
+    //       title: 'please workkkkkkkkkkkkkkkkkk',
+    //     },
+    //     sheets: [
+    //       {
+    //         properties: {
+    //           title: 'Questions',
+    //         },
+    //       },
+    //       {
+    //         properties: {
+    //           title: 'Responses',
+    //         },
+    //       },
+    //     ],
+    //   },
+    //   auth,
+    // })
+    // const { spreadsheetId } = response.data
+    // await prisma.form.create({
+    //   data: {
+    //     spreadsheetId,
+    //     userId: user.id,
+    //   },
+    // })
 
-    await sheets.spreadsheets.values.append({
+    const { spreadsheetId } = form
+
+    await sheets.spreadsheets.values.update({
       spreadsheetId,
-      insertDataOption: 'INSERT_ROWS',
       valueInputOption: 'RAW',
       range: 'Questions',
       requestBody: {
