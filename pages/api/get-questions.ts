@@ -31,7 +31,8 @@ const parseRow = (row: string[]): Question => {
   ) as Question
 }
 const parseValues = (values: string[][]): Question[] => {
-  return values.slice(1).map(parseRow)
+  if (!values) return []
+  return values.slice(1).map(parseRow) || []
 }
 
 type Query = {

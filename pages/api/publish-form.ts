@@ -69,17 +69,12 @@ const publishFormHandler = async (
       })
     }
 
-    const user = await prisma.user.findUnique({
+    const accounts = await prisma.user.findUnique({
       where: {
         email,
       },
-      select: {
-        id: true,
-        accounts: true,
-      },
-    })
+    }).accounts()
 
-    const { accounts } = user
     const account = accounts[0]
     const refreshToken = account.refresh_token
 
@@ -91,34 +86,6 @@ const publishFormHandler = async (
     auth.setCredentials({
       refresh_token: refreshToken,
     })
-
-    // const response = await sheets.spreadsheets.create({
-    //   requestBody: {
-    //     properties: {
-    //       title: 'please workkkkkkkkkkkkkkkkkk',
-    //     },
-    //     sheets: [
-    //       {
-    //         properties: {
-    //           title: 'Questions',
-    //         },
-    //       },
-    //       {
-    //         properties: {
-    //           title: 'Responses',
-    //         },
-    //       },
-    //     ],
-    //   },
-    //   auth,
-    // })
-    // const { spreadsheetId } = response.data
-    // await prisma.form.create({
-    //   data: {
-    //     spreadsheetId,
-    //     userId: user.id,
-    //   },
-    // })
 
     const { spreadsheetId } = form
 
