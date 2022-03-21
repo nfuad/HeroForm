@@ -11,6 +11,17 @@
   animation: typing 1.5s steps(40, end), blink-caret 0.75s step-end infinite;
 }
 
+/* Code for Firefox */
+::-moz-selection {
+  color: white;
+  background: black;
+}
+
+::selection {
+  color: white;
+  background: black;
+}
+
 /* The typing effect */
 @keyframes typing {
   from {

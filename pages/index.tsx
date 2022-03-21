@@ -1,12 +1,13 @@
 import Button from '@components/button'
+import Layout from '@components/layout'
 // import Header from '@components/header'
 import JSConfetti from 'js-confetti'
 import Image from 'next/image'
-import { useEffect } from 'react'
+import Link from 'next/link'
 
 const HomePage = () => {
   return (
-    <>
+    <Layout title="Home">
       <Header />
       <main className="mt-24">
         <Heading />
@@ -20,7 +21,7 @@ const HomePage = () => {
         <LastCTA />
         <Footer />
       </main>
-    </>
+    </Layout>
   )
 }
 
@@ -66,14 +67,16 @@ const Header = () => (
 )
 const GetStartedButton = () => {
   return (
-    <button className="bg-[#2c2c2c] bg-gradient-to-r hover:from-gray-900 hover:to-indigo-800 transition-all duration-1000 text-white rounded-lg px-5 py-3 transform-gpu hover:scale-105 font-heading tracking-wider text-xs xl:text-sm">
-      Get Started - It's Free
-      <style jsx>{`
-        button {
-          box-shadow: 0px 13.6301px 35.58px -6.81507px #cfcfcf;
-        }
-      `}</style>
-    </button>
+    <Link href="/continue">
+      <button className="bg-[#2c2c2c] bg-gradient-to-r hover:from-gray-900 hover:to-indigo-800 transition-all duration-1000 text-white rounded-lg px-5 py-3 transform-gpu hover:scale-105 font-heading tracking-wider text-xs xl:text-sm">
+        Get Started - It's Free
+        <style jsx>{`
+          button {
+            box-shadow: 0px 13.6301px 35.58px -6.81507px #cfcfcf;
+          }
+        `}</style>
+      </button>
+    </Link>
   )
 }
 const GitHubStars = () => {
@@ -244,12 +247,14 @@ const QuickFacts = () => {
 
 const SeeDemoButton = () => {
   return (
-    <button className="flex items-center justify-center mx-auto my-10 text-lg tracking-wide text-center text-indigo-600 hover:text-indigo-900 xl:text-xl font-heading group">
-      <span className="transition-all duration-75 group-hover:mr-2">
-        See It In Action
-      </span>
-      <ChevronRightIcon />
-    </button>
+    <Link href="/demo">
+      <button className="flex items-center justify-center mx-auto my-10 text-lg tracking-wide text-center text-indigo-600 hover:text-indigo-900 xl:text-xl font-heading group">
+        <span className="transition-all duration-75 group-hover:mr-2">
+          See It In Action
+        </span>
+        <ChevronRightIcon />
+      </button>
+    </Link>
   )
 }
 
