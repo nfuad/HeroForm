@@ -28,7 +28,7 @@ const Meta: FC = () => {
         sizes="16x16"
         href="/images/favicon-16x16.png"
       />
-      <link rel="manifest" href="/images/site.webmanifest" />
+      <link rel="manifest" href="/site.webmanifest" />
 
       <meta content="width=device-width, initial-scale=1" name="viewport" />
       <meta name="theme-color" content="#fff" />

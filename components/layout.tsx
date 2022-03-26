@@ -67,7 +67,7 @@ const Footer = () => {
 }
 
 const Header = () => (
-  <header className="flex items-center justify-between max-w-6xl px-5 py-5 mx-auto">
+  <header className="flex items-center justify-between px-5 py-5 mx-auto max-w-7xl">
     <p className="text-xl sm:text-2xl font-heading">Inquire</p>
     <div className="flex items-center justify-center">
       <JoinDiscordButton />

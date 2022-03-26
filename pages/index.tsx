@@ -87,82 +87,87 @@ const FreeAnimations = () => {
   return (
     <>
       <span className="emoji" id="one">
-        🔥
+        🎉
       </span>
       <span className="emoji" id="two">
         🎉
       </span>
       <span className="emoji" id="three">
-        😍
+        🎉
       </span>
       <style jsx>{`
         @keyframes emoji-one-anim {
-          from {
-            top: -20px;
+          0% {
+            top: -80px;
             left: 0px;
             opacity: 0;
-            transform: scale(0.2);
+            transform: scale(0);
+          }
+          20% {
+            top: -80px;
+            left: 0px;
+            opacity: 1;
+            transform: scale(0.9);
           }
           50% {
-            opacity: 50%;
-            left: -20%;
-            transform: scale(0.4);
-          }
-          to {
-            left: 10%;
-            top: -60px;
+            left: -50px;
+            transform: scale(1);
             opacity: 0;
-            transform: scale(0.5);
+          }
+          100% {
+            opacity: 0;
+            top: -150px;
+            left: -20px;
+            transform: scale(0);
           }
         }
         @keyframes emoji-two-anim {
-          from {
-            top: -30px;
-            left: 50%;
+          0% {
+            top: -100px;
+            left: 70px;
             opacity: 0;
-            transform: scale(0.1);
+            transform: scale(0);
           }
-          30% {
-            opacity: 50%;
-            left: 10%;
-            transform: scale(0.5);
+          20% {
+            top: -100px;
+            left: 70px;
+            opacity: 1;
+            transform: scale(1.5);
           }
-          60% {
-            opacity: 30%;
-            left: 20%;
+          50% {
+            transform: scale(1.7);
+            left: 70px;
           }
-          to {
-            left: -10%;
-            top: -50px;
+          100% {
             opacity: 0;
-            transform: scale(0.1);
+            top: -200px;
+            left: 70px;
+            transform: scale(2.6);
           }
         }
         @keyframes emoji-three-anim {
           0% {
-            top: -25px;
+            top: -80px;
             right: 0px;
-            opacity: 0.1;
+            opacity: 0;
             transform: scale(0);
           }
-          10% {
-            transform: scale(0.7);
-          }
-          30% {
-            opacity: 50%;
-            right: -20%;
+          20% {
+            top: -80px;
+            right: 0px;
+            opacity: 1;
             transform: scale(0.9);
           }
-          70% {
-            opacity: 30%;
-            right: 0%;
-            transform: scale(0.7);
+          50% {
+            right: -50px;
+            transform: scale(1);
+            opacity: 0;
           }
           100% {
-            right: -10%;
-            top: -70px;
             opacity: 0;
-            transform: scale(0.2);
+            top: -150px;
+            right: -20px;
+            transform: scale(0);
           }
         }
 
@@ -171,24 +176,36 @@ const FreeAnimations = () => {
         }
 
         #one {
-          animation: emoji-one-anim 1.5s infinite forwards ease-in-out;
+          animation: emoji-one-anim 1.5s infinite forwards linear;
         }
         #two {
-          animation: emoji-two-anim 1.5s infinite forwards ease-in-out;
+          animation: emoji-two-anim 1.5s infinite forwards linear;
         }
         #three {
-          animation: emoji-three-anim 1.5s infinite forwards ease-in-out;
+          animation: emoji-three-anim 1.5s infinite forwards linear;
         }
       `}</style>
     </>
   )
 }
 
+// max-w-xs mx-auto my-24 text-xs leading-snug tracking-wide text-center text-gray-500 sm:mt-8 sm:text-sm md:max-w-xl md:text-lg xl:max-w-3xl xl:text-2xl xl:leading-normal
 const SubHeading = () => (
-  <h2 className="max-w-xs mx-auto mt-5 text-xs leading-snug tracking-wide text-center text-gray-900 sm:mt-8 sm:text-sm md:max-w-xl md:text-lg xl:max-w-3xl xl:text-2xl font-heading mb-9">
+  <p className="max-w-3xl text-[#545465] text-[26px] leading-tight mt-16 mb-8 text-center mx-auto">
     Asking questions with good looking forms should’ve never been{' '}
-    <em>pricey</em>, <em>bloated</em> or <em>heavily branded</em>. Not Anymore.
-  </h2>
+    <em>pricey</em>, <em>bloated</em> or <em>heavily branded</em>. With Inquire,
+    it finally isn't.
+    <style jsx>{`
+      em {
+        background: #ffd9d9;
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+        border-radius: 0.2em;
+        color: #3b06a5;
+        font-weight: bold;
+      }
+    `}</style>
+  </p>
 )
 const Heading = () => {
   const onHover = () => {
@@ -204,7 +221,7 @@ const Heading = () => {
     alert('Yes! It is. Now keep this a secret and don’t tell anyone 🙏')
 
   return (
-    <h1 className="mt-32 text-xl text-center sm:text-3xl md:text-4xl xl:text-6xl">
+    <h1 className="mt-32 text-xl leading-10 text-center sm:text-3xl md:text-4xl xl:text-8xl xl:leading-[1.1]">
       <span className="text-black">
         <span>Create</span>{' '}
         <span className="relative">
@@ -217,12 +234,10 @@ const Heading = () => {
           </span>{' '}
           <FreeAnimations />
         </span>
-        <span>Forms &amp; Surveys In Minutes.</span>
+        <span>Forms &amp; Surveys.</span>
       </span>
       <br />
-      <span className="text-gray-400">
-        With Stunning Designs &amp; Zero Coding.
-      </span>
+      <span>On Brand, Without Coding.</span>
     </h1>
   )
 }
