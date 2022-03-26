@@ -22,4 +22,12 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
     }),
   ],
+  callbacks: {
+    redirect({ url, baseUrl }) {
+      if (url.startsWith(baseUrl)) return url
+      // allows relative callback URLs
+      else if (url.startsWith('/')) return new URL(url, baseUrl).toString()
+      return baseUrl
+    },
+  },
 })

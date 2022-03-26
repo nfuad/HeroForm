@@ -3,12 +3,17 @@ import 'cal-sans'
 import { FC } from 'react'
 import type { AppProps } from 'next/app'
 import { SessionProvider } from 'next-auth/react'
+import { DefaultSeo } from 'next-seo'
+import SEO from '../next-seo.config'
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   return (
-    <SessionProvider session={pageProps.session} refetchInterval={0}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <>
+      <DefaultSeo {...SEO} />
+      <SessionProvider session={pageProps.session} refetchInterval={0}>
+        <Component {...pageProps} />
+      </SessionProvider>
+    </>
   )
 }
 
