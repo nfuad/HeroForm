@@ -98,75 +98,75 @@ const FreeAnimations = () => {
       <style jsx>{`
         @keyframes emoji-one-anim {
           0% {
-            top: -80px;
-            left: 0px;
+            top: -20%;
+            left: 0%;
             opacity: 0;
             transform: scale(0);
           }
           20% {
-            top: -80px;
-            left: 0px;
+            top: -70%;
+            left: 0%;
             opacity: 1;
             transform: scale(0.9);
           }
           50% {
-            left: -50px;
+            left: -15%;
             transform: scale(1);
             opacity: 0;
           }
           100% {
             opacity: 0;
-            top: -150px;
-            left: -20px;
+            top: -190%;
+            left: -20%;
             transform: scale(0);
           }
         }
         @keyframes emoji-two-anim {
           0% {
-            top: -100px;
-            left: 70px;
+            top: -20%;
+            left: 50%;
             opacity: 0;
             transform: scale(0);
           }
           20% {
-            top: -100px;
-            left: 70px;
+            top: -70%;
+            left: 50%;
             opacity: 1;
             transform: scale(1.5);
           }
           50% {
             transform: scale(1.7);
-            left: 70px;
+            left: 50%;
           }
           100% {
             opacity: 0;
-            top: -200px;
-            left: 70px;
+            top: -200%;
+            left: 50%;
             transform: scale(2.6);
           }
         }
         @keyframes emoji-three-anim {
           0% {
-            top: -80px;
-            right: 0px;
+            top: -20%;
+            right: -30%;
             opacity: 0;
             transform: scale(0);
           }
           20% {
-            top: -80px;
-            right: 0px;
+            top: -70%;
+            right: -30%;
             opacity: 1;
             transform: scale(0.9);
           }
           50% {
-            right: -50px;
+            right: -80%;
             transform: scale(1);
             opacity: 0;
           }
           100% {
             opacity: 0;
-            top: -150px;
-            right: -20px;
+            top: -190%;
+            right: -20%;
             transform: scale(0);
           }
         }
@@ -189,9 +189,8 @@ const FreeAnimations = () => {
   )
 }
 
-// max-w-xs mx-auto my-24 text-xs leading-snug tracking-wide text-center text-gray-500 sm:mt-8 sm:text-sm md:max-w-xl md:text-lg xl:max-w-3xl xl:text-2xl xl:leading-normal
 const SubHeading = () => (
-  <p className="max-w-3xl text-[#545465] text-[26px] leading-tight mt-16 mb-8 text-center mx-auto">
+  <p className="max-w-full md:max-w-2xl lg:max-w-3xl text-[#545465] text-xs px-10 sm:px-2 sm:text-sm md:text-xl xl:text-2xl xl:leading-tight mt-8 lg:mt-16 mb-8 text-center mx-auto">
     Asking questions with good looking forms should’ve never been{' '}
     <em>pricey</em>, <em>bloated</em> or <em>heavily branded</em>. With Inquire,
     it finally isn't.
@@ -221,7 +220,7 @@ const Heading = () => {
     alert('Yes! It is. Now keep this a secret and don’t tell anyone 🙏')
 
   return (
-    <h1 className="mt-32 text-xl leading-10 text-center sm:text-3xl md:text-4xl xl:text-8xl xl:leading-[1.1]">
+    <h1 className="mt-32 leading-9 text-center text-[26px] sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl xl:leading-[1.1]">
       <span className="text-black">
         <span>Create</span>{' '}
         <span className="relative">
@@ -250,83 +249,110 @@ const Video = () => {
 }
 
 const HowItWorks = () => {
+  const data = [
+    {
+      title: 'Connect Google Sheets',
+      points: [
+        {
+          heading: 'Integrate Google Sheets',
+          body: 'Operate with tools you and your team are familiar with. No need to use any other software.',
+        },
+        {
+          heading: 'Own Your Data',
+          body: "Your data gets stored on your Google Sheets. We don't store any responses on our database.",
+        },
+        {
+          heading: 'Process Responses',
+          body: 'Give your teammates access to the spreadsheet or export responses in CSV/JSON formats right from Google Sheets.',
+        },
+      ],
+      image: {
+        src: require('/public/connect.png'),
+        alt: 'Connect Google Sheets',
+        height: 750,
+        objectFit: 'contain',
+        objectPosition: 'center',
+      },
+    },
+    {
+      title: 'Create Amazing Forms',
+      points: [
+        {
+          heading: 'Unlimited Forms',
+          body: "Create as many forms as you want. And as many questions as you want. We don't limit you.",
+        },
+        {
+          heading: 'Simple & Minimal UI',
+          body: "Unlike all the other tools, we don't have a bloated UI. Inquire is simple and Minimal - so it's to get things done.",
+        },
+        {
+          heading: 'Super Fast & Accessible',
+          body: 'Forms load faster than you can blink. How cool is that? :) And accessibility features coming soon.',
+        },
+      ],
+      image: {
+        src: require('/public/create.png'),
+        alt: 'Create Amazing Forms',
+      },
+    },
+    {
+      title: 'Share Everywhere',
+      points: null,
+      image: {
+        src: require('/public/share.png'),
+        alt: 'Share Everywhere',
+      },
+    },
+  ]
   return (
     <div className="flex flex-col items-center justify-center mx-auto">
       <h2 className="text-3xl">Here's How It Works</h2>
 
-      <div className="flex flex-col items-center justify-center mt-10 mb-14">
-        <div className="flex flex-col items-center justify-center">
-          <span className="w-1 h-24 rounded-full bg-gradient-to-t from-indigo-500 via-purple-200 to-transparent" />
-          <span className="flex items-center justify-center w-10 h-10 -mt-2 text-white rounded-full bg-gradient-to-r from-indigo-500 to-purple-500">
-            1
-          </span>
-        </div>
-        <h3 className="mt-5 mb-10 text-5xl text-indigo-900 font-heading">
-          Connect Google Sheets
-        </h3>
+      {data.map((item, index) => {
+        const position = index + 1
+        return <HowItWorksSection {...item} position={position} key={index} />
+      })}
+    </div>
+  )
+}
 
-        <div className="flex items-center justify-between space-x-10">
-          <Image src={require('/public/connect.png')} />
-          <div className="flex flex-col max-w-sm space-y-10">
-            <div className="space-y-2">
-              <h4 className="text-2xl">Integrate Google Sheets</h4>
-              <p className="text-sm text-gray-600">
-                Operate with tools you and your team are familiar with. No need
-                to use any other software.
-              </p>
-            </div>
+const HowItWorksSection = ({ position, title, points, image }) => {
+  const isEven = position % 2 === 0
+  const withPoints = points?.length > 0 // one doesn't have points :)
 
-            <div className="space-y-2">
-              <h4 className="text-2xl">Own Your Data</h4>
-              <p className="text-sm text-gray-600">
-                We don&apos;t store any responses on our database. Everything
-                gets stored on your Google Sheets. You own your data.
-              </p>
-            </div>
-          </div>
+  const renderPoints = () =>
+    points?.map(({ heading, body }, index) => {
+      return (
+        <div className="space-y-2" key={index}>
+          <h4 className="text-2xl">{heading}</h4>
+          <p className="text-sm text-gray-600">{body}</p>
         </div>
-        {/* <p className="max-w-md text-center">
-          All you need to do is connect your Google Sheets &amp; we’ll create a
-          sheet in there to store your questions, metadata and the responses! We
-          store the least amount of data &amp; protect your privacy :) Have
-          everyone in the team involved by giving them access to the sheet.
-        </p> */}
+      )
+    })
+
+  return (
+    <div className="flex flex-col items-center justify-center my-20">
+      <div className="flex flex-col items-center justify-center">
+        <span className="w-1 h-24 rounded-full bg-gradient-to-t from-indigo-500 via-purple-200 to-transparent" />
+        <span className="flex items-center justify-center w-10 h-10 -mt-2 text-white rounded-full bg-gradient-to-r from-indigo-500 to-purple-500">
+          {position}
+        </span>
       </div>
-      <div className="flex flex-col items-center justify-center mt-10 mb-14">
-        <div className="flex flex-col items-center justify-center">
-          <span className="w-1 h-24 rounded-full bg-gradient-to-t from-indigo-500 via-purple-200 to-transparent" />
-          <span className="flex items-center justify-center w-10 h-10 -mt-2 text-white rounded-full bg-gradient-to-r from-indigo-500 to-purple-500">
-            2
-          </span>
+      <h3 className="mt-5 mb-10 text-5xl text-indigo-900 font-heading">
+        {title}
+      </h3>
+
+      <div
+        className={`flex ${
+          isEven && 'flex-row-reverse'
+        } items-center justify-between my-20 ${withPoints && 'space-x-16'}`}
+      >
+        <div className={isEven && 'ml-24'}>
+          <Image {...image} />
         </div>
-        <h3 className="mt-5 mb-10 text-5xl text-indigo-900 font-heading">
-          Create Amazing Forms
-        </h3>
-        <Image src={require('/public/create.png')} />
-        {/* <p className="max-w-md text-center">
-          Create as many forms as you want with our simple and intuitive admin
-          UI. You don't need to have to code/design anything. You can even
-          manage forms from Google Sheets. Inject analytics code to keep track
-          of your form's performance (coming soon)
-        </p> */}
-      </div>
-      <div className="flex flex-col items-center justify-center mt-10 mb-14">
-        <div className="flex flex-col items-center justify-center">
-          <span className="w-1 h-24 rounded-full bg-gradient-to-t from-indigo-500 via-purple-200 to-transparent" />
-          <span className="flex items-center justify-center w-10 h-10 -mt-2 text-white rounded-full bg-gradient-to-r from-indigo-500 to-purple-500">
-            3
-          </span>
+        <div className="flex flex-col max-w-sm space-y-10">
+          {renderPoints()}
         </div>
-        <h3 className="mt-5 mb-10 text-5xl text-indigo-900 font-heading">
-          Share Everywhere
-        </h3>
-        <Image src={require('/public/share.png')} />
-        {/* <p className="max-w-md text-center">
-          Share your forms with anyone you want. You can embed the link on your
-          website, share on socials, or even send them to your customers via
-          private DMs and emails :) See the responses get populated in your
-          Google Sheets.
-        </p> */}
       </div>
     </div>
   )
