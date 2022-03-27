@@ -199,6 +199,13 @@ export default function Home() {
   )
 }
 
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: true,
+  }
+}
+
 export async function getStaticProps(context) {
   // const data = await prisma.product.findMany({
   //   include: {
