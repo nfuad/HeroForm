@@ -3,11 +3,17 @@ import { NextSeo } from 'next-seo'
 
 import { SITE_DATA } from '@constants/site-data'
 import { GetStartedButton } from '@components/common'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { ROUTES } from '@constants/routes'
+import toast from 'react-hot-toast'
+import { Container, Loader } from './continue'
 
 type Props = {
   title?: string
   showHeader?: boolean
   showFooter?: boolean
+  isProtected?: boolean
 }
 
 type LayoutProps = Props & HTMLAttributes<HTMLElement>
@@ -17,7 +23,31 @@ const Layout: FC<LayoutProps> = ({
   title,
   showHeader = false,
   showFooter = false,
+  isProtected = false, // for protected routes like admin
 }) => {
+  const router = useRouter()
+  const { status } = useSession({
+    required: isProtected,
+    onUnauthenticated: () => {
+      toast.error('You must be signed in to continue')
+      router.push(ROUTES.CONTINUE)
+    },
+  })
+
+  const isLoading = status === 'loading'
+  const isUnauthenticated = status === 'unauthenticated'
+
+  if (isProtected) {
+    if (isLoading) {
+      return (
+        <Container>
+          <Loader />
+        </Container>
+      )
+    }
+    if (isUnauthenticated) return null
+  }
+
   const pageTitle = title ? `${title} | ${SITE_DATA.title}` : SITE_DATA.title
 
   return (
