@@ -344,10 +344,10 @@ const HowItWorksSection = ({ position, title, points, image }) => {
 
       <div
         className={`flex ${
-          isEven && 'flex-row-reverse'
-        } items-center justify-between my-20 ${withPoints && 'space-x-16'}`}
+          isEven ? 'flex-row-reverse' : ''
+        } items-center justify-between my-20 ${withPoints ? 'space-x-16' : ''}`}
       >
-        <div className={isEven && 'ml-24'}>
+        <div className={isEven ? 'ml-24' : ''}>
           <Image {...image} />
         </div>
         <div className="flex flex-col max-w-sm space-y-10">

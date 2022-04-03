@@ -9,16 +9,25 @@ import Layout from '@components/layout'
 import { ROUTES } from '@constants/routes'
 import { GetStartedButton } from '@components/common'
 import { ChevronRightIcon } from '@components/icons'
-import { useEffect, useState } from 'react'
-import { useForms } from '@components/admin/forms/use-forms'
 import { useMutation, useQuery } from 'react-query'
 import axios from 'axios'
 import isEmpty from 'lodash.isempty'
 import Link from 'next/link'
 
-const AdminPage: NextPage = () => {
+const AdminPage: NextPage = () => (
+  <Layout isProtected title="Admin">
+    <Container>
+      <Admin />
+    </Container>
+  </Layout>
+)
+
+export default AdminPage
+
+const Admin = () => {
   const { status } = useSession()
   const isAuthenticated = status === 'authenticated'
+
   const {
     isLoading: getFormsLoading,
     error: getFormsError,
@@ -32,121 +41,134 @@ const AdminPage: NextPage = () => {
       },
     },
   )
-  console.log({ getFormsLoading, getFormsError, formsData })
+  const noExistingForms = !getFormsLoading && isEmpty(formsData?.forms)
   const {
     mutate: createForm,
     isLoading: createFormLoading,
-    isError: createFormError,
+    // isError: createFormError,
+    isSuccess: createFormSuccess,
   } = useMutation(() => axios.post(ROUTES.API.CREATE_FORM), {
-    onSuccess(data: any) {
+    onSuccess({ data: { id } }) {
+      console.log({ id })
       toast.success('Form created!')
-      const { id } = data
       router.push(`${ROUTES.ADMIN}/${id}`)
     },
     onError(error: any) {
       console.log({ error })
-      toast.error('Could not create form')
+      toast.error('Could not create form. Try again later :)')
     },
   })
-  // const {} = useMutation(createForm, {})
-  // console.log({ isLoading, error, data })
-  // enum State {
-  //   Idle,
-  //   Processing,
-  //   Success,
-  //   Error,
-  // }
-  // const { forms, loading: formsLoading, error: formsError } = useForms()
-  // const [status, setStatus] = useState(State.Idle)
-  // const isIdle = State.Idle
-  // const isError = State.Error
-  // const isSuccess = State.Success
-  // const isProcessing = State.Processing
+
   const router = useRouter()
-
-  // const handleCreateClick = async () => {
-  //   try {
-  //     setStatus(State.Processing)
-  //     const response = await fetch('/api/create-form', {
-  //       method: 'POST',
-  //     })
-  //     const data = await response.json()
-  //     toast.success('Form created!')
-
-  //     const { id } = data
-  //     router.push(`/admin/${id}`)
-  //   } catch (error) {
-  //     toast.error('Failed to create form')
-  //   }
-  // }
-
-  // useEffect(() => {}, [status])
-
-  // <div className="flex flex-col p-8 gap-y-12">
-  //   <Button className="self-end" onClick={handleCreate}>
-  //     + Create Form
-  //   </Button>
-  //   <Forms />
-  // </div>
-  // console.log({ forms, formsLoading, formsError })
 
   const handleCreateClick = () => createForm()
 
-  return (
-    <Layout isProtected title="Admin">
-      {getFormsLoading && (
-        <Container>
-          <h1>Loading your forms...</h1>
-          <p>Hold tight, this is taking some time 😄</p>
-        </Container>
-      )}
-      {getFormsError && (
-        <Container>
-          <h1>Something went wrong...</h1>
-          <p>
-            There was an error when trying to load your forms. Please try again
-            😄
-          </p>
-        </Container>
-      )}
-      {isEmpty(formsData?.forms) ? (
-        <Container>
-          <h1 className="px-16 lg:px-0 mx-auto text-4xl text-center md:px-24 lg:text-5xl xl:text-6xl">
-            You don't have any forms yet. Create One?
-          </h1>
+  if (getFormsLoading) {
+    return (
+      <>
+        <h1>Loading your forms...</h1>
+        <p>Hold tight, this is taking some time 😄</p>
+      </>
+    )
+  }
 
-          <button
-            onClick={handleCreateClick}
-            className="flex items-center justify-center mx-auto my-4 text-lg tracking-wide text-center text-indigo-600 xl:my-10 hover:text-indigo-900 sm:text-2xl xl:text-4xl font-heading group"
-            disabled={createFormLoading}
-          >
-            <span className="transition-all duration-75 group-hover:mr-2">
-              Continue
-            </span>
-            <ChevronRightIcon
-              className="w-5 h-5 md:w-6 md:h-6 lg:w-9 lg:h-9"
-              strokeWidth={4}
-            />
-          </button>
-        </Container>
-      ) : (
-        <Container>
-          {formsData.forms.map((form) => (
-            <Form href={''} title={''} questions={[]} />
-          ))}
-        </Container>
-      )}
-    </Layout>
+  if (getFormsError) {
+    return (
+      <>
+        <h1>Oops!</h1>
+        <p>Something went wrong while loading forms. Try again later.</p>
+      </>
+    )
+  }
+
+  if (createFormLoading) {
+    return (
+      <>
+        <h1>Creating form...</h1>
+        <p>We'll redirect you to the form page</p>
+      </>
+    )
+  }
+
+  if (createFormSuccess) {
+    return (
+      <>
+        <h1>Form created!</h1>
+        <p>Redirecting now...</p>
+      </>
+    )
+  }
+
+  if (noExistingForms) {
+    return (
+      <>
+        <h1 className="px-16 mx-auto text-4xl text-center lg:px-0 md:px-24 lg:text-5xl xl:text-6xl">
+          You don't have any forms yet. Create One?
+        </h1>
+
+        <CreateFirstFormButton
+          handleCreateClick={handleCreateClick}
+          createFormLoading={createFormLoading}
+        />
+      </>
+    )
+  }
+
+  const renderForms = () =>
+    formsData?.forms?.map((form) => <Form {...form} key={form.id} />)
+
+  return (
+    <>
+      <h1 className="my-3 text-xl">Your Forms</h1>
+      <div className="flex flex-wrap gap-x-6 max-w-7xl gap-y-7">
+        {renderForms()}
+
+        <AddFormButton
+          handleCreateClick={handleCreateClick}
+          createFormLoading={createFormLoading}
+        />
+      </div>
+    </>
   )
 }
 
-export default AdminPage
+const CreateFirstFormButton = ({ handleCreateClick, createFormLoading }) => {
+  return (
+    <button
+      onClick={handleCreateClick}
+      className="flex items-center justify-center mx-auto my-4 text-lg tracking-wide text-center text-indigo-600 xl:my-10 hover:text-indigo-900 sm:text-2xl xl:text-4xl font-heading group"
+      disabled={createFormLoading}
+    >
+      <span className="transition-all duration-75 group-hover:mr-2">
+        Continue
+      </span>
+      <ChevronRightIcon
+        className="w-5 h-5 md:w-6 md:h-6 lg:w-9 lg:h-9"
+        strokeWidth={4}
+      />
+    </button>
+  )
+}
 
-const Form = ({ href, title, questions }) => (
-  <Link href={href}>
-    <a className="cursor-pointer rounded-md shadow-md w-40 h-52 transition-shadow hover:shadow-xl text-center flex flex-col items-center justify-center">
-      <h1>{title}</h1>
-      <p>{questions.length} Questions</p>
-    </a>
-  </Link>
-)
+const Form = ({ id, name }) => {
+  const href = `/admin/${id}`
+  return (
+    <Link href={href}>
+      <a className="flex flex-col items-center justify-center w-32 h-40 text-sm text-center transition-shadow rounded-md shadow-md cursor-pointer hover:shadow-xl">
+        <h1>{name}</h1>
+      </a>
+    </Link>
+  )
+}
+
+const AddFormButton = ({ handleCreateClick, createFormLoading }) => {
+  return (
+    <button
+      className="w-32 h-40 text-indigo-900 bg-orange-100 rounded-md shadow-md font-heading"
+      onClick={handleCreateClick}
+      disabled={createFormLoading}
+    >
+      + Add Form
+    </button>
+  )
+}

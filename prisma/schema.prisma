@@ -59,6 +59,6 @@ model Form {
   id            String @id @default(cuid())
   userId        String
   spreadsheetId String @unique
-
+  name          String? @default("Untitled")
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
