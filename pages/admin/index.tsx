@@ -13,6 +13,8 @@ import { useEffect, useState } from 'react'
 import { useForms } from '@components/admin/forms/use-forms'
 import { useMutation, useQuery } from 'react-query'
 import axios from 'axios'
+import isEmpty from 'lodash.isempty'
+import Link from 'next/link'
 
 const AdminPage: NextPage = () => {
   const { status } = useSession()
@@ -21,12 +23,15 @@ const AdminPage: NextPage = () => {
     isLoading: getFormsLoading,
     error: getFormsError,
     data: formsData,
-  } = useQuery(ROUTES.API.GET_FORMS, {
-    enabled: isAuthenticated,
-    onError: () => {
-      toast.error('Could not get forms')
+  }: { isLoading: boolean; error: Error; data: { forms: any[] } } = useQuery(
+    ROUTES.API.GET_FORMS,
+    {
+      enabled: isAuthenticated,
+      onError: () => {
+        toast.error('Could not get forms')
+      },
     },
-  })
+  )
   console.log({ getFormsLoading, getFormsError, formsData })
   const {
     mutate: createForm,
@@ -89,23 +94,59 @@ const AdminPage: NextPage = () => {
 
   return (
     <Layout isProtected title="Admin">
-      <Container>
-        <h1 className="px-16 mx-auto text-4xl text-center md:px-24 md:text-7xl">
-          You don't have any forms yet. Create One?
-        </h1>
+      {getFormsLoading && (
+        <Container>
+          <h1>Loading your forms...</h1>
+          <p>Hold tight, this is taking some time 😄</p>
+        </Container>
+      )}
+      {getFormsError && (
+        <Container>
+          <h1>Something went wrong...</h1>
+          <p>
+            There was an error when trying to load your forms. Please try again
+            😄
+          </p>
+        </Container>
+      )}
+      {isEmpty(formsData?.forms) ? (
+        <Container>
+          <h1 className="px-16 lg:px-0 mx-auto text-4xl text-center md:px-24 lg:text-5xl xl:text-6xl">
+            You don't have any forms yet. Create One?
+          </h1>
 
-        <button
-          onClick={handleCreateClick}
-          className="flex items-center justify-center mx-auto my-4 text-lg tracking-wide text-center text-indigo-600 xl:my-10 hover:text-indigo-900 xl:text-4xl font-heading group"
-        >
-          <span className="transition-all duration-75 group-hover:mr-2">
-            Continue
-          </span>
-          <ChevronRightIcon className="w-9 h-9" strokeWidth={4} />
-        </button>
-      </Container>
+          <button
+            onClick={handleCreateClick}
+            className="flex items-center justify-center mx-auto my-4 text-lg tracking-wide text-center text-indigo-600 xl:my-10 hover:text-indigo-900 sm:text-2xl xl:text-4xl font-heading group"
+            disabled={createFormLoading}
+          >
+            <span className="transition-all duration-75 group-hover:mr-2">
+              Continue
+            </span>
+            <ChevronRightIcon
+              className="w-5 h-5 md:w-6 md:h-6 lg:w-9 lg:h-9"
+              strokeWidth={4}
+            />
+          </button>
+        </Container>
+      ) : (
+        <Container>
+          {formsData.forms.map((form) => (
+            <Form href={''} title={''} questions={[]} />
+          ))}
+        </Container>
+      )}
     </Layout>
   )
 }
 
 export default AdminPage
+
+const Form = ({ href, title, questions }) => (
+  <Link href={href}>
+    <a className="cursor-pointer rounded-md shadow-md w-40 h-52 transition-shadow hover:shadow-xl text-center flex flex-col items-center justify-center">
+      <h1>{title}</h1>
+      <p>{questions.length} Questions</p>
+    </a>
+  </Link>
+)
