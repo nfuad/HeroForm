@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+import Meta from '@components/meta'
 
 class MyDocument extends Document {
   render(): JSX.Element {
@@ -15,6 +16,7 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600&display=swap"
             rel="stylesheet"
           />
+          <Meta />
         </Head>
         <body>
           <Main />

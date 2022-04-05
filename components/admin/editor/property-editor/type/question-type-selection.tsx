@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { Dropdown } from '@components/icons'
+import { DropdownIcon } from '@components/icons'
 import { QuestionType } from '@components/admin/editor/types'
 
 type Props = {
@@ -70,7 +70,7 @@ const QuestionTypeSelection: FC<Props> = ({
         <span className="flex-grow font-medium text-left text-gray-800 font-body">
           {selectedLabel}
         </span>
-        <Dropdown size="w-3.5 h-3.5" color="text-gray-800" />
+        <DropdownIcon size="w-3.5 h-3.5" color="text-gray-800" />
       </button>
       <div
         className={`absolute z-10 max-h-60 flex flex-col items-center w-full px-2 py-4 translate-y-full bg-stone-50 gap-y-px shadow-md -bottom-2 rounded-xl transform-gpu transition ease-in-out origin-top ${

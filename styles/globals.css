@@ -40,3 +40,13 @@ h5,
 h6 {
   font-family: 'Cal Sans';
 }
+
+/* change selection color */
+::selection {
+  color: white;
+  background: black;
+}
+::-moz-selection {
+  color: white;
+  background: black;
+}

@@ -1,0 +1,43 @@
+import { signIn, signOut, useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { ROUTES } from '@constants/routes'
+import Layout from '@components/layout'
+import {
+  Container,
+  Loader,
+  Authenticated,
+  UnAuthenticated,
+} from '@components/continue'
+const Continue = () => {
+  const router = useRouter()
+  const { data: session, status } = useSession()
+
+  const isLoading = status === 'loading'
+  const isAuthenticated = status === 'authenticated'
+  const isUnAuthenticated = status === 'unauthenticated'
+
+  const handleContinueClick = () => router.push(ROUTES.ADMIN)
+  const handleSignInClick = () =>
+    signIn('google', { callbackUrl: ROUTES.ADMIN })
+  const handleSignOutClick = () => signOut()
+
+  return (
+    <Layout title="Continue">
+      <Container>
+        {isLoading && <Loader />}
+        {isAuthenticated && (
+          <Authenticated
+            handleContinueClick={handleContinueClick}
+            session={session}
+            handleSignOutClick={handleSignOutClick}
+          />
+        )}
+        {isUnAuthenticated && (
+          <UnAuthenticated handleSignInClick={handleSignInClick} />
+        )}
+      </Container>
+    </Layout>
+  )
+}
+
+export default Continue

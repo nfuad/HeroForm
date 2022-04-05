@@ -6,7 +6,7 @@ type Props = {
   className?: string
 }
 
-const Dropdown: FC<Props> = ({
+export const DropdownIcon: FC<Props> = ({
   size = 'w-6 h-6',
   color = 'text-black',
   className = '',
@@ -33,5 +33,3 @@ const Dropdown: FC<Props> = ({
     </svg>
   )
 }
-
-export default Dropdown
