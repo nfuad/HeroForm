@@ -53,6 +53,7 @@ export const useQuestions = () => {
 
  */
 const EditorPage = () => {
+  const [questions, setQuestions] = useState<Question[]>([])
   const router = useRouter()
   const { id } = router.query
   const {
@@ -63,6 +64,12 @@ const EditorPage = () => {
   } = useQuery(`/api/get-questions?id=${id}`, {
     enabled: !!id,
   })
+
+  useEffect(() => {
+    const { questions = [] }: Record<string, any> = questionsData || {}
+
+    if (!isLoading) setQuestions(questions)
+  }, [isLoading, questionsData])
 
   console.log({ isError, isLoading, error })
 
@@ -83,25 +90,15 @@ const EditorPage = () => {
     )
   }
 
-  return <div>{JSON.stringify(questionsData, null, 2)}</div>
-  // const [questions, setQuestions] = useState<Question[]>([])
-
-  // useEffect(() => {
-  //   if (!loading) setQuestions(preloadedQuestions)
-  // }, [preloadedQuestions, loading])
-
-  // if (loading) return <p>Loading like a pro</p>
-  // if (error) return <p>There is an error</p>
-
-  // return (
-  //   <>
-  //     <div className="flex flex-col h-screen max-h-screen bg-slate-50">
-  //       <Header questions={questions} />
-  //       <Editor questions={questions} setQuestions={setQuestions} />
-  //     </div>
-  //     <Toast />
-  //   </>
-  // )
+  return (
+    <>
+      <div className="flex flex-col h-screen max-h-screen bg-slate-50">
+        <Header questions={questions} />
+        <Editor questions={questions} setQuestions={setQuestions} />
+      </div>
+      <Toast />
+    </>
+  )
 }
 
 export default EditorPage

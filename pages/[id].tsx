@@ -1,61 +1,12 @@
 import ReactPageScroller from 'react-page-scroller'
-import NextImage from 'next/image'
+import { useState } from 'react'
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app'
 // https://firebase.google.com/docs/web/setup#available-libraries
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import RadioButton, { plans } from '../components/radio-button'
+import prisma from '@lib/prisma'
 import Screen from '../components/screen'
-// import { banglaIndex, questions } from "../constants/questions";
-import EditIcon from '../components/EditIcon'
 import Chevron from '../components/Chevron'
-import { showConfettiAnimation } from '../lib/show-confetti-animation'
 import { allToppings } from '../constants/checkbox'
-import Checkbox from '../components/checkbox'
-import prisma from '../lib/prisma'
-import { v4 as uuidv4 } from 'uuid'
-
-const questions = {
-  [uuidv4()]: {
-    prompt: 'This is question 1 for you?',
-    type: 'input',
-    options: [],
-    answer: '',
-    isRequired: true,
-    placeholder: 'werdna@521.com',
-  },
-  [uuidv4()]: {
-    prompt: 'This is question 2 for you?',
-    type: 'input',
-    options: [],
-    answer: '',
-    isRequired: true,
-  },
-  [uuidv4()]: {
-    prompt: 'This is question 3 for you?',
-    type: 'input',
-    options: [],
-    answer: '',
-    isRequired: true,
-  },
-  [uuidv4()]: {
-    prompt: 'This is question 4 for you?',
-    type: 'input',
-    options: [],
-    answer: '',
-    isRequired: true,
-  },
-  [uuidv4()]: {
-    prompt: 'This is question 5 for you?',
-    type: 'input',
-    options: [],
-    answer: '',
-    isRequired: true,
-  },
-}
+import { GetStaticProps } from 'next'
 
 const ProgressBar = ({ scrollIndicator }) => (
   <div className="absolute z-50 w-full h-2 bg-gray-200">
@@ -139,31 +90,31 @@ const ArrowNavigator = ({
 }
 
 export default function Home() {
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [currentPage, setCurrentPage] = useState(0)
+  // const [isSubmitted, setIsSubmitted] = useState(false)
+  // const [currentPage, setCurrentPage] = useState(0)
 
-  const [selected, setSelected] = useState(plans[0])
+  // const [selected, setSelected] = useState(plans[0])
 
-  const totalPages = Object.keys(questions).length
-  const lastQuestion = totalPages === currentPage + 1
-  const firstQuestion = currentPage === 0
+  // const totalPages = Object.keys(questions).length
+  // const lastQuestion = totalPages === currentPage + 1
+  // const firstQuestion = currentPage === 0
 
-  const scrollIndicator = ((currentPage + 1) / totalPages) * 100
+  // const scrollIndicator = ((currentPage + 1) / totalPages) * 100
 
-  const [checkboxes, setCheckboxes] = useState(allToppings)
+  // const [checkboxes, setCheckboxes] = useState(allToppings)
 
-  const handleNext = () => {
-    if (lastQuestion) return
-    setCurrentPage((st) => st + 1)
-  }
-  const handlePrev = () => {
-    if (firstQuestion) return
-    setCurrentPage((st) => st - 1)
-  }
+  // const handleNext = () => {
+  //   if (lastQuestion) return
+  //   setCurrentPage((st) => st + 1)
+  // }
+  // const handlePrev = () => {
+  //   if (firstQuestion) return
+  //   setCurrentPage((st) => st - 1)
+  // }
 
   return (
     <Container>
-      <ProgressBar scrollIndicator={scrollIndicator} />
+      {/* <ProgressBar scrollIndicator={scrollIndicator} />
       <DotIndicators {...{ totalPages, currentPage, setCurrentPage }} />
       <ArrowNavigator
         {...{
@@ -194,7 +145,7 @@ export default function Home() {
             />
           )
         })}
-      </ReactPageScroller>
+      </ReactPageScroller> */}
     </Container>
   )
 }
@@ -206,7 +157,16 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps(context) {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const { id } = params as Record<string, string>
+
+  const data = await prisma.form.findUnique({
+    where: {
+      id,
+    },
+  })
+
+  console.log({ data })
   // const data = await prisma.product.findMany({
   //   include: {
   //     category: true,
