@@ -1,12 +1,12 @@
-import ReactPageScroller from 'react-page-scroller'
 import { useState } from 'react'
 
 // https://firebase.google.com/docs/web/setup#available-libraries
 import prisma from '@lib/prisma'
-import Screen from '../components/screen'
-import Chevron from '../components/Chevron'
-import { allToppings } from '../constants/checkbox'
-import { GetStaticProps } from 'next'
+import Questions from '@components/survey/questions'
+import Chevron from '@components/Chevron'
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import { Question } from '@components/admin/editor/types'
+import { getQuestionsBySheetId } from '@lib/sheets/get-questions-by-sheet-id'
 
 const ProgressBar = ({ scrollIndicator }) => (
   <div className="absolute z-50 w-full h-2 bg-gray-200">
@@ -16,17 +16,6 @@ const ProgressBar = ({ scrollIndicator }) => (
     />
   </div>
 )
-
-const SubmitButton = ({ handleClick, lastPage }) => {
-  return (
-    <button
-      onClick={handleClick}
-      className="px-6 py-3 text-white transition-all ease-in-out rounded-md shadow-3xl bg-gradient-to-r to-gradient-blue-one from-gradient-blue-two focus:ring-offset-0 focus:ring-4"
-    >
-      {lastPage ? 'submit' : 'next'}
-    </button>
-  )
-}
 
 const Container = ({ children }) => {
   return (
@@ -41,10 +30,15 @@ const Container = ({ children }) => {
   )
 }
 
-const DotIndicators = ({ totalPages, currentPage, setCurrentPage }) => {
+const DotIndicators = ({
+  totalPages,
+  currentPage,
+  setCurrentPage,
+  questions,
+}) => {
   return (
     <div className="absolute z-50 flex flex-col items-center justify-center space-y-3 right-5 top-1/2 translate-y-[-50%]">
-      {Object.keys(questions).map((_, index) => {
+      {questions.map((_, index) => {
         return (
           <div
             key={index}
@@ -89,33 +83,37 @@ const ArrowNavigator = ({
   )
 }
 
-export default function Home() {
-  // const [isSubmitted, setIsSubmitted] = useState(false)
-  // const [currentPage, setCurrentPage] = useState(0)
+type Props = {
+  questions: Question[]
+}
+const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
+  const [currentPage, setCurrentPage] = useState(0)
 
-  // const [selected, setSelected] = useState(plans[0])
+  const totalPages = questions.length
+  const lastQuestion = totalPages === currentPage + 1
+  const firstQuestion = currentPage === 0
 
-  // const totalPages = Object.keys(questions).length
-  // const lastQuestion = totalPages === currentPage + 1
-  // const firstQuestion = currentPage === 0
+  const scrollIndicator = ((currentPage + 1) / totalPages) * 100
 
-  // const scrollIndicator = ((currentPage + 1) / totalPages) * 100
+  console.log({ currentPage })
 
-  // const [checkboxes, setCheckboxes] = useState(allToppings)
+  const handleNext = () => {
+    if (lastQuestion) return
+    setCurrentPage((st) => st + 1)
+  }
+  const handlePrev = () => {
+    if (firstQuestion) return
+    setCurrentPage((st) => st - 1)
+  }
 
-  // const handleNext = () => {
-  //   if (lastQuestion) return
-  //   setCurrentPage((st) => st + 1)
-  // }
-  // const handlePrev = () => {
-  //   if (firstQuestion) return
-  //   setCurrentPage((st) => st - 1)
-  // }
+  if (questions.length === 0) return null
 
   return (
     <Container>
-      {/* <ProgressBar scrollIndicator={scrollIndicator} />
-      <DotIndicators {...{ totalPages, currentPage, setCurrentPage }} />
+      <ProgressBar scrollIndicator={scrollIndicator} />
+      <DotIndicators
+        {...{ totalPages, currentPage, setCurrentPage, questions }}
+      />
       <ArrowNavigator
         {...{
           handlePrev,
@@ -124,33 +122,19 @@ export default function Home() {
           isLastPage: lastQuestion,
         }}
       />
-      <ReactPageScroller
-        renderAllPagesOnFirstRender={true}
-        onBeforePageScroll={(nextPageIndex) => {
-          setCurrentPage(nextPageIndex)
-        }}
-        transitionTimingFunction="cubic-bezier(0.95, 0.05, 0.08, 1.01)"
-        animationTimer={1000}
-        blockScrollUp={isSubmitted}
-        blockScrollDown={isSubmitted}
-        customPageNumber={currentPage}
-      >
-        {Object.entries(questions).map(([id, question], index) => {
-          return (
-            <Screen
-              key={id}
-              index={index}
-              question={question}
-              handleNext={handleNext}
-            />
-          )
-        })}
-      </ReactPageScroller> */}
+      <Questions
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        questions={questions}
+        handleNext={handleNext}
+      />
     </Container>
   )
 }
 
-export async function getStaticPaths() {
+export default SurveyPage
+
+export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: [],
     fallback: true,
@@ -158,33 +142,39 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const { google } = await import('googleapis')
+
   const { id } = params as Record<string, string>
 
-  const data = await prisma.form.findUnique({
+  const form = await prisma.form.findUnique({
     where: {
       id,
     },
   })
 
-  console.log({ data })
-  // const data = await prisma.product.findMany({
-  //   include: {
-  //     category: true,
-  //   },
-  // });
-  // //convert decimal value to string to pass through as json
-  // const products = data.map((product) => ({
-  //   ...product,
-  //   price: product.price.toString(),
-  // }));
-  // return {
-  //   props: { products },
-  // };
+  const accounts = await prisma.user
+    .findUnique({
+      where: {
+        id: form.userId,
+      },
+    })
+    .accounts()
+
+  const account = accounts[0]
+  const refreshToken = account.refresh_token
+
+  const auth = new google.auth.OAuth2({
+    clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+  })
+  auth.setCredentials({ refresh_token: refreshToken })
+
+  const { spreadsheetId } = form
+  const questions = await getQuestionsBySheetId({ spreadsheetId, auth })
+
   return {
-    props: {},
+    props: {
+      questions,
+    },
   }
 }
-
-/**
- *
- */

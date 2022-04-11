@@ -2,38 +2,7 @@ import prisma from '@lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { google } from 'googleapis'
 import { getSession } from 'next-auth/react'
-import { Question } from '@components/admin/editor/types'
-
-const sheets = google.sheets('v4')
-const indexes: Record<keyof Question, number> = {
-  id: 0,
-  prompt: 1,
-  type: 2,
-  isRequired: 3,
-  options: 4,
-  placeholder: 5,
-}
-
-const parseJSON = (value: string) => {
-  try {
-    return JSON.parse(value)
-  } catch {
-    return value
-  }
-}
-const parseRow = (row: string[]): Question => {
-  return Object.keys(indexes).reduce(
-    (acc, key, index) => ({
-      ...acc,
-      [key]: parseJSON(row[index]),
-    }),
-    {},
-  ) as Question
-}
-const parseValues = (values: string[][]): Question[] => {
-  if (!values) return []
-  return values.slice(1).map(parseRow) || []
-}
+import { getQuestionsBySheetId } from '@lib/sheets/get-questions-by-sheet-id'
 
 type Query = {
   id: string
@@ -94,15 +63,7 @@ const getQuestionsHandler = async (
     }
 
     const { spreadsheetId } = form
-    const {
-      data: { values },
-    } = await sheets.spreadsheets.values.get({
-      spreadsheetId,
-      range: 'Questions',
-      auth,
-    })
-
-    const questions = parseValues(values)
+    const questions = await getQuestionsBySheetId({ spreadsheetId, auth })
 
     return res.status(200).json({
       success: true,
