@@ -5,24 +5,33 @@ type Props = {
   question: Question
   onClick: MouseEventHandler<HTMLButtonElement>
   selected?: boolean
+  order: number
 }
 
-const QuestionItem: FC<Props> = ({ question, onClick, selected = false }) => {
+const QuestionItem: FC<Props> = ({
+  question,
+  onClick,
+  selected = false,
+  order = 1,
+}) => {
+  console.log({ question })
   return (
     <button
-      className={`flex items-center w-full gap-x-4 px-3 py-2 rounded-lg text-left transition focus:ring-2 focus:ring-blue-200 ${
-        selected ? 'bg-blue-100' : 'hover:bg-blue-50'
+      className={`flex items-center w-full gap-x-4 px-3 py-2 rounded-lg text-left transition-all ${
+        selected ? 'bg-violet-200' : 'hover:bg-violet-50'
       }`}
       onClick={onClick}
       type="button"
     >
-      <div className="flex-shrink-0 w-6 h-6 bg-gray-100 rounded-md" />
+      <div className="flex items-center justify-center flex-shrink-0 w-6 h-6 bg-gray-100 rounded-md">
+        <p className="text-xs">{order}</p>
+      </div>
       <p
-        className={`flex-grow text-base text-gray-800 font-body line-clamp-2 ${
-          selected && 'font-semibold'
+        className={`flex-grow text-sm text-gray-800 line-clamp-2 ${
+          selected ? 'font-semibold' : 'font-body'
         }`}
       >
-        {question.prompt || 'Untitled Question'}
+        {question?.prompt}
       </p>
     </button>
   )

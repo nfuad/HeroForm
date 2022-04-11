@@ -16,9 +16,9 @@ const Continue = () => {
   const isAuthenticated = status === 'authenticated'
   const isUnAuthenticated = status === 'unauthenticated'
 
-  const handleContinueClick = () => router.push(ROUTES.ADMIN)
+  const handleContinueClick = () => router.push(ROUTES.DASHBOARD)
   const handleSignInClick = () =>
-    signIn('google', { callbackUrl: ROUTES.ADMIN })
+    signIn('google', { callbackUrl: ROUTES.DASHBOARD })
   const handleSignOutClick = () => signOut()
 
   return (
