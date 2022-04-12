@@ -1,30 +1,14 @@
-import { NextPage } from 'next'
-import Forms from '@components/admin/forms'
-import Button from '@components/button'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import { useSession } from 'next-auth/react'
-import { Container, Loader } from '@components/continue'
-import Layout from '@components/layout'
 import { ROUTES } from '@constants/routes'
-import { GetStartedButton } from '@components/common'
 import { ChevronRightIcon } from '@components/icons'
 import { useMutation, useQuery } from 'react-query'
 import axios from 'axios'
 import isEmpty from 'lodash.isempty'
 import Link from 'next/link'
 
-const AdminPage: NextPage = () => (
-  <Layout isProtected title="Admin">
-    <Container>
-      <Admin />
-    </Container>
-  </Layout>
-)
-
-export default AdminPage
-
-const Admin = () => {
+const Dashboard = () => {
   const { status } = useSession()
   const isAuthenticated = status === 'authenticated'
 
@@ -45,13 +29,12 @@ const Admin = () => {
   const {
     mutate: createForm,
     isLoading: createFormLoading,
-    // isError: createFormError,
     isSuccess: createFormSuccess,
   } = useMutation(() => axios.post(ROUTES.API.CREATE_FORM), {
     onSuccess({ data: { id } }) {
       console.log({ id })
       toast.success('Form created!')
-      router.push(`${ROUTES.ADMIN}/${id}`)
+      router.push(`${id}/${ROUTES.EDITOR}`)
     },
     onError(error: any) {
       console.log({ error })
@@ -151,7 +134,7 @@ const CreateFirstFormButton = ({ handleCreateClick, createFormLoading }) => {
 }
 
 const Form = ({ id, name }) => {
-  const href = `/admin/${id}`
+  const href = `${id}/${ROUTES.EDITOR}`
   return (
     <Link href={href}>
       <a className="flex flex-col items-center justify-center w-32 h-40 text-sm text-center transition-shadow rounded-md shadow-md cursor-pointer hover:shadow-xl">
@@ -164,11 +147,26 @@ const Form = ({ id, name }) => {
 const AddFormButton = ({ handleCreateClick, createFormLoading }) => {
   return (
     <button
-      className="w-32 h-40 text-indigo-900 bg-orange-100 rounded-md shadow-md font-heading"
+      className="flex items-center justify-center w-32 h-40 text-indigo-900 bg-gray-100 rounded-md shadow-md text-7xl"
       onClick={handleCreateClick}
       disabled={createFormLoading}
     >
-      + Add Form
+      <PlusIcon />
     </button>
   )
 }
+
+export default Dashboard
+
+const PlusIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-8 h-8"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={3}
+  >
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+  </svg>
+)
