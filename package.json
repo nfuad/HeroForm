@@ -24,6 +24,7 @@
     "googleapis": "^95.0.0",
     "js-confetti": "^0.10.2",
     "lodash.isempty": "^4.4.0",
+    "lodash.set": "^4.3.2",
     "nanoid": "^3.3.1",
     "next": "^12.0.0",
     "next-auth": "latest",

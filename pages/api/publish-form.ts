@@ -6,18 +6,17 @@ import type { Question } from '@components/admin/editor/types'
 
 const sheets = google.sheets('v4')
 
-const headers = ['ID', 'Prompt', 'Type', 'Required', 'Options', 'Placeholder']
-const indexes: Record<keyof Question, number> = {
+const headers = ['ID', 'Prompt', 'Type', 'Options', 'Properties']
+const indexes: Record<keyof any, number> = {
   id: 0,
   prompt: 1,
   type: 2,
-  isRequired: 3,
-  options: 4,
-  placeholder: 5,
+  options: 3,
+  properties: 4,
 }
 
-const parseQuestions = (questions: Question[]): string[][] => {
-  return questions.map((question) => {
+const parseQuestions = (questions: any): string[][] => {
+  return Object.values(questions).map((question) => {
     const row = Array(headers.length)
 
     Object.keys(question).forEach((key) => {
@@ -31,7 +30,7 @@ const parseQuestions = (questions: Question[]): string[][] => {
 
 type Body = {
   id: string
-  questions: Question[]
+  questions: any
 }
 const publishFormHandler = async (
   req: NextApiRequest,
@@ -69,11 +68,13 @@ const publishFormHandler = async (
       })
     }
 
-    const accounts = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    }).accounts()
+    const accounts = await prisma.user
+      .findUnique({
+        where: {
+          email,
+        },
+      })
+      .accounts()
 
     const account = accounts[0]
     const refreshToken = account.refresh_token

@@ -8,24 +8,6 @@ export const createOption = (index): Option => ({
 })
 
 export const createQuestion = ({ order }): any => {
-  // switch (type) {
-  //   case QuestionType.MULTI_CHOICE:
-  //     return {
-  //       id: nanoid(),
-  //       prompt: '',
-  //       isRequired: true,
-  //       options: [createOption(), createOption()],
-  //       type,
-  //     }
-  //   default:
-  //     return {
-  //       id: nanoid(),
-  //       prompt: '',
-  //       isRequired: true,
-  //       placeholder: '',
-  //       type,
-  //     }
-  // }
   return {
     id: nanoid(),
     prompt: getRandomQuestion(),
@@ -37,6 +19,7 @@ export const createQuestion = ({ order }): any => {
       placeholder: 'short text',
       isMultipleSelectionAllowed: false,
       isOtherOptionAllowed: false,
+      isMaxLengthSpecified: false,
       maxCharacters: 0,
     },
   }
