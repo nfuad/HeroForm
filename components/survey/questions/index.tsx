@@ -1,13 +1,12 @@
 import { Dispatch, FC, SetStateAction, useState } from 'react'
 import ReactPageScroller from 'react-page-scroller'
 
-import type { Question as QuestionType } from '@components/admin/editor/types'
 import SurveyQuestion from './question'
 
 type Props = {
   currentPage: number
   setCurrentPage: Dispatch<SetStateAction<number>>
-  questions: QuestionType[]
+  questions: any[]
   handleNext: () => void
 }
 
@@ -17,15 +16,32 @@ const Questions: FC<Props> = ({
   questions,
   handleNext,
 }) => {
+  const [responses, setResponses] = useState(() => {
+    return questions.reduce(
+      (acc, curr) => ({
+        ...acc,
+        [curr.id]: '',
+      }),
+      {},
+    )
+  })
   const [isSubmitted, setIsSubmitted] = useState(false)
 
+  const handleResponseChange = (id: string) => (value: any) => {
+    setResponses((prevState) => ({
+      ...prevState,
+      [id]: value,
+    }))
+  }
+
   const renderQuestions = () => {
-    return questions?.map((question, index) => (
+    return questions?.map((question) => (
       <SurveyQuestion
         key={question.id}
-        index={index}
         question={question}
+        response={responses[question.id]}
         handleNext={handleNext}
+        handleResponseChange={handleResponseChange(question.id)}
       />
     ))
   }

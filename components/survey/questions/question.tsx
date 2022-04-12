@@ -36,11 +36,17 @@ const TransitionWrapper = ({
 
 type Props = {
   question: any
-  index: number
   handleNext: () => void
+  response: any
+  handleResponseChange: (value: any) => void
 }
 
-const SurveyQuestion: FC<Props> = ({ question, index, handleNext }) => {
+const SurveyQuestion: FC<Props> = ({
+  question,
+  response,
+  handleResponseChange,
+  handleNext,
+}) => {
   const ref = useRef()
   const entryScreen1 = useIntersectionObserver(ref, {})
   const isVisible = !!entryScreen1?.isIntersecting
@@ -48,9 +54,21 @@ const SurveyQuestion: FC<Props> = ({ question, index, handleNext }) => {
   const renderInput = () => {
     switch (question.type) {
       case QuestionType.SHORT_TEXT:
-        return <ShortText placeholder={question.properties.placeholder} />
+        return (
+          <ShortText
+            placeholder={question.properties.placeholder}
+            value={response}
+            onChange={handleResponseChange}
+          />
+        )
       case QuestionType.LONG_TEXT:
-        return <LongText placeholder={question.properties.placeholder} />
+        return (
+          <LongText
+            placeholder={question.properties.placeholder}
+            value={response}
+            onChange={handleResponseChange}
+          />
+        )
       case QuestionType.MULTI_CHOICE:
         return <MultiChoice question={question} />
     }

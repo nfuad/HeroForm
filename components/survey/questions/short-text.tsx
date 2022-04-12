@@ -1,13 +1,20 @@
-import { FC } from 'react'
+import { ChangeEventHandler, FC } from 'react'
 
 type Props = {
   placeholder: string
+  onChange: (newValue: string) => void
+  value: string
 }
 
-const ShortText: FC<Props> = ({ placeholder }) => {
+const ShortText: FC<Props> = ({ placeholder, onChange, value }) => {
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) =>
+    onChange(e.target.value)
+
   return (
     <input
       className="w-full max-w-3xl text-2xl px-7 py-7 font-heading rounded-3xl placeholder:text-gray-300 placeholder:font-body"
+      onChange={handleChange}
+      value={value}
       placeholder={placeholder}
       type="text"
       style={{

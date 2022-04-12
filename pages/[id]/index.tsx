@@ -84,7 +84,7 @@ const ArrowNavigator = ({
 }
 
 type Props = {
-  questions: Question[]
+  questions: any[]
 }
 const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
   const [currentPage, setCurrentPage] = useState(0)
