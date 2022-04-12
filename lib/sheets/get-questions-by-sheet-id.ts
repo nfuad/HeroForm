@@ -2,14 +2,14 @@ import { Question } from '@components/admin/editor/types'
 import { OAuth2Client } from 'google-auth-library'
 import { google } from 'googleapis'
 
-const indexes: Record<keyof Question, number> = {
+const indexes: Record<keyof any, number> = {
   id: 0,
   prompt: 1,
   type: 2,
-  isRequired: 3,
-  options: 4,
-  placeholder: 5,
+  options: 3,
+  properties: 4,
 }
+
 const parseJSON = (value: string) => {
   try {
     return JSON.parse(value)
@@ -26,9 +26,20 @@ const parseRow = (row: string[]): Question => {
     {},
   ) as Question
 }
-const parseValues = (values: string[][]): Question[] => {
+const parseValues = (values: string[][]): any => {
   if (!values) return []
-  return values.slice(1).map(parseRow) || []
+  return (
+    values
+      .slice(1)
+      .map(parseRow)
+      .reduce((acc, curr) => {
+        const { id } = curr
+        return {
+          ...acc,
+          [id]: curr,
+        }
+      }, {}) || {}
+  )
 }
 
 type Params = {

@@ -11,55 +11,14 @@ import { Question, QuestionType } from './types'
 import Options from './question-editor/options'
 import { nanoid } from 'nanoid'
 import toast from 'react-hot-toast'
+import set from 'lodash.set'
 
 type Props = {
-  questions: Question[]
+  questions: any
   setQuestions: Dispatch<SetStateAction<Question[]>>
 }
-const Editor: FC<Props> = () => {
-  const [questions, setQuestions] = useState({})
+const Editor: FC<Props> = ({ questions, setQuestions }) => {
   const [selectedQuestionID, setSelectedQuestionID] = useState('')
-  // const [selectedID, setSelectedID] = useState<string>('')
-  // const [selectedQuestion, updateSelectedQuestion] = useState('')
-
-  // const selectedQuestion = useMemo(
-  //   () => questions.find(({ id }) => id === selectedID),
-  //   [questions, selectedID],
-  // )
-
-  // const updateSelectedQuestion = (newQuestion: Question) => {
-  //   setQuestions((prevState) =>
-  //     prevState.map((question) => {
-  //       if (question.id === selectedID) return newQuestion
-  //       return question
-  //     }),
-  //   )
-  // }
-
-  // return (
-  //   <div className="flex items-start flex-grow px-6 py-8 rounded-t-[2rem] gap-x-8 bg-stone-100 shadow-top">
-  //     <QuestionList
-  //       questions={questions}
-  //       selectedID={selectedID}
-  //       setQuestions={setQuestions}
-  //       setSelectedID={setSelectedID}
-  //     />
-  //     <QuestionEditor
-  //       question={selectedQuestion}
-  //       updateSelectedQuestion={updateSelectedQuestion}
-  //     />
-  //     <PropertyEditor
-  //       question={selectedQuestion}
-  //       updateSelectedQuestion={updateSelectedQuestion}
-  //     />
-  //   </div>
-  // )
-
-  // const handleAdd = () => {
-  //   const newQuestion = createQuestion(QuestionType.SHORT_TEXT)
-  //   setQuestions((prevState) => [...prevState, newQuestion])
-  //   setSelectedID(newQuestion.id)
-  // }
 
   const handleAdd = () => {
     const newQuestion = createQuestion({
@@ -98,22 +57,20 @@ const Editor: FC<Props> = () => {
     setSelectedQuestionID(prevQuestionID)
   }
 
-  console.log({ questions })
-
   const renderQuestions = () => {
     return Object.values(questions).map((question: any, index) => {
-      console.log({ question })
-      // const selected = selectedID === question.id
-      // const handleSelect = () => setSelectedID(question.id)
+      const questionID = question.id
+      const selected = selectedQuestionID === questionID
+      const handleSelectClick = () => setSelectedQuestionID(questionID)
       const order = index + 1
 
       return (
         <QuestionItem
           order={order}
-          key={question.id}
-          question={questions[question.id]}
-          selected={selectedQuestionID === question.id}
-          onClick={() => {}}
+          key={questionID}
+          question={question}
+          selected={selected}
+          onClick={handleSelectClick}
         />
       )
     })
@@ -128,20 +85,24 @@ const Editor: FC<Props> = () => {
 
   const question = questions[selectedQuestionID]
 
-  const handlePromptChange = (newPrompt: string) => {
-    setQuestions((prevState) => {
-      const newState = { ...prevState }
-      newState[selectedQuestionID].prompt = newPrompt
-      return newState
-    })
-  }
+  const { id, prompt, type } = question || {}
 
-  const handleTypeChange = (newType: QuestionType) => {
-    console.log({ newType })
+  const {
+    isRequired,
+    isMultipleSelectionAllowed,
+    isOtherOptionAllowed,
+    isMaxLengthSpecified,
+    placeholder,
+    maxCharacters,
+    order,
+  } = question?.properties || {}
+
+  const handleQuestionChange = (key: string, value: any) => {
     setQuestions((prevState) => {
-      const newState = { ...prevState }
-      newState[selectedQuestionID].type = newType
-      return newState
+      const copy = { ...prevState }
+      const path = `${selectedQuestionID}.${key}`
+      set(copy, path, value)
+      return copy
     })
   }
 
@@ -157,48 +118,18 @@ const Editor: FC<Props> = () => {
       </div>
 
       <div className="w-full max-w-7xl">
-        {/* <Container>
-          {question && (
-            <>
-              <QuestionPrompt prompt={question.prompt} onChange={setPrompt} />
-              {isShortText && (
-                <input
-                  className="flex-shrink-0 w-full max-w-3xl mx-auto mt-8 text-2xl px-7 py-7 font-heading rounded-3xl placeholder:text-gray-300 placeholder:font-body"
-                  placeholder={question.placeholder}
-                  type="text"
-                  style={{
-                    boxShadow: '0px 14px 39px 10px rgba(235, 145, 145, 0.2)',
-                  }}
-                  disabled
-                />
-              )}
-              {isLongText && (
-                <textarea
-                  className="flex-shrink-0 w-full max-w-3xl mx-auto mt-8 text-2xl resize-none px-7 py-7 font-heading rounded-3xl placeholder:text-gray-300 placeholder:font-body"
-                  placeholder={question.placeholder}
-                  style={{
-                    boxShadow: '0px 14px 39px 10px rgba(235, 145, 145, 0.2)',
-                  }}
-                  rows={5}
-                  disabled
-                />
-              )}
-              {isMultiChoice && (
-                <Options options={question.options} setOptions={setOptions} />
-              )}
-            </>
-          )}
-        </Container> */}
         <Container>
           <QuestionPrompt
-            prompt={question?.prompt}
-            onChange={handlePromptChange}
+            prompt={prompt}
+            onChange={(newPrompt: string) =>
+              handleQuestionChange('prompt', newPrompt)
+            }
           />
 
           {isShortText && (
             <input
               className="flex-shrink-0 w-full max-w-3xl mx-auto mt-8 text-2xl bg-white px-7 py-7 font-heading rounded-3xl placeholder:text-gray-300 placeholder:font-body"
-              placeholder={question?.properties?.placeholder}
+              placeholder={placeholder}
               type="text"
               style={{
                 boxShadow: '0px 14px 39px 10px rgba(235, 145, 145, 0.2)',
@@ -209,7 +140,7 @@ const Editor: FC<Props> = () => {
           {isLongText && (
             <textarea
               className="flex-shrink-0 w-full max-w-3xl mx-auto mt-8 text-2xl bg-white resize-none px-7 py-7 font-heading rounded-3xl placeholder:text-gray-300 placeholder:font-body"
-              placeholder={question?.properties.placeholder}
+              placeholder={placeholder}
               style={{
                 boxShadow: '0px 14px 39px 10px rgba(235, 145, 145, 0.2)',
               }}
@@ -232,15 +163,25 @@ const Editor: FC<Props> = () => {
                 Type
               </label>
               <QuestionTypeSelection
-                selected={question?.type}
-                onChange={handleTypeChange}
+                selected={type}
+                onChange={(newType: QuestionType) =>
+                  handleQuestionChange('type', newType)
+                }
               />
             </div>
             <div className="flex items-center justify-between my-2">
               <label htmlFor={'required'} className="text-sm font-body">
                 Required
               </label>
-              <input name="required" id="required" type="checkbox" />
+              <input
+                checked={isRequired}
+                onChange={() =>
+                  handleQuestionChange('properties.isRequired', !isRequired)
+                }
+                name="required"
+                id="required"
+                type="checkbox"
+              />
             </div>
             <div className="flex items-center justify-between my-2">
               <label
@@ -250,6 +191,13 @@ const Editor: FC<Props> = () => {
                 Multiple Selection
               </label>
               <input
+                checked={isMultipleSelectionAllowed}
+                onChange={() =>
+                  handleQuestionChange(
+                    'properties.isMultipleSelectionAllowed',
+                    !isMultipleSelectionAllowed,
+                  )
+                }
                 name="multiple-selection"
                 id="multiple-selection"
                 type="checkbox"
@@ -259,7 +207,18 @@ const Editor: FC<Props> = () => {
               <label htmlFor={'other-option'} className="text-sm font-body">
                 Other Option
               </label>
-              <input name="other-option" id="other-option" type="checkbox" />
+              <input
+                checked={isOtherOptionAllowed}
+                onChange={() =>
+                  handleQuestionChange(
+                    'properties.isOtherOptionAllowed',
+                    !isOtherOptionAllowed,
+                  )
+                }
+                name="other-option"
+                id="other-option"
+                type="checkbox"
+              />
             </div>
             <div className="flex flex-col items-start justify-between my-2">
               <div className="flex items-center justify-between w-full">
@@ -267,15 +226,32 @@ const Editor: FC<Props> = () => {
                   Max Characters
                 </label>
                 <input
+                  checked={isMaxLengthSpecified}
+                  onChange={() =>
+                    handleQuestionChange(
+                      'properties.isMaxLengthSpecified',
+                      !isMaxLengthSpecified,
+                    )
+                  }
                   name="max-characters"
                   id="max-characters"
                   type="checkbox"
                 />
               </div>
-              <input
-                type="number"
-                className="w-full px-2 py-1 mt-2 text-sm border-2 rounded-md"
-              />
+              {isMaxLengthSpecified && (
+                <input
+                  value={maxCharacters}
+                  onChange={(event) => {
+                    console.log({ val: event.target.value })
+                    handleQuestionChange(
+                      'properties.maxCharacters',
+                      parseInt(event.target.value),
+                    )
+                  }}
+                  type="number"
+                  className="w-full px-2 py-1 mt-2 text-sm border-2 rounded-md"
+                />
+              )}
             </div>
 
             <DeleteButton onClick={handleDelete} />

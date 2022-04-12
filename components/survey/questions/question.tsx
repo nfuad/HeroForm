@@ -35,7 +35,7 @@ const TransitionWrapper = ({
 }
 
 type Props = {
-  question: Question
+  question: any
   index: number
   handleNext: () => void
 }
@@ -48,9 +48,9 @@ const SurveyQuestion: FC<Props> = ({ question, index, handleNext }) => {
   const renderInput = () => {
     switch (question.type) {
       case QuestionType.SHORT_TEXT:
-        return <ShortText placeholder={question.placeholder} />
+        return <ShortText placeholder={question.properties.placeholder} />
       case QuestionType.LONG_TEXT:
-        return <LongText placeholder={question.placeholder} />
+        return <LongText placeholder={question.properties.placeholder} />
       case QuestionType.MULTI_CHOICE:
         return <MultiChoice question={question} />
     }

@@ -13,20 +13,24 @@ import axios from 'axios'
 import { ROUTES } from '@constants/routes'
 
 const EditorPage = () => {
+  const [questions, setQuestions] = useState({})
   const router = useRouter()
   const { id } = router.query
   const {
-    data: questionsData,
+    data: preloadedQuestionsData,
     isLoading,
     isError,
     error,
   }: {
-    data: { questions: any[] }
+    data: { preloadedQuestionsData: any[] }
     isLoading: boolean
     isError: boolean
     error: Error
   } = useQuery(`/api/get-questions?id=${id}`, {
     enabled: !!id,
+    onSuccess(data) {
+      setQuestions(data.questions)
+    },
   })
 
   const {
@@ -34,7 +38,7 @@ const EditorPage = () => {
     isLoading: publishFormLoading,
     isSuccess: publishFormSuccess,
   } = useMutation(
-    ({ questions, id }: { questions: any[]; id: string }) => {
+    ({ questions, id }: { questions: any; id: string }) => {
       return axios.post(ROUTES.API.PUBLISH_FORM, {
         questions,
         id,
@@ -54,7 +58,6 @@ const EditorPage = () => {
   )
 
   const handlePublishClick = () => {
-    console.log({ questions, id })
     publishForm({ questions, id: id as string })
   }
 
@@ -75,7 +78,7 @@ const EditorPage = () => {
     )
   }
 
-  const questions = questionsData?.questions
+  // const questions = questionsData?.questions
 
   return (
     <>
@@ -85,7 +88,7 @@ const EditorPage = () => {
           handlePublishClick={handlePublishClick}
           formName={id as string} // TODO: GET REAL FORM NAME
         />
-        <Editor />
+        <Editor questions={questions} setQuestions={setQuestions} />
       </div>
       <Toast />
     </>
