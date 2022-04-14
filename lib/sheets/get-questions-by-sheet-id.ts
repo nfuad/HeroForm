@@ -27,7 +27,7 @@ const parseRow = (row: string[]): Question => {
   ) as Question
 }
 const parseValues = (values: string[][]): any => {
-  if (!values) return []
+  if (!values) return {}
   return (
     values
       .slice(1)

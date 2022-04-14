@@ -1,15 +1,11 @@
-import { Dispatch, FC, SetStateAction, useMemo, useState } from 'react'
+import { Dispatch, FC, SetStateAction, useState } from 'react'
 import { createQuestion } from './helpers'
-import PropertyEditor from './property-editor'
 import QuestionTypeSelection from './property-editor/type/question-type-selection'
-import QuestionEditor from './question-editor'
 import Container from './question-editor/container'
 import QuestionPrompt from './question-editor/question-prompt'
-import QuestionList from './question-list'
 import QuestionItem from './question-list/question-item'
 import { Question, QuestionType } from './types'
 import Options from './question-editor/options'
-import { nanoid } from 'nanoid'
 import toast from 'react-hot-toast'
 import set from 'lodash.set'
 
@@ -85,7 +81,7 @@ const Editor: FC<Props> = ({ questions, setQuestions }) => {
 
   const question = questions[selectedQuestionID]
 
-  const { id, prompt, type } = question || {}
+  const { id, prompt, type, options } = question || {}
 
   const {
     isRequired,
@@ -148,7 +144,14 @@ const Editor: FC<Props> = ({ questions, setQuestions }) => {
               disabled
             />
           )}
-          {isMultiChoice && <Options options={[]} setOptions={() => {}} />}
+          {isMultiChoice && (
+            <Options
+              options={options}
+              setOptions={(newOptions) => {
+                handleQuestionChange('options', newOptions)
+              }}
+            />
+          )}
         </Container>
       </div>
 

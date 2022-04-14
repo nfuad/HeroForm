@@ -36,16 +36,18 @@ const TransitionWrapper = ({
 
 type Props = {
   question: any
-  handleNext: () => void
   response: any
+  onSubmit: () => void
   handleResponseChange: (value: any) => void
+  isLastPage: boolean
 }
 
 const SurveyQuestion: FC<Props> = ({
   question,
   response,
   handleResponseChange,
-  handleNext,
+  onSubmit,
+  isLastPage,
 }) => {
   const ref = useRef()
   const entryScreen1 = useIntersectionObserver(ref, {})
@@ -70,13 +72,19 @@ const SurveyQuestion: FC<Props> = ({
           />
         )
       case QuestionType.MULTI_CHOICE:
-        return <MultiChoice question={question} />
+        return (
+          <MultiChoice
+            question={question}
+            selected={response}
+            setSelected={handleResponseChange}
+          />
+        )
     }
   }
 
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault()
-    handleNext()
+    onSubmit()
   }
 
   return (
@@ -102,7 +110,9 @@ const SurveyQuestion: FC<Props> = ({
 
       <TransitionWrapper isVisible={isVisible}>
         <button className="flex items-center justify-center py-4 space-x-2 text-white bg-black shadow-3xl px-7 font-heading rounded-xl">
-          <span className="tracking-wider">Continue</span>
+          <span className="tracking-wider">
+            {isLastPage ? 'Submit' : 'Continue'}
+          </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-5 h-5"

@@ -101,6 +101,17 @@ const publishFormHandler = async (
       auth,
     })
 
+    await sheets.spreadsheets.values.update({
+      spreadsheetId,
+      valueInputOption: 'RAW',
+      range: 'Responses',
+      requestBody: {
+        range: 'Responses',
+        values: [Object.values(questions).map(({ prompt }) => prompt)],
+      },
+      auth,
+    })
+
     return res.status(200).json({
       success: true,
     })

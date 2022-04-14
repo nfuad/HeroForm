@@ -30,7 +30,7 @@ const Options: FC<Props> = ({ options, setOptions }) => {
   }
 
   const handleAdd = () => {
-    setOptions([...options, createOption()])
+    setOptions([...options, createOption(options.length + 1)])
   }
 
   const renderOptions = () => {

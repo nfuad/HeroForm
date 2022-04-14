@@ -1,13 +1,13 @@
 import { Question } from '@components/admin/editor/types'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
 type Props = {
   question: Question
+  selected: string
+  setSelected: (value: string) => void
 }
 
-const MultiChoice: FC<Props> = ({ question }) => {
-  const [selected, setSelected] = useState('')
-
+const MultiChoice: FC<Props> = ({ question, selected, setSelected }) => {
   const renderOptions = () => {
     return question.options.map((option) => {
       const isSelected = selected === option.id

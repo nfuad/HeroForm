@@ -22,11 +22,15 @@ const EditorPage = () => {
     isError,
     error,
   }: {
-    data: { preloadedQuestionsData: any[] }
+    data: { questions: any }
     isLoading: boolean
     isError: boolean
     error: Error
   } = useQuery(`/api/get-questions?id=${id}`, {
+    retry: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
     enabled: !!id,
     onSuccess(data) {
       setQuestions(data.questions)

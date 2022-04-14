@@ -7,5 +7,6 @@ export const ROUTES = {
     PUBLISH_FORM: '/api/publish-form',
     GET_FORMS: '/api/get-forms',
     CREATE_FORM: '/api/create-form',
+    CREATE_RESPONSE: '/api/create-response',
   },
 }
