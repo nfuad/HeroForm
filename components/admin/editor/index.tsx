@@ -12,10 +12,15 @@ import set from 'lodash.set'
 type Props = {
   questions: any
   setQuestions: Dispatch<SetStateAction<Question[]>>
+  selectedQuestionID: string
+  setSelectedQuestionID: Dispatch<SetStateAction<string>>
 }
-const Editor: FC<Props> = ({ questions, setQuestions }) => {
-  const [selectedQuestionID, setSelectedQuestionID] = useState('')
-
+const Editor: FC<Props> = ({
+  questions,
+  setQuestions,
+  selectedQuestionID,
+  setSelectedQuestionID,
+}) => {
   const handleAdd = () => {
     const newQuestion = createQuestion({
       order: Object.keys(questions).length + 1,

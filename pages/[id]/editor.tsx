@@ -11,9 +11,13 @@ import toast from 'react-hot-toast'
 import { useMutation } from 'react-query'
 import axios from 'axios'
 import { ROUTES } from '@constants/routes'
+import { PARAMS } from '@constants/params'
 
 const EditorPage = () => {
+  const [formName, setFormName] = useState('')
   const [questions, setQuestions] = useState({})
+  const [selectedQuestionID, setSelectedQuestionID] = useState('')
+
   const router = useRouter()
   const { id } = router.query
   const {
@@ -26,14 +30,16 @@ const EditorPage = () => {
     isLoading: boolean
     isError: boolean
     error: Error
-  } = useQuery(`/api/get-questions?id=${id}`, {
-    retry: false,
+  } = useQuery(`${ROUTES.API.GET_FORM}?${PARAMS.ID}=${id}`, {
     refetchOnReconnect: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     enabled: !!id,
     onSuccess(data) {
       setQuestions(data.questions)
+      const firstQuestionID = Object.keys(data.questions)[0] // need to sort this properly!
+      setSelectedQuestionID(firstQuestionID)
+      setFormName(data.name)
     },
   })
 
@@ -49,8 +55,7 @@ const EditorPage = () => {
       })
     },
     {
-      onSuccess({ data: { id } }) {
-        console.log({ id })
+      onSuccess() {
         toast.success('Form published!')
         router.push(`/${id}`)
       },
@@ -82,17 +87,21 @@ const EditorPage = () => {
     )
   }
 
-  // const questions = questionsData?.questions
-
   return (
     <>
       <div className="flex flex-col h-screen max-h-screen overflow-hidden bg-slate-50">
         <Header
           publishButtonDisabled={publishFormLoading}
           handlePublishClick={handlePublishClick}
-          formName={id as string} // TODO: GET REAL FORM NAME
+          formName={formName} // TODO: GET REAL FORM NAME
+          publishFormLoading={publishFormLoading}
         />
-        <Editor questions={questions} setQuestions={setQuestions} />
+        <Editor
+          questions={questions}
+          setQuestions={setQuestions}
+          selectedQuestionID={selectedQuestionID}
+          setSelectedQuestionID={setSelectedQuestionID}
+        />
       </div>
       <Toast />
     </>
