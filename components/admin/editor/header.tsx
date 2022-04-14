@@ -7,12 +7,14 @@ type Props = {
   handlePublishClick: () => void
   publishButtonDisabled: boolean
   formName: string
+  publishFormLoading: boolean
 }
 
 const Header: FC<Props> = ({
   handlePublishClick,
   publishButtonDisabled,
   formName = 'Untitled',
+  publishFormLoading,
 }) => {
   return (
     <header className="flex items-center justify-between px-12 py-4 bg-white border-b border-gray-200">
@@ -23,8 +25,9 @@ const Header: FC<Props> = ({
         <EditableFormName currentName={formName} />
       </div>
       <div className="flex gap-x-3">
-        <PreviewButton />
+        <PreviewButton processing={publishFormLoading} />
         <PublishButton
+          processing={publishFormLoading}
           disabled={publishButtonDisabled}
           onClick={handlePublishClick}
         />
@@ -91,7 +94,7 @@ const EditableFormName = ({ currentName }) => {
   )
 }
 
-const PreviewButton = () => {
+const PreviewButton = ({ processing }) => {
   const router = useRouter()
   const { id } = router.query as Record<string, string>
 
@@ -101,7 +104,12 @@ const PreviewButton = () => {
 
   return (
     <button
-      className="px-4 py-2 text-sm tracking-wide text-black transition-all duration-75 bg-white border rounded-md shadow-sm hover:text-violet-800 font-heading hover:shadow-lg"
+      disabled={processing}
+      className={`px-4 py-2 text-sm tracking-wide text-black transition-all duration-75 bg-white border rounded-md shadow-sm hover:text-violet-800 font-heading hover:shadow-lg ${
+        processing
+          ? 'cursor-not-allowed bg-gray-100 text-gray-500 hover:text-gray-500 hover:shadow-none'
+          : ''
+      }`}
       onClick={handlePreviewClick}
     >
       Preview
@@ -109,13 +117,17 @@ const PreviewButton = () => {
   )
 }
 
-const PublishButton = ({ disabled, onClick }) => (
+const PublishButton = ({ disabled, onClick, processing }) => (
   <button
-    className="px-4 py-2 text-sm tracking-wide text-white transition-all duration-75 rounded-md shadow-sm bg-violet-700 hover:bg-violet-900 font-heading hover:shadow-lg"
-    disabled={disabled}
+    className={`px-4 py-2 text-sm tracking-wide text-white transition-all duration-75 rounded-md shadow-sm  font-heading hover:shadow-lg ${
+      disabled || processing
+        ? 'bg-violet-300 cursor-not-allowed hover:shadow-none'
+        : 'bg-violet-700 hover:bg-violet-900'
+    }`}
+    disabled={disabled || processing}
     onClick={onClick}
   >
-    Publish
+    Publish{processing ? 'ing...' : ' '}
   </button>
 )
 
