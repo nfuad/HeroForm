@@ -10,7 +10,6 @@
     "format": "prettier --write '**/*.{js,jsx,ts,tsx}' .",
     "seed": "node prisma/seed.js",
     "db:push": "npx prisma db push",
-    "db:migrate": "npx prisma migrate dev",
     "db:generate": "npx prisma generate"
   },
   "dependencies": {

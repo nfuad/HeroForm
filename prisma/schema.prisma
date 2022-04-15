@@ -56,9 +56,10 @@ model VerificationToken {
 }
 
 model Form {
-  id            String @id @default(cuid())
+  id            String  @id @default(cuid())
+  publicId      String  @unique
   userId        String
-  spreadsheetId String @unique
+  spreadsheetId String  @unique
   name          String? @default("Untitled")
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
