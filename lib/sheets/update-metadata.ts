@@ -3,7 +3,7 @@ import { sheets } from './init'
 
 type Metadata = {
   title?: string
-  responseCount?: string
+  responseCount?: number
 }
 
 type Params = {

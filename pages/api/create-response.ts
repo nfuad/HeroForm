@@ -1,7 +1,7 @@
 import prisma from '@lib/prisma'
 import { NextApiHandler } from 'next'
 import { google } from 'googleapis'
-import { createResponse } from '@lib/sheets'
+import { createResponse, getMetadata, updateMetadata } from '@lib/sheets'
 
 type Body = {
   id: string
@@ -53,6 +53,14 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
     const { spreadsheetId } = form
 
     await createResponse({ auth, spreadsheetId, responses })
+    const metadata = await getMetadata({ auth, spreadsheetId })
+    await updateMetadata({
+      auth,
+      spreadsheetId,
+      metadata: {
+        responseCount: metadata.responseCount + 1,
+      },
+    })
 
     return res.status(200).json({
       success: true,
