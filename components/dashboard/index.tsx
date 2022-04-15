@@ -134,7 +134,7 @@ const CreateFirstFormButton = ({ handleCreateClick, createFormLoading }) => {
 }
 
 const Form = ({ publicId, metadata }) => {
-  const href = `${publicId}/${ROUTES.EDITOR}`
+  const href = `${publicId}${ROUTES.EDITOR}`
   return (
     <Link href={href}>
       <a className="flex flex-col items-center justify-center w-32 h-40 text-sm text-center transition-shadow rounded-md shadow-md cursor-pointer hover:shadow-xl">

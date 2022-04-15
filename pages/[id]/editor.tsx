@@ -23,17 +23,17 @@ const EditorPage = () => {
   const { id } = router.query
   const {
     data: preloadedQuestionsData,
-    isLoading,
+    isFetching: isFetchingQuestions,
     isError,
     error,
   }: {
     data: { questions: any; metadata: any }
-    isLoading: boolean
+    isFetching: boolean
     isError: boolean
     error: Error
   } = useQuery(`${ROUTES.API.GET_FORM}?${PARAMS.ID}=${id}`, {
     refetchOnReconnect: false,
-    refetchOnMount: false,
+    // refetchOnMount: false,
     refetchOnWindowFocus: false,
     retry: false,
     enabled: !!id,
@@ -90,7 +90,7 @@ const EditorPage = () => {
     }
   }, [unsaved])
 
-  if (isLoading) {
+  if (isFetchingQuestions) {
     return (
       <Container>
         <Loader />

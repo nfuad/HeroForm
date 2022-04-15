@@ -13,6 +13,7 @@ import {
   CheckIcon,
 } from '@components/icons'
 import { GetStartedButton } from '@components/common'
+import { useState } from 'react'
 
 const HomePage = () => {
   return (
@@ -73,13 +74,20 @@ const QuickFacts = () => {
 }
 
 const SeeDemoButton = () => {
+  const demoURL = 'https://inquie.sh/vH8ds0b3'
+
   return (
-    <button className="flex items-center justify-center mx-auto my-10 text-lg tracking-wide text-center text-indigo-600 hover:text-indigo-900 xl:text-xl font-heading group">
+    <a
+      target={'_blank'}
+      rel={'noopener noreferrer'}
+      href={demoURL}
+      className="flex items-center justify-center mx-auto my-10 text-lg tracking-wide text-center text-indigo-600 hover:text-indigo-900 xl:text-xl font-heading group"
+    >
       <span className="transition-all duration-75 group-hover:mr-2">
         See It In Action
       </span>
       <ChevronRightIcon />
-    </button>
+    </a>
   )
 }
 
@@ -190,7 +198,7 @@ const FreeAnimations = () => {
 }
 
 const SubHeading = () => (
-  <p className="max-w-full md:max-w-2xl lg:max-w-3xl text-[#545465] text-xs px-10 sm:px-2 sm:text-sm md:text-xl xl:text-2xl xl:leading-tight mt-8 lg:mt-16 mb-8 text-center mx-auto">
+  <p className="max-w-full md:max-w-2xl lg:max-w-3xl text-[#545465] text-xs px-10 sm:px-2 sm:text-sm md:text-xl xl:text-xl font-heading tracking-wider xl:leading-tight mt-8 lg:mt-12 mb-8 text-center mx-auto">
     Asking questions with good looking forms should’ve never been{' '}
     <em>pricey</em>, <em>bloated</em> or <em>heavily branded</em>. With Inquire,
     it finally isn't.
@@ -212,23 +220,16 @@ const Heading = () => {
 
     jsConfetti.addConfetti({
       emojis: ['🎉', '🤯', '🔥'],
-      emojiSize: 150,
+      emojiSize: 90,
     })
   }
 
-  const onClick = () =>
-    alert('Yes! It is. Now keep this a secret and don’t tell anyone 🙏')
-
   return (
-    <h1 className="mt-32 leading-9 text-center text-[26px] sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl xl:leading-[1.1]">
+    <h1 className="mt-32 leading-9 text-center text-[26px] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl xl:leading-[1.1]">
       <span className="text-black">
         <span>Create</span>{' '}
         <span className="relative">
-          <span
-            className="text-indigo-500 cursor-help"
-            onMouseOver={onHover}
-            onClick={onClick}
-          >
+          <span className="text-indigo-500 cursor-help" onMouseOver={onHover}>
             Free
           </span>{' '}
           <FreeAnimations />
@@ -241,9 +242,47 @@ const Heading = () => {
   )
 }
 const Video = () => {
+  const [showVideo, setShowVideo] = useState(false)
+  const [isHovering, setIsHovering] = useState(false)
+
   return (
     <div className="w-3/4 mx-auto my-20 overflow-hidden bg-transparent rounded-6xl">
-      <Image quality={100} src={require('/public/demo.png')} />
+      <div className="py-8">
+        <div className="grid items-start justify-center gap-8 ">
+          <div className="relative group">
+            <div className="absolute transition duration-1000 opacity-75 rounded-2xl -inset-1 bg-gradient-to-r from-pink-300 via-red-200 to-purple-300 blur group-hover:opacity-100 group-hover:duration-200 animate-tilt" />
+            <div
+              className="w-full mx-auto cursor-pointer rounded-xl max-w-7xl"
+              onClick={() => {
+                setShowVideo(true)
+              }}
+              onMouseEnter={() => {
+                setIsHovering(true)
+              }}
+              onMouseLeave={() => {
+                setIsHovering(false)
+              }}
+            >
+              <Image
+                className="rounded-xl"
+                quality={100}
+                src={require('/public/demo.png')}
+              />
+              <div
+                className={`absolute ${
+                  isHovering
+                    ? 'text-indigo-900 shadow-lg rotate-45 scale-110'
+                    : 'text-indigo-600 shadow-md '
+                } -translate-x-1/2 -translate-y-1/2 bg-white rounded-full top-1/2 left-1/2 transition-all duration-75`}
+              >
+                <PlayIcon />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {showVideo && <YTVideoEmbed setShowVideo={setShowVideo} />}
     </div>
   )
 }
@@ -480,3 +519,53 @@ const Testimonials = () => {
     </div>
   )
 }
+
+const YTVideoEmbed = ({ setShowVideo }) => {
+  return (
+    <div
+      onClick={() => {
+        setShowVideo(false)
+        console.log('clicked1')
+      }}
+      id="defaultModal"
+      tabIndex={-1}
+      aria-hidden="true"
+      className={
+        'fixed top-0 left-0 right-0 z-50 flex justify-center items-center bg-gray-800 bg-opacity-75 w-full overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full'
+      }
+    >
+      <iframe
+        width={'50%'}
+        height={'50%'}
+        src="https://www.youtube.com/embed/OJyuk1JHyi8?controls=0"
+        title="YouTube video player"
+        frameBorder={0}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        className="rounded-xl"
+      />
+    </div>
+  )
+}
+
+const PlayIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-20 h-20"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+    />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
+  </svg>
+)
