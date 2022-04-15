@@ -14,6 +14,7 @@ import { ROUTES } from '@constants/routes'
 import { PARAMS } from '@constants/params'
 
 const EditorPage = () => {
+  const [unsaved, setUnsaved] = useState(false)
   const [formName, setFormName] = useState('')
   const [questions, setQuestions] = useState({})
   const [selectedQuestionID, setSelectedQuestionID] = useState('')
@@ -34,6 +35,7 @@ const EditorPage = () => {
     refetchOnReconnect: false,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
+    retry: false,
     enabled: !!id,
     onSuccess(data) {
       setQuestions(data.questions)
@@ -56,10 +58,12 @@ const EditorPage = () => {
     },
     {
       onSuccess() {
+        setUnsaved(false)
         toast.success('Form published!')
         router.push(`/${id}`)
       },
       onError(error: any) {
+        setUnsaved(false) // will let the user close the tab, no need to keep the unsaved state
         console.log({ error })
         toast.error('Could not publish form. Try again later :)')
       },
@@ -69,6 +73,22 @@ const EditorPage = () => {
   const handlePublishClick = () => {
     publishForm({ questions, id: id as string })
   }
+
+  useEffect(() => {
+    const handleEvent = (e) => {
+      if (unsaved) {
+        e.preventDefault()
+        e.returnValue =
+          'You have unsaved changes. Are you sure you want to leave?'
+      }
+    }
+
+    window.addEventListener('beforeunload', handleEvent)
+
+    return () => {
+      window.removeEventListener('beforeunload', handleEvent)
+    }
+  }, [unsaved])
 
   if (isLoading) {
     return (
@@ -101,6 +121,7 @@ const EditorPage = () => {
           setQuestions={setQuestions}
           selectedQuestionID={selectedQuestionID}
           setSelectedQuestionID={setSelectedQuestionID}
+          setUnsaved={setUnsaved}
         />
       </div>
       <Toast />

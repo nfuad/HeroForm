@@ -14,12 +14,14 @@ type Props = {
   setQuestions: Dispatch<SetStateAction<Question[]>>
   selectedQuestionID: string
   setSelectedQuestionID: Dispatch<SetStateAction<string>>
+  setUnsaved: Dispatch<SetStateAction<boolean>>
 }
 const Editor: FC<Props> = ({
   questions,
   setQuestions,
   selectedQuestionID,
   setSelectedQuestionID,
+  setUnsaved,
 }) => {
   const handleAdd = () => {
     const newQuestion = createQuestion({
@@ -32,6 +34,8 @@ const Editor: FC<Props> = ({
       }
     })
     setSelectedQuestionID(newQuestion.id)
+
+    setUnsaved(true)
   }
 
   const handleDelete = () => {
@@ -56,6 +60,7 @@ const Editor: FC<Props> = ({
       return newState
     })
     setSelectedQuestionID(prevQuestionID)
+    setUnsaved(true)
   }
 
   const renderQuestions = () => {
@@ -105,6 +110,8 @@ const Editor: FC<Props> = ({
       set(copy, path, value)
       return copy
     })
+
+    setUnsaved(true)
   }
 
   return (
@@ -310,7 +317,7 @@ const AddIcon = () => (
  * 2. Make sure that the question editor is at least center aligned, or more on the top than the bottom
  * 3. Make the properties editor functional with the state
  * 4. Write a mutation query that updates the question
- * 5. Write the api function to actually run the update
+ * 5. Write the API function to actually run the update
  * 6. Create the proper components for these
- * 7. After everything, add an alert to show the unsaved changes :)
+ * 7. After everything, add an alert to show the unsaved changes :) - Done
  */
