@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { google } from 'googleapis'
 import prisma from '@lib/prisma'
 import { getSession } from 'next-auth/react'
+import { nanoid } from 'nanoid'
 
 const sheets = google.sheets('v4')
 
@@ -63,6 +64,7 @@ const createFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id } = await prisma.form.create({
       data: {
         spreadsheetId,
+        publicId: nanoid(8),
         userId: user.id,
       },
     })
