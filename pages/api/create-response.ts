@@ -21,7 +21,7 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
   try {
     const form = await prisma.form.findUnique({
       where: {
-        id,
+        publicId: id,
       },
       include: {
         user: {

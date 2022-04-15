@@ -31,10 +31,10 @@ const Dashboard = () => {
     isLoading: createFormLoading,
     isSuccess: createFormSuccess,
   } = useMutation(() => axios.post(ROUTES.API.CREATE_FORM), {
-    onSuccess({ data: { id } }) {
-      console.log({ id })
+    onSuccess({ data: { publicId } }) {
+      console.log({ publicId })
       toast.success('Form created!')
-      router.push(`${id}/${ROUTES.EDITOR}`)
+      router.push(`${publicId}/${ROUTES.EDITOR}`)
     },
     onError(error: any) {
       console.log({ error })
@@ -133,8 +133,8 @@ const CreateFirstFormButton = ({ handleCreateClick, createFormLoading }) => {
   )
 }
 
-const Form = ({ id, name }) => {
-  const href = `${id}/${ROUTES.EDITOR}`
+const Form = ({ publicId, name }) => {
+  const href = `${publicId}/${ROUTES.EDITOR}`
   return (
     <Link href={href}>
       <a className="flex flex-col items-center justify-center w-32 h-40 text-sm text-center transition-shadow rounded-md shadow-md cursor-pointer hover:shadow-xl">

@@ -60,18 +60,19 @@ const createFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       auth,
     })
+    const publicId = nanoid(8)
     const { spreadsheetId } = response.data
     const { id } = await prisma.form.create({
       data: {
         spreadsheetId,
-        publicId: nanoid(8),
+        publicId,
         userId: user.id,
       },
     })
 
     return res.status(200).json({
       success: true,
-      id,
+      publicId,
     })
   } catch (error) {
     console.error({ error })

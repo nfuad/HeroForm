@@ -27,7 +27,7 @@ const EditorPage = () => {
     isError,
     error,
   }: {
-    data: { questions: any }
+    data: { questions: any; name: string }
     isLoading: boolean
     isError: boolean
     error: Error

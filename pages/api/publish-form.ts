@@ -58,7 +58,7 @@ const publishFormHandler = async (
 
     const form = await prisma.form.findUnique({
       where: {
-        id,
+        publicId: id,
       },
     })
     if (!form) {
