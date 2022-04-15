@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { google } from 'googleapis'
 import { getSession } from 'next-auth/react'
 import { getQuestionsBySheetId } from '@lib/sheets/get-questions-by-sheet-id'
+import { getMetadata } from '@lib/sheets'
 
 type Query = {
   id: string
@@ -63,10 +64,12 @@ const getQuestionsHandler = async (
     }
 
     const { spreadsheetId } = form
+    const metadata = await getMetadata({ spreadsheetId, auth })
     const questions = await getQuestionsBySheetId({ spreadsheetId, auth })
 
     return res.status(200).json({
       success: true,
+      metadata,
       questions,
     })
   } catch (error) {

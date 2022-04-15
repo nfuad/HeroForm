@@ -1,6 +1,6 @@
 import { Question } from '@components/admin/editor/types'
 import { OAuth2Client } from 'google-auth-library'
-import { google } from 'googleapis'
+import { sheets } from './init'
 
 const indexes: Record<keyof any, number> = {
   id: 0,
@@ -51,7 +51,6 @@ export const getQuestionsBySheetId = async (
   params: Params,
 ): Promise<Question[]> => {
   const { spreadsheetId, auth } = params
-  const sheets = google.sheets('v4')
 
   const {
     data: { values },

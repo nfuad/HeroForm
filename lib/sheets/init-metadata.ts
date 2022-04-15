@@ -4,19 +4,21 @@ import { sheets } from './init'
 type Params = {
   spreadsheetId: string
   auth: OAuth2Client
-  responses: Record<string, string>
 }
 
-export const createResponse = async (params: Params): Promise<void> => {
-  const { spreadsheetId, auth, responses } = params
+export const initMetadata = async (params: Params): Promise<void> => {
+  const { spreadsheetId, auth } = params
 
   await sheets.spreadsheets.values.append({
     spreadsheetId,
     valueInputOption: 'RAW',
-    range: 'Responses',
+    range: 'Metadata',
     requestBody: {
-      range: 'Responses',
-      values: [Object.values(responses)],
+      range: 'Metadata',
+      values: [
+        ['Title', 'Response Count'],
+        ['Untitled', 0],
+      ],
     },
     auth,
   })

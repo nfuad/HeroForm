@@ -2,6 +2,9 @@ import { FC, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ROUTES } from '@constants/routes'
 import toast from 'react-hot-toast'
+import { useMutation } from 'react-query'
+import axios from 'axios'
+import { LoadingIcon } from '@components/icons'
 
 type Props = {
   handlePublishClick: () => void
@@ -41,6 +44,21 @@ export default Header
 const EditableFormName = ({ currentName }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState('')
+  const { mutate: updateMetadata, isLoading } = useMutation(
+    ({ title, id }: any) =>
+      axios.post(ROUTES.API.UPDATE_FORM_TITLE, { title, id }),
+    {
+      onSuccess() {
+        toast.success('Form Name Updated!')
+        setIsEditing(false)
+      },
+      onError() {
+        toast.error('Tough luck, need better internet')
+        setIsEditing(false)
+      },
+    },
+  )
+  const router = useRouter()
 
   useEffect(() => {
     setValue(currentName)
@@ -56,14 +74,7 @@ const EditableFormName = ({ currentName }) => {
     }
   }
 
-  const handleSave = () => {
-    // TODO: validation
-
-    // TODO: run mutation
-
-    setIsEditing(false)
-    toast.success('Form Name Updated!')
-  }
+  const handleSave = () => updateMetadata({ title: value, id: router.query.id })
 
   const handleEditButtonClick = () => setIsEditing(true)
 
@@ -82,7 +93,11 @@ const EditableFormName = ({ currentName }) => {
             className="w-full px-1 border-2 border-gray-300 rounded-md"
             onKeyDown={handleKeyDown}
           />
-          <SaveButton disabled={false} onClick={handleSaveButtonClick} />
+          {isLoading ? (
+            <LoadingIcon />
+          ) : (
+            <SaveButton disabled={false} onClick={handleSaveButtonClick} />
+          )}
         </>
       ) : (
         <>

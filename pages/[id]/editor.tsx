@@ -27,7 +27,7 @@ const EditorPage = () => {
     isError,
     error,
   }: {
-    data: { questions: any; name: string }
+    data: { questions: any; metadata: any }
     isLoading: boolean
     isError: boolean
     error: Error
@@ -41,7 +41,7 @@ const EditorPage = () => {
       setQuestions(data.questions)
       const firstQuestionID = Object.keys(data.questions)[0] // need to sort this properly!
       setSelectedQuestionID(firstQuestionID)
-      setFormName(data.name)
+      setFormName(data.metadata.title)
     },
   })
 
@@ -113,7 +113,7 @@ const EditorPage = () => {
         <Header
           publishButtonDisabled={publishFormLoading}
           handlePublishClick={handlePublishClick}
-          formName={formName} // TODO: GET REAL FORM NAME
+          formName={formName}
           publishFormLoading={publishFormLoading}
         />
         <Editor
