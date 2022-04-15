@@ -107,6 +107,8 @@ const EditorPage = () => {
     )
   }
 
+  const { responseCount } = preloadedQuestionsData?.metadata || {}
+
   return (
     <>
       <div className="flex flex-col h-screen max-h-screen overflow-hidden bg-slate-50">
@@ -114,6 +116,7 @@ const EditorPage = () => {
           publishButtonDisabled={publishFormLoading}
           handlePublishClick={handlePublishClick}
           formName={formName}
+          responseCount={responseCount}
           publishFormLoading={publishFormLoading}
         />
         <Editor

@@ -10,6 +10,7 @@ type Props = {
   handlePublishClick: () => void
   publishButtonDisabled: boolean
   formName: string
+  responseCount: number
   publishFormLoading: boolean
 }
 
@@ -17,6 +18,7 @@ const Header: FC<Props> = ({
   handlePublishClick,
   publishButtonDisabled,
   formName = 'Untitled',
+  responseCount,
   publishFormLoading,
 }) => {
   return (
@@ -27,6 +29,7 @@ const Header: FC<Props> = ({
         </div>
         <EditableFormName currentName={formName} />
       </div>
+      <p>{responseCount} response(s)</p>
       <div className="flex gap-x-3">
         <PreviewButton processing={publishFormLoading} />
         <PublishButton
