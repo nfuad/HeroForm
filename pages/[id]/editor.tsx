@@ -12,6 +12,7 @@ import { useMutation } from 'react-query'
 import axios from 'axios'
 import { ROUTES } from '@constants/routes'
 import { PARAMS } from '@constants/params'
+import { showConfettiAnimation } from '@lib/show-confetti-animation'
 
 const EditorPage = () => {
   const [unsaved, setUnsaved] = useState(false)
@@ -61,6 +62,8 @@ const EditorPage = () => {
         setUnsaved(false)
         toast.success('Form published!')
         router.push(`/${id}`)
+
+        showConfettiAnimation()
       },
       onError(error: any) {
         setUnsaved(false) // will let the user close the tab, no need to keep the unsaved state
