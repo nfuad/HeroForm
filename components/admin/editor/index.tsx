@@ -114,6 +114,22 @@ const Editor: FC<Props> = ({
     setUnsaved(true)
   }
 
+  const getPlaceholder = (type) => {
+    switch (type) {
+      case QuestionType.LONG_TEXT:
+        return 'Enter text here'
+
+      case QuestionType.SHORT_TEXT:
+        return 'Enter text here'
+
+      case QuestionType.MULTI_CHOICE:
+        return 'Select an option'
+
+      default:
+        throw new Error(`Unknown question type: ${type}`)
+    }
+  }
+
   return (
     <div className="flex items-center justify-between">
       <div className="h-screen max-w-[300px] w-full px-3 pt-5 pb-20 text-gray-900 bg-white border-r border-gray-200 overflow-auto">
@@ -179,9 +195,13 @@ const Editor: FC<Props> = ({
               </label>
               <QuestionTypeSelection
                 selected={type}
-                onChange={(newType: QuestionType) =>
+                onChange={(newType: QuestionType) => {
                   handleQuestionChange('type', newType)
-                }
+                  handleQuestionChange(
+                    'properties.placeholder',
+                    getPlaceholder(newType),
+                  )
+                }}
               />
             </div>
             <div className="flex items-center justify-between my-2">
@@ -198,76 +218,85 @@ const Editor: FC<Props> = ({
                 type="checkbox"
               />
             </div>
-            <div className="flex items-center justify-between my-2">
-              <label
-                htmlFor={'multiple-selection'}
-                className="text-sm font-body"
-              >
-                Multiple Selection
-              </label>
-              <input
-                checked={isMultipleSelectionAllowed}
-                onChange={() =>
-                  handleQuestionChange(
-                    'properties.isMultipleSelectionAllowed',
-                    !isMultipleSelectionAllowed,
-                  )
-                }
-                name="multiple-selection"
-                id="multiple-selection"
-                type="checkbox"
-              />
-            </div>
-            <div className="flex items-center justify-between my-2">
-              <label htmlFor={'other-option'} className="text-sm font-body">
-                Other Option
-              </label>
-              <input
-                checked={isOtherOptionAllowed}
-                onChange={() =>
-                  handleQuestionChange(
-                    'properties.isOtherOptionAllowed',
-                    !isOtherOptionAllowed,
-                  )
-                }
-                name="other-option"
-                id="other-option"
-                type="checkbox"
-              />
-            </div>
-            <div className="flex flex-col items-start justify-between my-2">
-              <div className="flex items-center justify-between w-full">
-                <label htmlFor={'max-characters'} className="text-sm font-body">
-                  Max Characters
+            {isMultiChoice && (
+              <div className="flex items-center justify-between my-2">
+                <label
+                  htmlFor={'multiple-selection'}
+                  className="text-sm font-body"
+                >
+                  Multiple Selection
                 </label>
                 <input
-                  checked={isMaxLengthSpecified}
+                  checked={isMultipleSelectionAllowed}
                   onChange={() =>
                     handleQuestionChange(
-                      'properties.isMaxLengthSpecified',
-                      !isMaxLengthSpecified,
+                      'properties.isMultipleSelectionAllowed',
+                      !isMultipleSelectionAllowed,
                     )
                   }
-                  name="max-characters"
-                  id="max-characters"
+                  name="multiple-selection"
+                  id="multiple-selection"
                   type="checkbox"
                 />
               </div>
-              {isMaxLengthSpecified && (
+            )}
+            {isMultiChoice && (
+              <div className="flex items-center justify-between my-2">
+                <label htmlFor={'other-option'} className="text-sm font-body">
+                  Other Option
+                </label>
                 <input
-                  value={maxCharacters}
-                  onChange={(event) => {
-                    console.log({ val: event.target.value })
+                  checked={isOtherOptionAllowed}
+                  onChange={() =>
                     handleQuestionChange(
-                      'properties.maxCharacters',
-                      parseInt(event.target.value),
+                      'properties.isOtherOptionAllowed',
+                      !isOtherOptionAllowed,
                     )
-                  }}
-                  type="number"
-                  className="w-full px-2 py-1 mt-2 text-sm border-2 rounded-md"
+                  }
+                  name="other-option"
+                  id="other-option"
+                  type="checkbox"
                 />
-              )}
-            </div>
+              </div>
+            )}
+            {(isLongText || isShortText) && (
+              <div className="flex flex-col items-start justify-between my-2">
+                <div className="flex items-center justify-between w-full">
+                  <label
+                    htmlFor={'max-characters'}
+                    className="text-sm font-body"
+                  >
+                    Max Characters
+                  </label>
+                  <input
+                    checked={isMaxLengthSpecified}
+                    onChange={() =>
+                      handleQuestionChange(
+                        'properties.isMaxLengthSpecified',
+                        !isMaxLengthSpecified,
+                      )
+                    }
+                    name="max-characters"
+                    id="max-characters"
+                    type="checkbox"
+                  />
+                </div>
+                {isMaxLengthSpecified && (
+                  <input
+                    value={maxCharacters}
+                    onChange={(event) => {
+                      console.log({ val: event.target.value })
+                      handleQuestionChange(
+                        'properties.maxCharacters',
+                        parseInt(event.target.value),
+                      )
+                    }}
+                    type="number"
+                    className="w-full px-2 py-1 mt-2 text-sm border-2 rounded-md"
+                  />
+                )}
+              </div>
+            )}
 
             <DeleteButton onClick={handleDelete} />
           </div>

@@ -1,19 +1,10 @@
-1. LP changes:
-   - // Update demo image with video
-   - // Link to a real demo in See It In Action!
-   - // GH icon instead of star button
-   - // Hover effect, too excessive!
-   - // Remove click effect on "Free"
-   - // Get some inspo from feather.so
-   - // Make the github and discord button functional
-2. Dashboard changes:
-   - Header is missing (logo, profile, etc.)
-   - Footer is missing
-   - Welcome, you're logged in as <email>
-   - show the forms nicely
-   - not responsive :)
-3. // Add Nprogress
-4. Use this: https://play.tailwindcss.com/fNKKyOG2Yv
-5. // Make the id shorter (use nanoid) in the slug
-6. Add a button / link for responses (open the google sheet)
-7. // Create metadata page to store the responses count and name and use it in the editor
+1. Preview needs to be working:
+   - same as published, few differences:
+     1. No results will be submitted
+     2. There will be a banner that says - viewing in preview mode.
+2. // The max characters need to be enforced in the output
+3. There should be a beginning screen, and a thank you screen (non editable for now) for the output
+4. The output's progress bar needs to be have like typeform's as much as possible
+5. In the dashboard, the onboarding screen needs to be functioning when there's no forms
+
+No welcome or thank you screen in teh editor, just in the outputs.

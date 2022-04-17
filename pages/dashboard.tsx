@@ -8,11 +8,13 @@ const DashboardPage: NextPage = () => {
   const isAuthenticated = status === 'authenticated'
 
   const {
+    isLoading: loadingForms,
     isFetching: fetchingForms,
-    error: fetchFormsError,
+    error: loadingFormsError,
     data: formsData,
     isSuccess: formsLoaded,
   }: {
+    isLoading: boolean
     isFetching: boolean
     error: Error
     data: { forms: any[] }
@@ -23,7 +25,7 @@ const DashboardPage: NextPage = () => {
       toast.error('Could not get forms')
     },
   })
-  const noExistingForms = !fetchingForms && isEmpty(formsData?.forms)
+  const noExistingForms = !loadingForms && isEmpty(formsData?.forms)
   const {
     mutate: createForm,
     isLoading: creatingForm,
@@ -32,7 +34,7 @@ const DashboardPage: NextPage = () => {
     onSuccess({ data: { publicId } }) {
       console.log({ publicId })
       toast.success('Form created!')
-      router.push(`${publicId}/${ROUTES.EDITOR}`)
+      router.push(`${publicId}/${ROUTES.EDIT}`)
     },
     onError(error: any) {
       console.log({ error })
@@ -46,14 +48,14 @@ const DashboardPage: NextPage = () => {
     formsData?.forms?.map((form) => <Form {...form} key={form.id} />)
 
   const getStatusText = () => {
-    if (fetchingForms) {
+    if (loadingForms) {
       return {
         heading: 'Loading Your Forms 😘',
         body: 'Hold tight, this is taking some time 😅',
       }
     }
 
-    if (fetchFormsError) {
+    if (loadingFormsError) {
       return {
         heading: 'Oops, Something went wrong 😢',
         body: "We couldn't load your forms, try again later pls?",
@@ -87,28 +89,37 @@ const DashboardPage: NextPage = () => {
     }
   }
 
-  // todo: redo the screen here for no forms.
   return (
     <Layout showFooter showHeader isProtected title="Dashboard">
       <div className="flex flex-col items-start justify-start flex-grow w-full px-5 mx-auto my-20 overflow-hidden max-w-7xl">
         <h2 className="mb-10 text-xl text-gray-700">
           Welcome, {data?.user?.name}&nbsp;&nbsp;🎉
         </h2>
-        <div>
-          <h3 className="py-2 text-3xl font-heading">
-            {getStatusText().heading}
-          </h3>
+        <div className="w-full">
+          <div className="flex justify-between max-w-full">
+            <h3 className="py-2 text-3xl font-heading">
+              {getStatusText().heading}
+            </h3>
+            {fetchingForms && (
+              <div className="flex items-center justify-start">
+                <LoadingIcon />
+                <span className="ml-2 text-xs">Refreshing...</span>
+              </div>
+            )}
+          </div>
           <div className="h-2">
             <p className="text-sm text-gray-500 font-body">
               {getStatusText().body}
             </p>
           </div>
-          <div className="flex flex-wrap my-16 space-evenly gap-x-9 gap-y-9">
+          <div className="flex flex-wrap w-full my-16 space-evenly gap-x-9 gap-y-9">
             {renderForms()}
-            <AddFormButton
-              handleCreateClick={handleCreateClick}
-              creatingForm={creatingForm}
-            />
+            {!loadingForms && (
+              <AddFormButton
+                handleCreateClick={handleCreateClick}
+                creatingForm={creatingForm}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -147,10 +158,10 @@ const CreateFirstFormButton = ({ handleCreateClick, createFormLoading }) => {
 }
 
 const Form = ({ publicId, metadata: { title, responseCount } }) => {
-  const href = `${publicId}${ROUTES.EDITOR}`
+  const href = `${publicId}${ROUTES.EDIT}`
   return (
     <Link href={href}>
-      <a className="flex flex-col items-center justify-center w-32 h-40 text-sm text-center transition-shadow rounded-md shadow-md cursor-pointer hover:shadow-xl">
+      <a className="flex flex-col items-center justify-center w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer hover:shadow-xl">
         <h1>{title}</h1>
         <p className="mt-2 text-xs text-gray-500">
           {responseCount} response{responseCount > 1 && 's'}

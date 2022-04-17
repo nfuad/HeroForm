@@ -71,6 +71,7 @@ const getQuestionsHandler = async (
       success: true,
       metadata,
       questions,
+      spreadsheetId,
     })
   } catch (error) {
     console.error({ error })

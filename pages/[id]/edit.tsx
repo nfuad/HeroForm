@@ -28,7 +28,7 @@ const EditorPage = () => {
     isError,
     error,
   }: {
-    data: { questions: any; metadata: any }
+    data: { questions: any; metadata: any; spreadsheetId: any }
     isFetching: boolean
     isError: boolean
     error: Error
@@ -110,7 +110,8 @@ const EditorPage = () => {
     )
   }
 
-  const { responseCount } = preloadedQuestionsData?.metadata || {}
+  const { spreadsheetId = '', metadata = {} } = preloadedQuestionsData || {}
+  const { responseCount } = metadata
 
   return (
     <>
@@ -121,6 +122,7 @@ const EditorPage = () => {
           formName={formName}
           responseCount={responseCount}
           publishFormLoading={publishFormLoading}
+          spreadSheetLink={`https://docs.google.com/spreadsheets/d/${spreadsheetId}`}
         />
         <Editor
           questions={questions}

@@ -1,12 +1,13 @@
 import { ChangeEventHandler, FC } from 'react'
 
 type Props = {
-  placeholder: string
+  properties: any
   onChange: (newValue: string) => void
   value: string
 }
 
-const ShortText: FC<Props> = ({ placeholder, onChange, value }) => {
+const ShortText: FC<Props> = ({ properties, onChange, value }) => {
+  const { placeholder, maxCharacters } = properties
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) =>
     onChange(e.target.value)
 
@@ -16,6 +17,7 @@ const ShortText: FC<Props> = ({ placeholder, onChange, value }) => {
       onChange={handleChange}
       value={value}
       placeholder={placeholder}
+      maxLength={maxCharacters}
       type="text"
       style={{
         boxShadow: '0px 14px 39px 10px rgba(235, 145, 145, 0.2)',
