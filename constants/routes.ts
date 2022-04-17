@@ -2,7 +2,7 @@ export const ROUTES = {
   HOME: '/',
   DASHBOARD: '/dashboard',
   CONTINUE: '/continue',
-  EDITOR: '/editor',
+  EDIT: '/edit',
   PREVIEW: '/preview',
   API: {
     GET_FORM: '/api/get-form',

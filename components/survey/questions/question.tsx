@@ -52,13 +52,14 @@ const SurveyQuestion: FC<Props> = ({
   const ref = useRef()
   const entryScreen1 = useIntersectionObserver(ref, {})
   const isVisible = !!entryScreen1?.isIntersecting
+  const { properties, prompt } = question
 
   const renderInput = () => {
     switch (question.type) {
       case QuestionType.SHORT_TEXT:
         return (
           <ShortText
-            placeholder={question.properties.placeholder}
+            properties={properties}
             value={response}
             onChange={handleResponseChange}
           />
@@ -66,7 +67,7 @@ const SurveyQuestion: FC<Props> = ({
       case QuestionType.LONG_TEXT:
         return (
           <LongText
-            placeholder={question.properties.placeholder}
+            properties={properties}
             value={response}
             onChange={handleResponseChange}
           />
@@ -74,6 +75,7 @@ const SurveyQuestion: FC<Props> = ({
       case QuestionType.MULTI_CHOICE:
         return (
           <MultiChoice
+            properties={properties}
             question={question}
             selected={response}
             setSelected={handleResponseChange}
@@ -94,9 +96,7 @@ const SurveyQuestion: FC<Props> = ({
       onSubmit={handleSubmit}
     >
       <TransitionWrapper isVisible={isVisible}>
-        <h1 className="text-lg sm:text-xl md:text-3xl lg:text-6xl">
-          {question.prompt}
-        </h1>
+        <h1 className="text-lg sm:text-xl md:text-3xl lg:text-6xl">{prompt}</h1>
       </TransitionWrapper>
 
       <TransitionWrapper

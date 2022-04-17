@@ -1,12 +1,13 @@
 import { ChangeEventHandler, FC } from 'react'
 
 type Props = {
-  placeholder: string
+  properties: any
   value: string
   onChange: (newValue: string) => void
 }
 
-const LongText: FC<Props> = ({ placeholder, value, onChange }) => {
+const LongText: FC<Props> = ({ properties, value, onChange }) => {
+  const { placeholder, maxCharacters } = properties
   const handleChange: ChangeEventHandler<HTMLTextAreaElement> = (e) =>
     onChange(e.target.value)
 
@@ -16,6 +17,7 @@ const LongText: FC<Props> = ({ placeholder, value, onChange }) => {
       value={value}
       onChange={handleChange}
       placeholder={placeholder}
+      maxLength={maxCharacters}
       style={{
         boxShadow: '0px 14px 39px 10px rgba(235, 145, 145, 0.2)',
       }}
