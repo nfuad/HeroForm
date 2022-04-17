@@ -12,6 +12,7 @@ import { useMutation } from 'react-query'
 import axios from 'axios'
 import { ROUTES } from '@constants/routes'
 import { PARAMS } from '@constants/params'
+import { showConfettiAnimation } from '@lib/show-confetti-animation'
 
 const EditorPage = () => {
   const [unsaved, setUnsaved] = useState(false)
@@ -23,17 +24,17 @@ const EditorPage = () => {
   const { id } = router.query
   const {
     data: preloadedQuestionsData,
-    isLoading,
+    isFetching: isFetchingQuestions,
     isError,
     error,
   }: {
     data: { questions: any; metadata: any }
-    isLoading: boolean
+    isFetching: boolean
     isError: boolean
     error: Error
   } = useQuery(`${ROUTES.API.GET_FORM}?${PARAMS.ID}=${id}`, {
     refetchOnReconnect: false,
-    refetchOnMount: false,
+    // refetchOnMount: false,
     refetchOnWindowFocus: false,
     retry: false,
     enabled: !!id,
@@ -61,6 +62,8 @@ const EditorPage = () => {
         setUnsaved(false)
         toast.success('Form published!')
         router.push(`/${id}`)
+
+        showConfettiAnimation()
       },
       onError(error: any) {
         setUnsaved(false) // will let the user close the tab, no need to keep the unsaved state
@@ -90,7 +93,7 @@ const EditorPage = () => {
     }
   }, [unsaved])
 
-  if (isLoading) {
+  if (isFetchingQuestions) {
     return (
       <Container>
         <Loader />

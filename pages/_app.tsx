@@ -7,6 +7,7 @@ import { DefaultSeo } from 'next-seo'
 import SEO from '../next-seo.config'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import axios from 'axios'
+import NextNProgress from 'nextjs-progressbar'
 
 const defaultQueryFn = async ({ queryKey }) => {
   const { data } = await axios.get(`${queryKey[0]}`)
@@ -22,6 +23,13 @@ const queryClient = new QueryClient({
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
+      <NextNProgress
+        color="#b11fa8"
+        startPosition={0.3}
+        stopDelayMs={200}
+        height={3}
+        showOnShallow={true}
+      />
       <DefaultSeo {...SEO} />
       <QueryClientProvider client={queryClient}>
         <SessionProvider session={pageProps.session} refetchInterval={0}>
