@@ -15,6 +15,18 @@ const QuestionItem: FC<Props> = ({
   order = 1,
 }) => {
   console.log({ question })
+  console.log({ question })
+  console.log({ question })
+  console.log({ question })
+  console.log({ question })
+  console.log({ question })
+  console.log({ question })
+  console.log({ question })
+  console.log({ question })
+  console.log({ question })
+  console.log({ question })
+  console.log({ question })
+  console.log('here!!!')
   return (
     <button
       className={`flex items-center w-full gap-x-4 px-3 py-2 rounded-lg text-left transition-all ${

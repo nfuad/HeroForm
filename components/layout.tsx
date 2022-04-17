@@ -264,7 +264,7 @@ const JoinGitHubButton = () => {
       <Image
         width="25"
         height="25"
-        src={require('../public/Github-Mark-32px.png')}
+        src={require('../public/images/github-logo.png')}
       />
     </a>
   )

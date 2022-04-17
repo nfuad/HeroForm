@@ -8,7 +8,8 @@ import {
   Authenticated,
   UnAuthenticated,
 } from '@components/continue'
-const Continue = () => {
+
+const ContinuePage = () => {
   const router = useRouter()
   const { data: session, status } = useSession()
 
@@ -40,4 +41,4 @@ const Continue = () => {
   )
 }
 
-export default Continue
+export default ContinuePage

@@ -6,7 +6,11 @@ export const UnAuthenticated = ({ handleSignInClick }) => (
       <h1 className="text-4xl tracking-normal">Account Log In</h1>
       <p className="mb-3 text-center text-gray-600 text-md">
         Click the button below to connect your{' '}
-        <Image width={20} height={20} src={require('/public/sheets.png')} />{' '}
+        <Image
+          width={20}
+          height={20}
+          src={require('/public/images/sheets.png')}
+        />{' '}
         <b>Google Sheets</b> &amp; start creating forms/surveys. If you already
         have an account, this will log you back into the admin.
       </p>
