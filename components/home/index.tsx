@@ -425,7 +425,7 @@ export const Testimonials = () => {
         </blockquote>
         <figcaption className="flex items-center justify-center gap-x-2">
           <Image
-            src="https://engineering.unl.edu/images/staff/Kayla-Person.jpg"
+            src="/public/images/avatar.png"
             width={30}
             height={30}
             objectFit="cover"
@@ -443,7 +443,7 @@ export const Testimonials = () => {
         </blockquote>
         <figcaption className="flex items-center justify-center gap-x-2">
           <Image
-            src="https://engineering.unl.edu/images/staff/Kayla-Person.jpg"
+            src="/public/images/avatar.png"
             width={30}
             height={30}
             objectFit="cover"
@@ -461,7 +461,7 @@ export const Testimonials = () => {
         </blockquote>
         <figcaption className="flex items-center justify-center gap-x-2">
           <Image
-            src="https://engineering.unl.edu/images/staff/Kayla-Person.jpg"
+            src="/public/images/avatar.png"
             width={30}
             height={30}
             objectFit="cover"
