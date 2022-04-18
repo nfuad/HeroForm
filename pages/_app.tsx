@@ -20,16 +20,19 @@ const queryClient = new QueryClient({
     },
   },
 })
+
+const PROGRESSBAR_OPTIONS = {
+  color: '#b11fa8',
+  startPosition: 0.3,
+  stopDelayMs: 200,
+  height: 3,
+  showOnShallow: true,
+}
+
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
-      <NextNProgress
-        color="#b11fa8"
-        startPosition={0.3}
-        stopDelayMs={200}
-        height={3}
-        showOnShallow={true}
-      />
+      <NextNProgress {...PROGRESSBAR_OPTIONS} />
       <DefaultSeo {...SEO} />
       <QueryClientProvider client={queryClient}>
         <SessionProvider session={pageProps.session} refetchInterval={0}>

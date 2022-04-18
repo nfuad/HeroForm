@@ -3,10 +3,10 @@ import { useState } from 'react'
 // https://firebase.google.com/docs/web/setup#available-libraries
 import prisma from '@lib/prisma'
 import Questions from '@components/survey/questions'
-import Chevron from '@components/Chevron'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { Question } from '@components/admin/editor/types'
 import { getQuestionsBySheetId } from '@lib/sheets/get-questions-by-sheet-id'
+import { Chevron } from '@components/icons'
 
 const ProgressBar = ({ scrollIndicator }) => (
   <div className="absolute z-50 w-full h-2 bg-gray-200">
@@ -21,7 +21,7 @@ const Container = ({ children }) => {
   return (
     <div
       style={{
-        backgroundImage: `url('/background.svg')`,
+        backgroundImage: `url('/images/background.svg')`,
       }}
       className="relative w-full h-full bg-no-repeat bg-cover"
     >
@@ -94,8 +94,6 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
   const firstQuestion = currentPage === 0
 
   const scrollIndicator = ((currentPage + 1) / totalPages) * 100
-
-  console.log({ currentPage })
 
   const handleNext = () => {
     if (lastQuestion) return

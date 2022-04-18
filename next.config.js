@@ -2,7 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['engineering.unl.edu'],
+    domains: [],
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production', // remove console.log in production
   },
 }
 

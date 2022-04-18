@@ -15,7 +15,7 @@ export const initForm = async (
   return sheets.spreadsheets.create({
     requestBody: {
       properties: {
-        title: 'please workkkkkkkkkkkkkkkkkk',
+        title: 'Inquire Form',
       },
       sheets: [
         {
