@@ -1,38 +1,11 @@
 import { useRef, FC, FormEventHandler } from 'react'
-import { Transition } from '@headlessui/react'
 
-import type { Question } from '@components/admin/editor/types'
 import { QuestionType } from '@components/admin/editor/types'
 import useIntersectionObserver from '@hooks/use-intersection-observer'
 import ShortText from './short-text'
 import LongText from './long-text'
 import MultiChoice from './multi-choice'
-
-const TransitionWrapper = ({
-  isVisible,
-  children,
-  enter = 'transform transition duration-[400ms]',
-  enterFrom = 'opacity-0',
-  enterTo = 'opacity-100 translate-y-0',
-  leave = 'transform duration-200 transition ease-in-out',
-  leaveFrom = 'opacity-100 scale-100 translate-y-0',
-  leaveTo = 'opacity-0',
-}) => {
-  return (
-    <Transition
-      className={'w-full flex justify-center items-center'}
-      show={isVisible}
-      enter={enter}
-      enterFrom={enterFrom}
-      enterTo={enterTo}
-      leave={leave}
-      leaveFrom={leaveFrom}
-      leaveTo={leaveTo}
-    >
-      {children}
-    </Transition>
-  )
-}
+import TransitionWrapper from './transition-wrapper'
 
 type Props = {
   question: any

@@ -31,14 +31,16 @@ const Container = ({ children }) => {
 }
 
 const DotIndicators = ({
-  totalPages,
+  totalQuestions,
   currentPage,
   setCurrentPage,
-  questions,
+  isSubmitted,
 }) => {
+  if (isSubmitted) return null
+
   return (
     <div className="absolute z-50 flex flex-col items-center justify-center space-y-3 right-5 top-1/2 translate-y-[-50%]">
-      {questions.map((_, index) => {
+      {Array.from({ length: totalQuestions }).map((_, index) => {
         return (
           <div
             key={index}
@@ -46,7 +48,7 @@ const DotIndicators = ({
               setCurrentPage(index)
             }}
             className={`transition-all duration-300 ease-in-out cursor-pointer ${
-              index === currentPage
+              index === currentPage - 1
                 ? 'bg-gradient-blue-one w-4 h-4'
                 : 'bg-gray-200 w-2 h-2'
             } rounded-full`}
@@ -62,7 +64,10 @@ const ArrowNavigator = ({
   handlePrev,
   isFirstPage,
   isLastPage,
+  isSubmitted,
 }) => {
+  if (isSubmitted) return null
+
   return (
     <div className="absolute z-50 flex flex-row divide-x-2 divide-gray-300 rounded-lg shadow-3xl bottom-5 right-5">
       <button
@@ -88,19 +93,21 @@ type Props = {
 }
 const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
   const [currentPage, setCurrentPage] = useState(0)
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
-  const totalPages = questions.length
-  const lastQuestion = totalPages === currentPage + 1
-  const firstQuestion = currentPage === 0
+  const totalQuestions = questions.length
+  const totalPages = totalQuestions + 2
+  const isLastPage = totalPages === currentPage + 1
+  const isFirstPage = currentPage === 0
 
   const scrollIndicator = ((currentPage + 1) / totalPages) * 100
 
   const handleNext = () => {
-    if (lastQuestion) return
+    if (isLastPage) return
     setCurrentPage((st) => st + 1)
   }
   const handlePrev = () => {
-    if (firstQuestion) return
+    if (isFirstPage) return
     setCurrentPage((st) => st - 1)
   }
 
@@ -110,14 +117,15 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
     <Container>
       <ProgressBar scrollIndicator={scrollIndicator} />
       <DotIndicators
-        {...{ totalPages, currentPage, setCurrentPage, questions }}
+        {...{ totalQuestions, currentPage, setCurrentPage, isSubmitted }}
       />
       <ArrowNavigator
         {...{
           handlePrev,
           handleNext,
-          isFirstPage: firstQuestion,
-          isLastPage: lastQuestion,
+          isFirstPage,
+          isLastPage,
+          isSubmitted,
         }}
       />
       <Questions
@@ -125,6 +133,8 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
         setCurrentPage={setCurrentPage}
         questions={questions}
         handleNext={handleNext}
+        isSubmitted={isSubmitted}
+        setIsSubmitted={setIsSubmitted}
       />
     </Container>
   )

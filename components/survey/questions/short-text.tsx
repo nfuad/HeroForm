@@ -7,7 +7,7 @@ type Props = {
 }
 
 const ShortText: FC<Props> = ({ properties, onChange, value }) => {
-  const { placeholder, maxCharacters } = properties
+  const { placeholder, maxCharacters, isMaxLengthSpecified } = properties
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) =>
     onChange(e.target.value)
 
@@ -17,7 +17,7 @@ const ShortText: FC<Props> = ({ properties, onChange, value }) => {
       onChange={handleChange}
       value={value}
       placeholder={placeholder}
-      maxLength={maxCharacters}
+      maxLength={isMaxLengthSpecified ? maxCharacters : undefined}
       type="text"
       style={{
         boxShadow: '0px 14px 39px 10px rgba(235, 145, 145, 0.2)',

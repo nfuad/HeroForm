@@ -6,12 +6,17 @@ import { Dispatch, FC, SetStateAction, useState } from 'react'
 import toast from 'react-hot-toast'
 import ReactPageScroller from 'react-page-scroller'
 import { useMutation } from 'react-query'
+import InitialPage from './initial-page'
 
 import SurveyQuestion from './question'
+import ShortText from './short-text'
+import SuccessPage from './success-page'
 
 type Props = {
   currentPage: number
   setCurrentPage: Dispatch<SetStateAction<number>>
+  isSubmitted: boolean
+  setIsSubmitted: Dispatch<SetStateAction<boolean>>
   questions: any[]
   handleNext: () => void
 }
@@ -19,6 +24,8 @@ type Props = {
 const Questions: FC<Props> = ({
   currentPage,
   setCurrentPage,
+  isSubmitted,
+  setIsSubmitted,
   questions,
   handleNext,
 }) => {
@@ -34,9 +41,6 @@ const Questions: FC<Props> = ({
   const { mutate: createResponse } = useMutation(
     (body: any) => axios.post(ROUTES.API.CREATE_RESPONSE, body),
     {
-      onSuccess: () => {
-        toast.success('Response saved! Now go away peacefully!')
-      },
       onError: () => {
         toast.error(
           'Could not save response. Looks like someone needs an internet plan upgrade.',
@@ -57,20 +61,24 @@ const Questions: FC<Props> = ({
     return questions?.map((question, index) => {
       const isLastPage = index === questions?.length - 1
       const handleSubmit = () => {
-        if (isLastPage)
-          return createResponse({ responses, id: router.query.id })
+        if (isLastPage) {
+          createResponse({ responses, id: router.query.id })
+          setIsSubmitted(true)
+        }
         handleNext()
       }
 
       return (
-        <SurveyQuestion
-          key={question.id}
-          question={question}
-          response={responses[question.id]}
-          handleResponseChange={handleResponseChange(question.id)}
-          isLastPage={isLastPage}
-          onSubmit={handleSubmit}
-        />
+        <>
+          <SurveyQuestion
+            key={question.id}
+            question={question}
+            response={responses[question.id]}
+            handleResponseChange={handleResponseChange(question.id)}
+            isLastPage={isLastPage}
+            onSubmit={handleSubmit}
+          />
+        </>
       )
     })
   }
@@ -84,11 +92,13 @@ const Questions: FC<Props> = ({
         }}
         transitionTimingFunction="cubic-bezier(0.95, 0.05, 0.08, 1.01)"
         animationTimer={1000}
-        blockScrollUp={false}
-        blockScrollDown={false}
+        blockScrollUp={isSubmitted}
+        blockScrollDown={isSubmitted}
         customPageNumber={currentPage}
       >
+        <InitialPage handleNext={handleNext} />
         {renderQuestions()}
+        <SuccessPage />
       </ReactPageScroller>
       <Toast />
     </>
