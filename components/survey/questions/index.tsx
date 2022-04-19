@@ -10,7 +10,6 @@ import { useMutation } from 'react-query'
 import InitialPage from './initial-page'
 
 import SurveyQuestion from './question'
-import ShortText from './short-text'
 import SuccessPage from './success-page'
 
 type Props = {

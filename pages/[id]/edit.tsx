@@ -118,24 +118,29 @@ const EditorPage = () => {
 
   return (
     <>
-      <div className="flex flex-col h-screen max-h-screen overflow-hidden bg-slate-50">
-        <Header
-          publishButtonDisabled={publishFormLoading}
-          handlePublishClick={handlePublishClick}
-          formName={formName}
-          responseCount={responseCount}
-          publishFormLoading={publishFormLoading}
-          spreadSheetLink={`https://docs.google.com/spreadsheets/d/${spreadsheetId}`}
-        />
-        <Editor
-          questions={questions}
-          setQuestions={setQuestions}
-          selectedQuestionID={selectedQuestionID}
-          setSelectedQuestionID={setSelectedQuestionID}
-          setUnsaved={setUnsaved}
-        />
+      <div className="overflow-hidden bg-slate-50">
+        <div className="flex items-center justify-center h-screen lg:hidden">
+          <p>Editor is currently unavailable on this viewport.</p>
+        </div>
+        <div className="flex-col hidden h-screen max-h-screen lg:flex">
+          <Header
+            publishButtonDisabled={publishFormLoading}
+            handlePublishClick={handlePublishClick}
+            formName={formName}
+            responseCount={responseCount}
+            publishFormLoading={publishFormLoading}
+            spreadSheetLink={`https://docs.google.com/spreadsheets/d/${spreadsheetId}`}
+          />
+          <Editor
+            questions={questions}
+            setQuestions={setQuestions}
+            selectedQuestionID={selectedQuestionID}
+            setSelectedQuestionID={setSelectedQuestionID}
+            setUnsaved={setUnsaved}
+          />
+        </div>
+        <Toast />
       </div>
-      <Toast />
     </>
   )
 }
