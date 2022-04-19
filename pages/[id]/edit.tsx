@@ -12,6 +12,7 @@ import axios from 'axios'
 import { ROUTES } from '@constants/routes'
 import { PARAMS } from '@constants/params'
 import { showConfettiAnimation } from '@lib/show-confetti-animation'
+import { LOCAL_STORAGE } from '@constants/local-storage'
 
 const EditorPage = () => {
   const [unsaved, setUnsaved] = useState(false)
@@ -93,7 +94,10 @@ const EditorPage = () => {
   }, [unsaved])
 
   useEffect(() => {
-    localStorage.setItem('questions', JSON.stringify(Object.values(questions)))
+    localStorage.setItem(
+      LOCAL_STORAGE.QUESTIONS,
+      JSON.stringify(Object.values(questions)),
+    )
   }, [questions])
 
   if (isFetchingQuestions) {

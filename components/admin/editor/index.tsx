@@ -8,6 +8,7 @@ import { Question, QuestionType } from './types'
 import Options from './question-editor/options'
 import toast from 'react-hot-toast'
 import set from 'lodash.set'
+import { AddIcon } from '@components/icons'
 
 type Props = {
   questions: any
@@ -218,7 +219,8 @@ const Editor: FC<Props> = ({
                 type="checkbox"
               />
             </div>
-            {isMultiChoice && (
+            {/* TODO: DO LATER */}
+            {/* {isMultiChoice && (
               <div className="flex items-center justify-between my-2">
                 <label
                   htmlFor={'multiple-selection'}
@@ -258,7 +260,7 @@ const Editor: FC<Props> = ({
                   type="checkbox"
                 />
               </div>
-            )}
+            )} */}
             {(isLongText || isShortText) && (
               <div className="flex flex-col items-start justify-between my-2">
                 <div className="flex items-center justify-between w-full">
@@ -325,19 +327,6 @@ const AddButton = ({ onClick }) => (
   >
     <AddIcon />
   </button>
-)
-
-const AddIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="w-5 h-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={3}
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-  </svg>
 )
 
 /**
