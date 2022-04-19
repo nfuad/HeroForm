@@ -1,5 +1,6 @@
 import { EditIcon } from '@components/icons'
 import { ChangeEventHandler, FC, useRef } from 'react'
+import toast from 'react-hot-toast'
 import { createOption } from '../helpers'
 import { Option } from '../types'
 
@@ -27,6 +28,10 @@ const Options: FC<Props> = ({ options, setOptions }) => {
     }
 
   const handleDelete = (id: string) => () => {
+    if (options.length === 1) {
+      toast.error('You must have at least one option')
+      return
+    }
     setOptions(options.filter((option) => option.id !== id))
   }
 
@@ -35,15 +40,17 @@ const Options: FC<Props> = ({ options, setOptions }) => {
   }
 
   const renderOptions = () => {
-    return options.map(({ id, value }, index) => (
-      <Option
-        key={id}
-        value={value}
-        index={index}
-        onChange={handleChange(id)}
-        onDeleteClick={handleDelete(id)}
-      />
-    ))
+    return options.map(({ id, value }, index) => {
+      return (
+        <Option
+          key={id}
+          value={value}
+          index={index}
+          onChange={handleChange(id)}
+          onDeleteClick={handleDelete(id)}
+        />
+      )
+    })
   }
 
   return (
