@@ -8,10 +8,14 @@
 - Add analytics to keep track of user visits and stuff :)
 - Responsiveness:
   - // Make the LP responsive
-  - Make the dashboard responsive
-  - Make the output and editor pages responsive
+  - // Make the dashboard responsive
+  - // Make the output and editor pages responsive
+  - Make the continue page responsive
 - // Design the multiple choice for the editor
 - Design the multiple choice for the output
 - Make the "other option" and "multi select" functional for multiple choice
 - // Fix all build + type errors and make it live on Vercel
 - Test + QA on different devices + with different accounts
+- Full page spinner not amazing
+- Required fields is required
+- hitting on continue doesn't work on preview
