@@ -88,7 +88,7 @@ const Footer = () => {
   return (
     <footer className="flex flex-col items-center justify-center w-full mx-auto mt-auto text-center my-14">
       {isHome && (
-        <p className="pb-6 leading-tight font-heading">
+        <p className="pb-6 text-sm leading-tight sm:text-base font-heading">
           <span>Created with</span>
           &nbsp;<span className="animate animate-pulse">❤️</span>
           &nbsp;&nbsp;
@@ -100,7 +100,7 @@ const Footer = () => {
           <span>You dare not sue or copy us 👀</span>
         </p>
       )}
-      <p className="text-sm text-gray-500">
+      <p className="text-xs text-gray-500 sm:text-sm">
         Copyright Ⓒ {new Date().getFullYear()} Inquire. All rights reserved.
       </p>
     </footer>

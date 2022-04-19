@@ -6,6 +6,7 @@ import { useMutation } from 'react-query'
 import axios from 'axios'
 import { LoadingIcon } from '@components/icons'
 import Link from 'next/link'
+import { PARAMS } from '@constants/params'
 
 type Props = {
   handlePublishClick: () => void
@@ -135,7 +136,7 @@ const PreviewButton = ({ processing }) => {
   const { id } = router.query as Record<string, string>
 
   const handlePreviewClick = () => {
-    router.push(`/${id}/${ROUTES.PREVIEW}`)
+    window.open(`/${id}?${PARAMS.PREVIEW}=true`, '_blank', 'noopener')
   }
 
   return (

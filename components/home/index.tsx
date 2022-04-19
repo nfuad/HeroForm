@@ -9,7 +9,7 @@ import {
 } from '@components/icons'
 import { GetStartedButton } from '@components/common'
 import { useState } from 'react'
-import { PlayIcon } from '@components/icons/play'
+import { PlayIcon, CloseIcon } from '@components/icons'
 import { showConfettiAnimation } from '@lib/show-confetti-animation'
 
 const QuickFactItem = ({ renderIcon, children }) => {
@@ -200,8 +200,8 @@ export const Video = () => {
   const [isHovering, setIsHovering] = useState(false)
 
   return (
-    <div className="w-3/4 mx-auto my-20 overflow-hidden bg-transparent rounded-6xl">
-      <div className="py-8">
+    <div className="w-full mx-auto my-20 overflow-hidden bg-transparent sm:w-3/4 rounded-6xl">
+      <div className="px-10 py-8 sm:px-4">
         <div className="grid items-start justify-center gap-8 ">
           <div className="relative group">
             <div className="absolute transition duration-1000 opacity-75 rounded-2xl -inset-1 bg-gradient-to-r from-pink-300 via-red-200 to-purple-300 blur group-hover:opacity-100 group-hover:duration-200 animate-tilt" />
@@ -209,6 +209,7 @@ export const Video = () => {
               className="w-full mx-auto cursor-pointer rounded-xl max-w-7xl"
               onClick={() => {
                 setShowVideo(true)
+                setIsHovering(false)
               }}
               onMouseEnter={() => {
                 setIsHovering(true)
@@ -317,30 +318,32 @@ const HowItWorksSection = ({ position, title, points, image }) => {
     points?.map(({ heading, body }, index) => {
       return (
         <div className="space-y-2" key={index}>
-          <h4 className="text-2xl">{heading}</h4>
-          <p className="text-sm text-gray-600">{body}</p>
+          <h4 className="text-lg sm:text-xl lg:text-2xl">{heading}</h4>
+          <p className="text-sm text-gray-600 font-body">{body}</p>
         </div>
       )
     })
 
   return (
-    <div className="flex flex-col items-center justify-center my-20">
+    <div className="flex flex-col items-center justify-center px-20 my-10">
       <div className="flex flex-col items-center justify-center">
         <span className="w-1 h-24 rounded-full bg-gradient-to-t from-indigo-500 via-purple-200 to-transparent" />
         <span className="flex items-center justify-center w-10 h-10 -mt-2 text-white rounded-full bg-gradient-to-r from-indigo-500 to-purple-500">
           {position}
         </span>
       </div>
-      <h3 className="mt-5 mb-10 text-5xl text-indigo-900 font-heading">
+      <h3 className="mt-5 mb-10 text-3xl text-center text-indigo-900 sm:text-4xl lg:text-5xl font-heading">
         {title}
       </h3>
 
       <div
-        className={`flex ${
+        className={`flex sm:flex-row flex-col ${
           isEven ? 'flex-row-reverse' : ''
-        } items-center justify-between my-20 ${withPoints ? 'space-x-16' : ''}`}
+        } items-center justify-between my-20 ${
+          withPoints ? 'space-x-0 sm:space-x-16' : ''
+        }`}
       >
-        <div className={isEven ? 'ml-24' : ''}>
+        <div className={`mb-10 sm:mb-0 ${isEven ? 'sm:ml-24' : ''}`}>
           <Image {...image} />
         </div>
         <div className="flex flex-col max-w-sm space-y-10">
@@ -351,24 +354,9 @@ const HowItWorksSection = ({ position, title, points, image }) => {
   )
 }
 
-export const LastCTA = () => {
-  return (
-    <div className="flex flex-col items-center justify-center max-w-5xl py-20 mx-auto my-32 shadow-sm rounded-xl bg-yellow-50 gap-y-6">
-      <h2 className="text-3xl text-center sm:text-4xl md:text-5xl">
-        Ready to Create Amazing Forms?
-      </h2>
-      <p>
-        It's free. It's fast. It's privacy-focused &amp; it's Open Source. Get
-        started now 👇
-      </p>
-      <GetStartedButton />
-    </div>
-  )
-}
-
 export const SelfHosting = () => {
   return (
-    <div className="flex flex-col items-center justify-center mx-auto my-40 text-center gap-y-10">
+    <div className="flex flex-col items-center justify-center mx-auto my-40 text-center px-7 gap-y-10">
       <h2 className="text-3xl text-center sm:text-4xl md:text-5xl">
         <span>Don't Like This?</span>
         <br />
@@ -377,7 +365,7 @@ export const SelfHosting = () => {
         </span>
       </h2>
 
-      <div className="flex items-center justify-between w-full max-w-md mx-auto">
+      <div className="items-center justify-between hidden w-full max-w-md mx-auto sm:flex">
         <div className="flex flex-col items-start justify-start">
           <p className="flex items-center justify-center">
             <CheckIcon />
@@ -399,13 +387,51 @@ export const SelfHosting = () => {
           </p>
         </div>
       </div>
-      <p className="max-w-md tracking-wide text-gray-500 font-heading text-md">
+      <div className="flex flex-col items-center justify-center text-center sm:hidden">
+        <p className="flex items-center justify-center">
+          <CheckIcon />
+          <span className="ml-2 font-heading">Open Source Codebase</span>
+        </p>
+        <p className="flex items-center justify-center">
+          <CheckIcon />
+          <span className="ml-2 font-heading">Community Driven</span>
+        </p>
+        <p className="flex items-center justify-center">
+          <CheckIcon />
+          <span className="ml-2 font-heading">MIT Licensed</span>
+        </p>
+        <p className="flex items-center justify-center">
+          <CheckIcon />
+          <span className="ml-2 font-heading">Deployment Docs</span>
+        </p>
+      </div>
+      <p className="max-w-md tracking-wide text-gray-500 font-body text-md">
         There's zero vendor lock-in going on. And everything is well documented.
         You're free to modify the source code or self host anytime you want
       </p>
     </div>
   )
 }
+
+const Quote = ({ block, image, citation }) => (
+  <figure className="px-10">
+    <blockquote>
+      <p className="max-w-xl my-4 text-sm tracking-wide text-gray-900 sm:text-md lg:text-xl font-heading">
+        &quot; {block} &quot;{' '}
+      </p>
+    </blockquote>
+    <figcaption className="flex items-center justify-center gap-x-2">
+      <Image
+        src={image}
+        width={30}
+        height={30}
+        objectFit="cover"
+        className="rounded-full"
+      />{' '}
+      <cite className="text-xs sm:text-sm">{citation}</cite>
+    </figcaption>
+  </figure>
+)
 
 export const Testimonials = () => {
   return (
@@ -416,71 +442,39 @@ export const Testimonials = () => {
         <span className="text-gray-400">Good stuff...</span>
       </h2>
 
-      <figure>
-        <blockquote>
-          <p className="max-w-xl my-4 text-xl tracking-wide text-gray-900 font-heading">
-            &quot; Words can be like X-rays, if you use them properly—they’ll go
-            through anything. You read and you’re pierced. &quot;{' '}
-          </p>
-        </blockquote>
-        <figcaption className="flex items-center justify-center gap-x-2">
-          <Image
-            src="/public/images/avatar.png"
-            width={30}
-            height={30}
-            objectFit="cover"
-            className="rounded-full"
-          />{' '}
-          <cite>Aldous Huxley, Brave New World</cite>
-        </figcaption>
-      </figure>
-      <figure>
-        <blockquote>
-          <p className="max-w-xl my-4 text-xl tracking-wide text-gray-900 font-heading">
-            &quot; Words can be like X-rays, if you use them properly—they’ll go
-            through anything. You read and you’re pierced. &quot;{' '}
-          </p>
-        </blockquote>
-        <figcaption className="flex items-center justify-center gap-x-2">
-          <Image
-            src="/public/images/avatar.png"
-            width={30}
-            height={30}
-            objectFit="cover"
-            className="rounded-full"
-          />{' '}
-          <cite>Aldous Huxley, Brave New World</cite>
-        </figcaption>
-      </figure>
-      <figure>
-        <blockquote>
-          <p className="max-w-xl my-4 text-xl tracking-wide text-gray-900 font-heading">
-            &quot; Words can be like X-rays, if you use them properly—they’ll go
-            through anything. You read and you’re pierced. &quot;{' '}
-          </p>
-        </blockquote>
-        <figcaption className="flex items-center justify-center gap-x-2">
-          <Image
-            src="/public/images/avatar.png"
-            width={30}
-            height={30}
-            objectFit="cover"
-            className="rounded-full"
-          />{' '}
-          <cite>Aldous Huxley, Brave New World</cite>
-        </figcaption>
-      </figure>
+      <Quote
+        block={
+          'Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.'
+        }
+        image="/images/whatever.png"
+        citation={'Monika Mayer - CEO, Whatever'}
+      />
+      <Quote
+        block={
+          'Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.'
+        }
+        image="/images/whatever.png"
+        citation={'Monika Mayer - CEO, Whatever'}
+      />
+      <Quote
+        block={
+          'Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.'
+        }
+        image="/images/whatever.png"
+        citation={'Monika Mayer - CEO, Whatever'}
+      />
     </div>
   )
 }
 
 const YTVideoEmbed = ({ setShowVideo }) => {
+  const handleClick = () => {
+    setShowVideo(false)
+  }
+
   return (
     <div
-      onClick={() => {
-        setShowVideo(false)
-        console.log('clicked1')
-      }}
+      onClick={handleClick}
       id="defaultModal"
       tabIndex={-1}
       aria-hidden="true"
@@ -488,16 +482,37 @@ const YTVideoEmbed = ({ setShowVideo }) => {
         'fixed top-0 left-0 right-0 z-50 flex justify-center items-center bg-gray-800 bg-opacity-75 w-full overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full'
       }
     >
-      <iframe
-        width={'50%'}
-        height={'50%'}
-        src="https://www.youtube.com/embed/OJyuk1JHyi8?controls=0"
-        title="YouTube video player"
-        frameBorder={0}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        className="rounded-xl"
-      />
+      <button
+        className="absolute text-white transition-all duration-75 top-10 right-10 hover:scale-110"
+        onClick={handleClick}
+      >
+        <CloseIcon />
+      </button>
+      <div className="flex items-center justify-center w-screen h-screen max-w-7xl">
+        <iframe
+          src="https://www.youtube.com/embed/OJyuk1JHyi8?controls=0"
+          title="YouTube video player"
+          frameBorder={0}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          className="w-full rounded-xl aspect-video"
+        />
+      </div>
+    </div>
+  )
+}
+
+export const LastCTA = () => {
+  return (
+    <div className="flex flex-col items-center justify-center max-w-5xl py-20 mx-auto my-32 shadow-sm px-7 rounded-xl bg-yellow-50 gap-y-6">
+      <h2 className="text-3xl text-center sm:text-4xl md:text-5xl">
+        Ready to Create Amazing Forms?
+      </h2>
+      <p className="text-sm text-center sm:text-base font-body">
+        It's free. It's fast. It's privacy-focused &amp; it's Open Source. Get
+        started now 👇
+      </p>
+      <GetStartedButton />
     </div>
   )
 }
