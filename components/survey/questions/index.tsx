@@ -75,16 +75,14 @@ const Questions: FC<Props> = ({
       }
 
       return (
-        <>
-          <SurveyQuestion
-            key={question.id}
-            question={question}
-            response={responses[question.id]}
-            handleResponseChange={handleResponseChange(question.id)}
-            isLastPage={isLastPage}
-            onSubmit={handleSubmit}
-          />
-        </>
+        <SurveyQuestion
+          key={question.id}
+          question={question}
+          response={responses[question.id]}
+          handleResponseChange={handleResponseChange(question.id)}
+          isLastPage={isLastPage}
+          onSubmit={handleSubmit}
+        />
       )
     })
   }
