@@ -149,7 +149,7 @@ const DropDown = () => {
                   )}
                 >
                   <p>Signed in as</p>
-                  <p className="tracking-wide font-heading">
+                  <p className="tracking-wide break-all font-heading">
                     {data?.user?.email}
                   </p>
                 </div>

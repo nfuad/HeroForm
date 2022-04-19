@@ -1,5 +1,4 @@
 import { NextPage } from 'next'
-import { Container, Loader } from '@components/continue'
 import Layout from '@components/layout'
 
 const DashboardPage: NextPage = () => {
@@ -92,11 +91,11 @@ const DashboardPage: NextPage = () => {
   return (
     <Layout showFooter showHeader isProtected title="Dashboard">
       <div className="flex flex-col items-start justify-start flex-grow w-full px-5 mx-auto my-20 overflow-hidden max-w-7xl">
-        <h2 className="mb-10 text-xl text-gray-700">
+        <h2 className="mx-auto mb-2 text-xl text-gray-700 xl:mx-0 xl:mb-10">
           Welcome, {data?.user?.name}&nbsp;&nbsp;🎉
         </h2>
         <div className="w-full">
-          <div className="flex justify-between max-w-full">
+          <div className="flex flex-col items-center max-w-full xl:flex-row xl:justify-between">
             <h3 className="py-2 text-3xl font-heading">
               {getStatusText().heading}
             </h3>
@@ -112,7 +111,7 @@ const DashboardPage: NextPage = () => {
               {getStatusText().body}
             </p>
           </div>
-          <div className="flex flex-wrap w-full my-16 space-evenly gap-x-9 gap-y-9">
+          <div className="flex flex-wrap justify-center w-full my-16 xl:justify-start space-evenly gap-x-9 gap-y-9">
             {renderForms()}
             {!loadingForms && (
               <AddFormButton
@@ -133,29 +132,11 @@ import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import { useSession } from 'next-auth/react'
 import { ROUTES } from '@constants/routes'
-import { ChevronRightIcon, LoadingIcon } from '@components/icons'
+import { LoadingIcon } from '@components/icons'
 import { useMutation, useQuery } from 'react-query'
 import axios from 'axios'
 import isEmpty from 'lodash.isempty'
 import Link from 'next/link'
-
-const CreateFirstFormButton = ({ handleCreateClick, createFormLoading }) => {
-  return (
-    <button
-      onClick={handleCreateClick}
-      className="flex items-center justify-center mx-auto my-4 text-lg tracking-wide text-center text-indigo-600 xl:my-10 hover:text-indigo-900 sm:text-2xl xl:text-4xl font-heading group"
-      disabled={createFormLoading}
-    >
-      <span className="transition-all duration-75 group-hover:mr-2">
-        Continue
-      </span>
-      <ChevronRightIcon
-        className="w-5 h-5 md:w-6 md:h-6 lg:w-9 lg:h-9"
-        strokeWidth={4}
-      />
-    </button>
-  )
-}
 
 const Form = ({ publicId, metadata: { title, responseCount } }) => {
   const href = `${publicId}${ROUTES.EDIT}`
