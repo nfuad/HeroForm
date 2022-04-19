@@ -18,4 +18,3 @@
 - Test + QA on different devices + with different accounts
 - Full page spinner not amazing
 - Required fields is required
-- hitting on continue doesn't work on preview

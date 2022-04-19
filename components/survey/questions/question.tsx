@@ -90,7 +90,10 @@ const SurveyQuestion: FC<Props> = ({
       </TransitionWrapper>
 
       <TransitionWrapper isVisible={isVisible}>
-        <button className="flex items-center justify-center px-5 py-3 space-x-2 text-white bg-black rounded-lg md:rounded-xl md:px-7 md:py-4 lg:py-4 shadow-3xl lg:px-7 font-heading lg:rounded-xl">
+        <button
+          onClick={handleEnter}
+          className="flex items-center justify-center px-5 py-3 space-x-2 text-white bg-black rounded-lg md:rounded-xl md:px-7 md:py-4 lg:py-4 shadow-3xl lg:px-7 font-heading lg:rounded-xl"
+        >
           <span className="text-xs tracking-wider md:text-sm lg:text-base">
             {isLastPage ? 'Submit' : 'Continue'}
           </span>
