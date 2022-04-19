@@ -16,4 +16,5 @@ export type Question = {
   isRequired: boolean
   options?: Option[]
   placeholder?: string
+  properties?: any
 }

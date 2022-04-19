@@ -17,7 +17,7 @@ const PropertyEditor: FC<Props> = ({ question, updateSelectedQuestion }) => {
       updateSelectedQuestion({
         ...question,
         type,
-        options: [createOption(), createOption()],
+        options: [createOption(1), createOption(2)],
       })
       return
     }

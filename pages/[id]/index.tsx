@@ -47,7 +47,7 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
 
   return (
     <Container>
-      <PreviewBanner />
+      {isPreview && <PreviewBanner />}
       <ProgressBar scrollIndicator={scrollIndicator} />
       <DotIndicators
         {...{ totalQuestions, currentPage, setCurrentPage, isSubmitted }}
