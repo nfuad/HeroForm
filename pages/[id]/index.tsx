@@ -7,6 +7,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import { getQuestionsBySheetId } from '@lib/sheets/get-questions-by-sheet-id'
 import { ChevronIcon, WarningIcon } from '@components/icons'
 import { useRouter } from 'next/router'
+import { LOCAL_STORAGE } from '@constants/local-storage'
 
 type Props = {
   questions: any[]
@@ -20,7 +21,7 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
 
   if (isPreview) {
     // load questions from local storage if available
-    const localQuestions = localStorage.getItem('questions')
+    const localQuestions = localStorage.getItem(LOCAL_STORAGE.QUESTIONS)
     if (localQuestions) {
       questions = JSON.parse(localQuestions)
     }
