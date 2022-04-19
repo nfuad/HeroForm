@@ -1,4 +1,4 @@
-export const Chevron = ({ style }: any) => {
+export const ChevronIcon = ({ style }: any) => {
   return (
     <div>
       <svg

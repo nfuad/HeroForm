@@ -1,5 +1,6 @@
 import Toast from '@components/toast'
 import { ROUTES } from '@constants/routes'
+import { showConfettiAnimation } from '@lib/show-confetti-animation'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { Dispatch, FC, SetStateAction, useState } from 'react'
@@ -19,6 +20,7 @@ type Props = {
   setIsSubmitted: Dispatch<SetStateAction<boolean>>
   questions: any[]
   handleNext: () => void
+  isPreview: boolean
 }
 
 const Questions: FC<Props> = ({
@@ -28,6 +30,7 @@ const Questions: FC<Props> = ({
   setIsSubmitted,
   questions,
   handleNext,
+  isPreview,
 }) => {
   const [responses, setResponses] = useState(() => {
     return questions.reduce(
@@ -62,8 +65,11 @@ const Questions: FC<Props> = ({
       const isLastPage = index === questions?.length - 1
       const handleSubmit = () => {
         if (isLastPage) {
-          createResponse({ responses, id: router.query.id })
+          if (!isPreview) {
+            createResponse({ responses, id: router.query.id })
+          }
           setIsSubmitted(true)
+          showConfettiAnimation()
         }
         handleNext()
       }

@@ -92,6 +92,10 @@ const EditorPage = () => {
     }
   }, [unsaved])
 
+  useEffect(() => {
+    localStorage.setItem('questions', JSON.stringify(Object.values(questions)))
+  }, [questions])
+
   if (isFetchingQuestions) {
     return (
       <Container>
