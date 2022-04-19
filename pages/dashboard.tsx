@@ -106,7 +106,7 @@ const DashboardPage: NextPage = () => {
               </div>
             )}
           </div>
-          <div className="h-2">
+          <div className="flex justify-center w-full h-2 xl:justify-start">
             <p className="text-sm text-gray-500 font-body">
               {getStatusText().body}
             </p>
