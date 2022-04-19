@@ -1,4 +1,5 @@
 import useIntersectionObserver from '@hooks/use-intersection-observer'
+import { useKeydown } from '@hooks/use-keydown'
 import { FC, useRef } from 'react'
 import TransitionWrapper from './transition-wrapper'
 
@@ -10,6 +11,13 @@ const InitialPage: FC<Props> = ({ handleNext }) => {
   const ref = useRef()
   const entryScreen1 = useIntersectionObserver(ref, {})
   const isVisible = !!entryScreen1?.isIntersecting
+
+  useKeydown({
+    onKeyDown({ isEnterKeyPressed }) {
+      if (isEnterKeyPressed) handleNext()
+    },
+    stopListening: !isVisible,
+  })
 
   return (
     <div

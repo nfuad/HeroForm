@@ -1,38 +1,71 @@
 import { Question } from '@components/admin/editor/types'
-import { FC } from 'react'
+import { useKeydown } from '@hooks/use-keydown'
+import { FC, MouseEventHandler } from 'react'
 
 type Props = {
-  properties: any
   question: Question
   selected: string
   setSelected: (value: string) => void
 }
 
-const MultiChoice: FC<Props> = ({
-  question,
-  selected,
-  setSelected,
-  properties,
-}) => {
+const MultiChoice: FC<Props> = ({ question, selected, setSelected }) => {
+  useKeydown({
+    onKeyDown({ key }) {
+      const index = key.toUpperCase().charCodeAt(0) - CHAR_CODE_OFFSET
+      const isIndexInRange = index >= 0 && index < question.options.length
+
+      if (isIndexInRange) setSelected(question.options[index].id)
+    },
+  })
+
   const renderOptions = () => {
-    return question.options.map((option) => {
+    return question.options.map((option, index) => {
       const isSelected = selected === option.id
       const handleClick = () => setSelected(option.id)
 
       return (
-        <button key={option.id} onClick={handleClick} type="button">
-          {option.value} {isSelected ? '(selected like a pro)' : ''}
-        </button>
+        <Option
+          key={option.id}
+          index={index}
+          onClick={handleClick}
+          isSelected={isSelected}
+        >
+          {option.value}
+        </Option>
       )
     })
   }
 
   return (
-    <div>
-      <div className="text-center">I am not designed :'(</div>
-      <div className="flex flex-col mt-8 space-y-1">{renderOptions()}</div>
+    <div className="flex flex-col items-center mt-8 space-y-4">
+      {renderOptions()}
     </div>
   )
 }
 
 export default MultiChoice
+
+type OptionProps = {
+  index: number
+  isSelected: boolean
+  onClick: MouseEventHandler<HTMLButtonElement>
+}
+const CHAR_CODE_OFFSET = 65
+const Option: FC<OptionProps> = ({ index, isSelected, children, onClick }) => {
+  return (
+    <button
+      type="button"
+      className={`group flex items-center bg-white hover:bg-white border text-base gap-x-3 w-max min-w-[384px] pl-3 pr-[3.25rem] py-3 rounded-xl transition duration-300 ${
+        isSelected ? 'ring-4 ring-blue-100 border-blue-400' : ''
+      }`}
+      onClick={onClick}
+    >
+      <div className="flex items-center justify-center flex-shrink-0 text-sm font-bold text-gray-700 rounded-md bg-violet-100 w-7 h-7 font-body">
+        {String.fromCharCode(index + CHAR_CODE_OFFSET)}
+      </div>
+      <p className="flex-grow text-base font-semibold tracking-wide text-gray-700 bg-transparent font-heading focus:outline-none">
+        {children}
+      </p>
+    </button>
+  )
+}

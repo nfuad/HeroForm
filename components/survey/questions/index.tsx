@@ -1,5 +1,6 @@
 import Toast from '@components/toast'
 import { ROUTES } from '@constants/routes'
+import { useKeydown } from '@hooks/use-keydown'
 import { showConfettiAnimation } from '@lib/show-confetti-animation'
 import axios from 'axios'
 import { useRouter } from 'next/router'
@@ -62,7 +63,7 @@ const Questions: FC<Props> = ({
   const renderQuestions = () => {
     return questions?.map((question, index) => {
       const isLastPage = index === questions?.length - 1
-      const handleSubmit = () => {
+      const handleEnter = () => {
         if (isLastPage) {
           if (!isPreview) {
             createResponse({ responses, id: router.query.id })
@@ -80,7 +81,7 @@ const Questions: FC<Props> = ({
           response={responses[question.id]}
           handleResponseChange={handleResponseChange(question.id)}
           isLastPage={isLastPage}
-          onSubmit={handleSubmit}
+          handleEnter={handleEnter}
         />
       )
     })

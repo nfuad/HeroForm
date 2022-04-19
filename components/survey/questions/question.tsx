@@ -1,4 +1,4 @@
-import { useRef, FC, FormEventHandler } from 'react'
+import { useRef, FC } from 'react'
 
 import { QuestionType } from '@components/admin/editor/types'
 import useIntersectionObserver from '@hooks/use-intersection-observer'
@@ -6,26 +6,41 @@ import ShortText from './short-text'
 import LongText from './long-text'
 import MultiChoice from './multi-choice'
 import TransitionWrapper from './transition-wrapper'
+import { useKeydown } from '@hooks/use-keydown'
 
 type Props = {
   question: any
   response: any
-  onSubmit: () => void
   handleResponseChange: (value: any) => void
   isLastPage: boolean
+  handleEnter: () => void
 }
 
 const SurveyQuestion: FC<Props> = ({
   question,
   response,
   handleResponseChange,
-  onSubmit,
   isLastPage,
+  handleEnter,
 }) => {
   const ref = useRef()
   const entryScreen1 = useIntersectionObserver(ref, {})
   const isVisible = !!entryScreen1?.isIntersecting
   const { properties, prompt } = question
+
+  useKeydown({
+    onKeyDown({ isEnterKeyPressed, isShiftKeyPressed }) {
+      const isLongText = question.type === QuestionType.LONG_TEXT
+      if (isLongText) {
+        if (isEnterKeyPressed && isShiftKeyPressed) {
+          handleEnter()
+        }
+      } else if (isEnterKeyPressed && !isShiftKeyPressed) {
+        handleEnter()
+      }
+    },
+    stopListening: !isVisible,
+  })
 
   const renderInput = () => {
     switch (question.type) {
@@ -48,7 +63,6 @@ const SurveyQuestion: FC<Props> = ({
       case QuestionType.MULTI_CHOICE:
         return (
           <MultiChoice
-            properties={properties}
             question={question}
             selected={response}
             setSelected={handleResponseChange}
@@ -57,16 +71,10 @@ const SurveyQuestion: FC<Props> = ({
     }
   }
 
-  const handleSubmit: FormEventHandler = (e) => {
-    e.preventDefault()
-    onSubmit()
-  }
-
   return (
-    <form
+    <div
       ref={ref}
       className="flex flex-col items-center justify-center w-full h-full max-w-4xl mx-auto text-center gap-y-8 md:gap-y-12 lg:gap-y-16"
-      onSubmit={handleSubmit}
     >
       <TransitionWrapper isVisible={isVisible}>
         <h1 className="text-xl md:text-3xl lg:text-6xl">{prompt}</h1>
@@ -100,7 +108,7 @@ const SurveyQuestion: FC<Props> = ({
           </svg>
         </button>
       </TransitionWrapper>
-    </form>
+    </div>
   )
 }
 

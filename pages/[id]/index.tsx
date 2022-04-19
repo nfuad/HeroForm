@@ -157,7 +157,7 @@ const DotIndicators = ({
           <div
             key={index}
             onClick={() => {
-              setCurrentPage(index)
+              setCurrentPage(index + 1)
             }}
             className={`transition-all duration-300 ease-in-out cursor-pointer ${
               index === currentPage - 1
