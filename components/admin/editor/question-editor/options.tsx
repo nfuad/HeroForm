@@ -49,7 +49,7 @@ const Options: FC<Props> = ({ options, setOptions }) => {
   return (
     <div className="flex flex-col items-center flex-shrink-0 mx-auto mt-8 gap-y-4">
       {renderOptions()}
-      {!optionsLimitReached && (
+      {!optionsLimitReached ? (
         <button
           type="button"
           className="w-1/2 px-2 py-2 mt-4 text-green-900 duration-300 bg-[#E2F7E3] hover:scale-95 transition-all duration-75 hover:shadow-md border rounded-lg text-sm font-heading hover:text-gray-900 focus:outline-none"
@@ -57,6 +57,10 @@ const Options: FC<Props> = ({ options, setOptions }) => {
         >
           + Add option
         </button>
+      ) : (
+        <p className="text-xs text-gray-600">
+          Max options ({MAX_OPTIONS}) reached.
+        </p>
       )}
     </div>
   )

@@ -10,7 +10,8 @@
   - // Make the LP responsive
   - Make the dashboard responsive
   - Make the output and editor pages responsive
-- Design the multiple choice for both the editor and the output
+- // Design the multiple choice for the editor
+- Design the multiple choice for the output
 - Make the "other option" and "multi select" functional for multiple choice
 - // Fix all build + type errors and make it live on Vercel
 - Test + QA on different devices + with different accounts
