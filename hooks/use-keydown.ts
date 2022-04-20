@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react'
 
 type Params = {
   onKeyDown: (context: {
+    nativeEvent: KeyboardEvent
     key: string
     isEnterKeyPressed: boolean
     isShiftKeyPressed: boolean
@@ -15,6 +16,7 @@ export const useKeydown = (params: Params) => {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       onKeyDown({
+        nativeEvent: e,
         key: e.key,
         isEnterKeyPressed: e.key === 'Enter',
         isShiftKeyPressed: e.shiftKey,

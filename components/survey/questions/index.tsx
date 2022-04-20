@@ -1,13 +1,6 @@
 import Toast from '@components/toast'
-import { ROUTES } from '@constants/routes'
-import { useKeydown } from '@hooks/use-keydown'
-import { showConfettiAnimation } from '@lib/show-confetti-animation'
-import axios from 'axios'
-import { useRouter } from 'next/router'
-import { Dispatch, FC, SetStateAction, useState } from 'react'
-import toast from 'react-hot-toast'
+import { Dispatch, FC, SetStateAction } from 'react'
 import ReactPageScroller from 'react-page-scroller'
-import { useMutation } from 'react-query'
 import InitialPage from './initial-page'
 
 import SurveyQuestion from './question'
@@ -16,43 +9,20 @@ import SuccessPage from './success-page'
 type Props = {
   currentPage: number
   setCurrentPage: Dispatch<SetStateAction<number>>
-  isSubmitted: boolean
-  setIsSubmitted: Dispatch<SetStateAction<boolean>>
+  responses: Record<string, string>
+  setResponses: Dispatch<SetStateAction<Record<string, string>>>
   questions: any[]
   handleNext: () => void
-  isPreview: boolean
 }
 
 const Questions: FC<Props> = ({
   currentPage,
   setCurrentPage,
-  isSubmitted,
-  setIsSubmitted,
+  responses,
+  setResponses,
   questions,
   handleNext,
-  isPreview,
 }) => {
-  const [responses, setResponses] = useState(() => {
-    return questions.reduce(
-      (acc, curr) => ({
-        ...acc,
-        [curr.id]: '',
-      }),
-      {},
-    )
-  })
-  const { mutate: createResponse } = useMutation(
-    (body: any) => axios.post(ROUTES.API.CREATE_RESPONSE, body),
-    {
-      onError: () => {
-        toast.error(
-          'Could not save response. Looks like someone needs an internet plan upgrade.',
-        )
-      },
-    },
-  )
-  const router = useRouter()
-
   const handleResponseChange = (id: string) => (value: any) => {
     setResponses((prevState) => ({
       ...prevState,
@@ -64,13 +34,6 @@ const Questions: FC<Props> = ({
     return questions?.map((question, index) => {
       const isLastPage = index === questions?.length - 1
       const handleEnter = () => {
-        if (isLastPage) {
-          if (!isPreview) {
-            createResponse({ responses, id: router.query.id })
-          }
-          setIsSubmitted(true)
-          showConfettiAnimation()
-        }
         handleNext()
       }
 
@@ -96,9 +59,9 @@ const Questions: FC<Props> = ({
         }}
         transitionTimingFunction="cubic-bezier(0.95, 0.05, 0.08, 1.01)"
         animationTimer={1000}
-        blockScrollUp={isSubmitted}
-        blockScrollDown={isSubmitted}
         customPageNumber={currentPage}
+        blockScrollUp
+        blockScrollDown
       >
         <InitialPage handleNext={handleNext} />
         {renderQuestions()}

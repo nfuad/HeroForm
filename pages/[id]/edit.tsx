@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import type { Question } from '@components/admin/editor/types'
 import Editor from '@components/admin/editor'
 import Header from '@components/admin/editor/header'
 import Toast from '@components/toast'

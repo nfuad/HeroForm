@@ -8,6 +8,11 @@ import { getQuestionsBySheetId } from '@lib/sheets/get-questions-by-sheet-id'
 import { ChevronIcon, WarningIcon } from '@components/icons'
 import { useRouter } from 'next/router'
 import { LOCAL_STORAGE } from '@constants/local-storage'
+import toast from 'react-hot-toast'
+import { showConfettiAnimation } from '@lib/show-confetti-animation'
+import { useMutation } from 'react-query'
+import axios from 'axios'
+import { ROUTES } from '@constants/routes'
 
 type Props = {
   questions: any[]
@@ -15,7 +20,25 @@ type Props = {
 const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
   const [currentPage, setCurrentPage] = useState(0)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [responses, setResponses] = useState(() => {
+    return questions.reduce(
+      (acc, curr) => ({
+        ...acc,
+        [curr.id]: '',
+      }),
+      {},
+    )
+  })
   const router = useRouter()
+
+  const { mutate: createResponse } = useMutation(
+    (body: any) => axios.post(ROUTES.API.CREATE_RESPONSE, body),
+    {
+      onError: () => {
+        toast.error('Cannot save response.')
+      },
+    },
+  )
 
   const isPreview = (router.query.preview as string) === 'true'
 
@@ -31,11 +54,29 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
   const totalPages = totalQuestions + 2
   const isLastPage = totalPages === currentPage + 1
   const isFirstPage = currentPage === 0
+  const isLastQuestion = currentPage === totalPages - 2
 
   const scrollIndicator = ((currentPage + 1) / totalPages) * 100
 
   const handleNext = () => {
-    if (isLastPage) return
+    const currentQuestion = questions[currentPage - 1]
+    const { id, properties } = currentQuestion || {}
+    const { isRequired = false } = properties || {}
+    const canGoNext = (!isRequired || responses[id]) && !isLastPage
+
+    if (!canGoNext) {
+      toast.error('This question is required.')
+      return
+    }
+
+    if (isLastQuestion) {
+      if (!isPreview) {
+        createResponse({ responses, id: router.query.id })
+      }
+      setIsSubmitted(true)
+      showConfettiAnimation()
+    }
+
     setCurrentPage((st) => st + 1)
   }
   const handlePrev = () => {
@@ -66,9 +107,8 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
         setCurrentPage={setCurrentPage}
         questions={questions}
         handleNext={handleNext}
-        isSubmitted={isSubmitted}
-        setIsSubmitted={setIsSubmitted}
-        isPreview={isPreview}
+        responses={responses}
+        setResponses={setResponses}
       />
     </Container>
   )
@@ -93,6 +133,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       publicId: id,
     },
   })
+
+  if (!form) {
+    return {
+      notFound: true,
+    }
+  }
 
   const accounts = await prisma.user
     .findUnique({
@@ -152,7 +198,7 @@ const DotIndicators = ({
   if (isSubmitted) return null
 
   return (
-    <div className="absolute z-50 flex flex-col items-center justify-center space-y-3 right-5 top-1/2 translate-y-[-50%]">
+    <div className="hidden md:flex absolute z-50 flex-col items-center justify-center space-y-3 right-5 top-1/2 translate-y-[-50%]">
       {Array.from({ length: totalQuestions }).map((_, index) => {
         return (
           <div

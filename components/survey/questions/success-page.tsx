@@ -10,7 +10,7 @@ const SuccessPage: FC = () => {
   return (
     <div
       ref={ref}
-      className="flex flex-col items-center justify-center w-full h-full max-w-4xl mx-auto text-center gap-y-8 md:gap-y-12 lg:gap-y-16"
+      className="flex flex-col items-center justify-center w-full h-full max-w-4xl px-4 mx-auto text-center gap-y-8 md:gap-y-12 lg:gap-y-16"
     >
       <TransitionWrapper isVisible={isVisible}>
         <h1 className="text-xl md:text-3xl lg:text-6xl">

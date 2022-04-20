@@ -7,11 +7,11 @@ export const Authenticated = ({
 }) => (
   <>
     <h1 className="text-2xl ">You're Logged In</h1>
-    <div>
+    <div className="w-full">
       <h2 className="pb-2 tracking-wide">Continue with -</h2>
       <button
         onClick={handleContinueClick}
-        className="flex items-center justify-between px-6 py-3 transition-all duration-75 border border-gray-200 rounded-lg hover:shadow-lg gap-x-2 hover:scale-105"
+        className="flex items-center justify-between w-full px-6 py-3 transition-all duration-75 border border-gray-200 rounded-lg hover:shadow-lg gap-x-2 hover:scale-105"
       >
         <div className="flex justify-between gap-x-2">
           <img

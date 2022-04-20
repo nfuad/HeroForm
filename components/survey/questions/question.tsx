@@ -29,10 +29,12 @@ const SurveyQuestion: FC<Props> = ({
   const { properties, prompt } = question
 
   useKeydown({
-    onKeyDown({ isEnterKeyPressed, isShiftKeyPressed }) {
+    onKeyDown({ nativeEvent, isEnterKeyPressed, isShiftKeyPressed }) {
       const isLongText = question.type === QuestionType.LONG_TEXT
+
       if (isLongText) {
         if (isEnterKeyPressed && isShiftKeyPressed) {
+          nativeEvent.preventDefault()
           handleEnter()
         }
       } else if (isEnterKeyPressed && !isShiftKeyPressed) {
@@ -50,6 +52,7 @@ const SurveyQuestion: FC<Props> = ({
             properties={properties}
             value={response}
             onChange={handleResponseChange}
+            autoFocus={isVisible}
           />
         )
       case QuestionType.LONG_TEXT:
@@ -58,6 +61,7 @@ const SurveyQuestion: FC<Props> = ({
             properties={properties}
             value={response}
             onChange={handleResponseChange}
+            autoFocus={isVisible}
           />
         )
       case QuestionType.MULTI_CHOICE:
@@ -74,7 +78,7 @@ const SurveyQuestion: FC<Props> = ({
   return (
     <div
       ref={ref}
-      className="flex flex-col items-center justify-center w-full h-full max-w-4xl mx-auto text-center gap-y-8 md:gap-y-12 lg:gap-y-16"
+      className="flex flex-col items-center justify-center w-full h-full max-w-4xl px-4 mx-auto text-center gap-y-8 md:gap-y-12 lg:gap-y-16"
     >
       <TransitionWrapper isVisible={isVisible}>
         <h1 className="text-xl md:text-3xl lg:text-6xl">{prompt}</h1>
