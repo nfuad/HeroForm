@@ -1,7 +1,7 @@
 export const WarningIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    className="w-7 h-7"
+    className="w-6 h-6 sm:w-7 sm:h-7"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
