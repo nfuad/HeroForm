@@ -204,11 +204,11 @@ const ArrowNavigator = ({
 const PreviewBanner = () => {
   return (
     <div className="fixed w-full top-10 z-100">
-      <div className="flex items-center justify-center max-w-md px-5 py-2 mx-auto text-white rounded-lg bg-violet-600">
+      <div className="flex items-center justify-center max-w-xs px-3 py-2 mx-auto text-white rounded-lg sm:px-5 md:max-w-sm lg:max-w-md bg-violet-600">
         <span>
           <WarningIcon />
         </span>
-        <p className="mx-auto ml-2 tracking-wide text-center font-body">
+        <p className="mx-auto ml-2 text-sm tracking-wide text-center font-body">
           Preview Mode. Answers won't be submitted unless the actual form link
           is used.
         </p>
