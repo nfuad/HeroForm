@@ -22,8 +22,8 @@ const MultiChoice: FC<Props> = ({ question, selected, setSelected }) => {
 
   const renderOptions = () => {
     return question.options.map((option, index) => {
-      const isSelected = selected === option.id
-      const handleClick = () => setSelected(option.id)
+      const isSelected = selected === option.value
+      const handleClick = () => setSelected(option.value)
 
       return (
         <Option

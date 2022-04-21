@@ -16,7 +16,7 @@ const getFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     }
 
-    const { forms = [] } = await prisma.user.findUnique({
+    const { forms = [] } = await prisma().user.findUnique({
       where: {
         email,
       },
@@ -25,8 +25,8 @@ const getFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     })
 
-    const accounts = await prisma.user
-      .findUnique({
+    const accounts = await prisma()
+      .user.findUnique({
         where: {
           email,
         },

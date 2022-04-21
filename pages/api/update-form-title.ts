@@ -32,7 +32,7 @@ const publishFormHandler = async (
       })
     }
 
-    const form = await prisma.form.findUnique({
+    const form = await prisma().form.findUnique({
       where: {
         publicId: id,
       },
@@ -44,8 +44,8 @@ const publishFormHandler = async (
       })
     }
 
-    const accounts = await prisma.user
-      .findUnique({
+    const accounts = await prisma()
+      .user.findUnique({
         where: {
           email,
         },

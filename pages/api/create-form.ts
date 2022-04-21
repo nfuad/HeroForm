@@ -16,7 +16,7 @@ const createFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma().user.findUnique({
       where: {
         email,
       },
@@ -44,7 +44,7 @@ const createFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     await initMetadata({ auth, spreadsheetId })
 
     const publicId = nanoid(8)
-    await prisma.form.create({
+    await prisma().form.create({
       data: {
         spreadsheetId,
         publicId,

@@ -19,7 +19,7 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
   }
 
   try {
-    const form = await prisma.form.findUnique({
+    const form = await prisma().form.findUnique({
       where: {
         publicId: id,
       },

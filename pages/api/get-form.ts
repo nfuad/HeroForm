@@ -33,8 +33,8 @@ const getQuestionsHandler = async (
       })
     }
 
-    const accounts = await prisma.user
-      .findUnique({
+    const accounts = await prisma()
+      .user.findUnique({
         where: {
           email,
         },
@@ -50,7 +50,7 @@ const getQuestionsHandler = async (
     })
     auth.setCredentials({ refresh_token: refreshToken })
 
-    const form = await prisma.form.findUnique({
+    const form = await prisma().form.findUnique({
       where: {
         publicId: id,
       },

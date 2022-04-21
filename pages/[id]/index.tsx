@@ -128,7 +128,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const { id } = params as Record<string, string>
 
-  const form = await prisma.form.findUnique({
+  const form = await prisma().form.findUnique({
     where: {
       publicId: id,
     },
@@ -140,8 +140,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   }
 
-  const accounts = await prisma.user
-    .findUnique({
+  const accounts = await prisma()
+    .user.findUnique({
       where: {
         id: form.userId,
       },
