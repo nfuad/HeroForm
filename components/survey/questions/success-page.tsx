@@ -14,7 +14,7 @@ const SuccessPage: FC = () => {
     >
       <TransitionWrapper isVisible={isVisible}>
         <h1 className="text-xl md:text-3xl lg:text-6xl">
-          Thank You for your response!
+          Your response has been submitted. Thanks for your time!
         </h1>
       </TransitionWrapper>
     </div>

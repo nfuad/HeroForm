@@ -25,7 +25,9 @@ const InitialPage: FC<Props> = ({ handleNext }) => {
       className="flex flex-col items-center justify-center w-full h-full max-w-4xl px-4 mx-auto text-center gap-y-8 md:gap-y-12 lg:gap-y-16"
     >
       <TransitionWrapper isVisible={isVisible}>
-        <h1 className="text-xl md:text-3xl lg:text-6xl">Are You Ready?</h1>
+        <h1 className="text-xl md:text-3xl lg:text-6xl">
+          Hey, we got a few questions for you. Ready to get started?
+        </h1>
       </TransitionWrapper>
 
       <TransitionWrapper isVisible={isVisible}>
@@ -34,7 +36,7 @@ const InitialPage: FC<Props> = ({ handleNext }) => {
           className="flex items-center justify-center px-5 py-3 space-x-2 text-white bg-black rounded-lg md:rounded-xl md:px-7 md:py-4 lg:py-4 shadow-3xl lg:px-7 font-heading lg:rounded-xl"
         >
           <span className="text-xs tracking-wider md:text-sm lg:text-base">
-            Get Started
+            Ok, let's go!
           </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
