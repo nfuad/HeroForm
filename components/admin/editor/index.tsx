@@ -45,7 +45,27 @@ const Editor: FC<Props> = ({
       return
     }
 
-    const currentQuestionOrder = questions[selectedQuestionID].properties.order
+    const currentQuestionID = selectedQuestionID
+    const currentQuestionOrder = questions[currentQuestionID].properties.order
+
+    setQuestions((prevState) => {
+      const newState = { ...prevState }
+      delete newState[selectedQuestionID]
+
+      Object.keys(newState).forEach((questionID) => {
+        const question = newState[questionID]
+        if (question.properties.order > currentQuestionOrder) {
+          set(
+            newState,
+            `${questionID}.properties.order`,
+            question.properties.order - 1,
+          )
+        }
+      })
+
+      return newState
+    })
+
     const prevQuestionID = Object.values(questions)
       .filter(
         (question: any) =>
@@ -55,32 +75,29 @@ const Editor: FC<Props> = ({
 
     console.log({ currentQuestionOrder, prevQuestionID })
 
-    setQuestions((prevState) => {
-      const newState = { ...prevState }
-      delete newState[selectedQuestionID]
-      return newState
-    })
     setSelectedQuestionID(prevQuestionID)
     setUnsaved(true)
   }
 
   const renderQuestions = () => {
-    return Object.values(questions).map((question: any, index) => {
-      const questionID = question.id
-      const selected = selectedQuestionID === questionID
-      const handleSelectClick = () => setSelectedQuestionID(questionID)
-      const order = index + 1
-
-      return (
-        <QuestionItem
-          order={order}
-          key={questionID}
-          question={question}
-          selected={selected}
-          onClick={handleSelectClick}
-        />
+    return Object.values(questions)
+      .sort(
+        (a: Question, b: Question) => a.properties.order - b.properties.order,
       )
-    })
+      .map((question: any, index) => {
+        const questionID = question.id
+        const selected = selectedQuestionID === questionID
+        const handleSelectClick = () => setSelectedQuestionID(questionID)
+
+        return (
+          <QuestionItem
+            key={questionID}
+            question={question}
+            selected={selected}
+            onClick={handleSelectClick}
+          />
+        )
+      })
   }
 
   const isShortText =
@@ -328,14 +345,3 @@ const AddButton = ({ onClick }) => (
     <AddIcon />
   </button>
 )
-
-/**
- * Things to do:
- * 1. Add the responses in the header somewhere
- * 2. Make sure that the question editor is at least center aligned, or more on the top than the bottom
- * 3. Make the properties editor functional with the state
- * 4. Write a mutation query that updates the question
- * 5. Write the API function to actually run the update
- * 6. Create the proper components for these
- * 7. After everything, add an alert to show the unsaved changes :) - Done
- */

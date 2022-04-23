@@ -5,15 +5,11 @@ type Props = {
   question: Question
   onClick: MouseEventHandler<HTMLButtonElement>
   selected?: boolean
-  order: number
 }
 
-const QuestionItem: FC<Props> = ({
-  question,
-  onClick,
-  selected = false,
-  order = 1,
-}) => {
+const QuestionItem: FC<Props> = ({ question, onClick, selected = false }) => {
+  const order = question.properties.order
+
   return (
     <button
       className={`flex items-center w-full gap-x-4 px-3 py-2 rounded-lg text-left transition-all ${
