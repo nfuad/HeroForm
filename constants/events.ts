@@ -1,0 +1,3 @@
+export const EVENTS = {
+  SIGN_UP_BUTTON_CLICKED: 'SIGN_UP_BUTTON_CLICKED',
+}
