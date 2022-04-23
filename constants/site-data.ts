@@ -1,13 +1,12 @@
-export const SITE_URL = 'https://inquire.io'
-export const SITE_DOMAIN = 'inquire.io'
+export const SITE_URL = 'https://inquire.sh'
+export const SITE_DOMAIN = 'inquire.sh'
 
 export const SITE_DATA = {
-  title: 'Inquire',
+  title: 'Inquire — Blazing Fast Forms, Free & Open Source',
   description:
-    'Create Free Forms & Surveys In Seconds. With Stunning Designs & Zero coding.',
-  description_long: '',
+    'Build blazing fast, interactive forms for research, feedback, and more.  No coding needed. View responses in Google Sheets. Get Started, It’s FREE',
   canonical_url: SITE_URL,
   domain: SITE_DOMAIN,
   twitter_user: '@',
-  image: `${SITE_URL}/images/og-image.png`,
+  image: `${SITE_URL}/images/og-image.webp`,
 }
