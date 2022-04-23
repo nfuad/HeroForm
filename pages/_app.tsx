@@ -8,6 +8,7 @@ import SEO from '../next-seo.config'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import axios from 'axios'
 import NextNProgress from 'nextjs-progressbar'
+import Script from 'next/script'
 
 const defaultQueryFn = async ({ queryKey }) => {
   const { data } = await axios.get(`${queryKey[0]}`)
@@ -32,6 +33,12 @@ const PROGRESSBAR_OPTIONS = {
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
+      <Script
+        async
+        defer
+        data-website-id={process.env.NEXT_PUBLIC_UMAMI_DATA_WEBSITE_ID}
+        src={process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL}
+      />
       <NextNProgress {...PROGRESSBAR_OPTIONS} />
       <DefaultSeo {...SEO} />
       <QueryClientProvider client={queryClient}>
