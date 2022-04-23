@@ -36,15 +36,15 @@ const Meta: FC = () => {
 
       {/* OPEN GRAPH TAGS */}
       <meta property="og:type" content="website" />
-      <meta property="og:title" content={data.description} />
-      <meta property="og:description" content={data.description_long} />
+      <meta property="og:title" content={data.title} />
+      <meta property="og:description" content={data.description} />
       <meta property="og:image" content={data.image} />
       <meta property="og:url" content={data.canonical_url} />
       <meta property="og:site_name" content={data.title} />
 
       {/* TWITTER CARD TAGS */}
-      <meta name="twitter:title" content={data.description} />
-      <meta name="twitter:description" content={data.description_long} />
+      <meta name="twitter:title" content={data.title} />
+      <meta name="twitter:description" content={data.description} />
       <meta name="twitter:image" content={data.image} />
       <meta name="twitter:site" content={data.twitter_user} />
       <meta name="twitter:creator" content={data.twitter_user} />
