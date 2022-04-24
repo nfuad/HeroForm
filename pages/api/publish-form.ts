@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { google } from 'googleapis'
 import { getSession } from 'next-auth/react'
 import prisma from '@lib/prisma'
-import type { Question } from '@components/admin/editor/types'
+import * as Sentry from '@sentry/nextjs'
 
 const sheets = google.sheets('v4')
 
@@ -122,8 +122,8 @@ const publishFormHandler = async (
       success: true,
     })
   } catch (error) {
+    Sentry.captureException(error)
     console.error({ error })
-    console.log(error.response.data)
     return res.status(500).json({
       success: false,
       message: 'Internal Server Error',
@@ -131,4 +131,4 @@ const publishFormHandler = async (
   }
 }
 
-export default publishFormHandler
+export default Sentry.withSentry(publishFormHandler)

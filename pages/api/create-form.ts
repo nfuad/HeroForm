@@ -4,6 +4,9 @@ import prisma from '@lib/prisma'
 import { getSession } from 'next-auth/react'
 import { nanoid } from 'nanoid'
 import { initForm, initMetadata } from '@lib/sheets'
+import * as Sentry from '@sentry/nextjs'
+
+const FORM_ID_LENGTH = 8
 
 const createFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -43,7 +46,8 @@ const createFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { spreadsheetId } = response.data
     await initMetadata({ auth, spreadsheetId })
 
-    const publicId = nanoid(8)
+    const publicId = nanoid(FORM_ID_LENGTH)
+
     await prisma().form.create({
       data: {
         spreadsheetId,
@@ -57,6 +61,7 @@ const createFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       publicId,
     })
   } catch (error) {
+    Sentry.captureException(error)
     console.error({ error })
     return res.status(500).json({
       success: false,
@@ -65,4 +70,4 @@ const createFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default createFormHandler
+export default Sentry.withSentry(createFormHandler)

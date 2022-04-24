@@ -4,6 +4,7 @@ import { google } from 'googleapis'
 import { getSession } from 'next-auth/react'
 import { getQuestionsBySheetId } from '@lib/sheets/get-questions-by-sheet-id'
 import { getMetadata } from '@lib/sheets'
+import * as Sentry from '@sentry/nextjs'
 
 type Query = {
   id: string
@@ -74,6 +75,7 @@ const getQuestionsHandler = async (
       spreadsheetId,
     })
   } catch (error) {
+    Sentry.captureException(error)
     console.error({ error })
     return res.status(500).json({
       success: false,
@@ -82,4 +84,4 @@ const getQuestionsHandler = async (
   }
 }
 
-export default getQuestionsHandler
+export default Sentry.withSentry(getQuestionsHandler)

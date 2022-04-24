@@ -10,6 +10,7 @@ export const UnAuthenticated = ({ handleSignInClick }) => (
           width={20}
           height={20}
           src={require('/public/images/sheets.png')}
+          alt="sheets"
         />{' '}
         <b>Google Sheets</b> &amp; start creating forms/surveys. If you already
         have an account, this will log you back into the admin.

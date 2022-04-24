@@ -3,6 +3,7 @@ import { getMetadata } from '@lib/sheets'
 import { google } from 'googleapis'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
+import * as Sentry from '@sentry/nextjs'
 
 const getFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -57,6 +58,7 @@ const getFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       forms: formsWithMetadata,
     })
   } catch (error) {
+    Sentry.captureException(error)
     console.error({ error })
     res.status(500).json({
       success: false,
@@ -65,4 +67,4 @@ const getFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default getFormHandler
+export default Sentry.withSentry(getFormHandler)

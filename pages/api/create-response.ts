@@ -2,6 +2,7 @@ import prisma from '@lib/prisma'
 import { NextApiHandler } from 'next'
 import { google } from 'googleapis'
 import { createResponse, getMetadata, updateMetadata } from '@lib/sheets'
+import * as Sentry from '@sentry/nextjs'
 
 type Body = {
   id: string
@@ -66,8 +67,8 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
       success: true,
     })
   } catch (error) {
+    Sentry.captureException(error)
     console.error({ error })
-    console.log(error.response.data)
     return res.status(500).json({
       success: false,
       message: 'Internal Server Error',
@@ -75,4 +76,4 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
   }
 }
 
-export default createResponseHandler
+export default Sentry.withSentry(createResponseHandler)

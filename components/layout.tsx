@@ -12,8 +12,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/solid'
-import { LogOutIcon } from './icons'
+import { LogOutIcon, ChevronDownIcon } from './icons'
 
 type Props = {
   title?: string
@@ -94,7 +93,10 @@ const Footer = () => {
           &nbsp;&nbsp;
           <span>
             {' '}
-            by <a href="/folks">folks.</a>
+            by{' '}
+            <Link href="/folks">
+              <a>folks.</a>
+            </Link>
           </span>
           <br />
           <span>You dare not sue or copy us 👀</span>
@@ -120,10 +122,15 @@ const DropDown = () => {
       <div>
         <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
           <div className="flex items-center justify-start gap-x-2">
-            <img
-              src={data?.user?.image}
-              className="h-6 border-2 rounded-full border-violet-500"
-            />
+            {
+              // have to use <img> tag here because we don't know the google domains :)
+              // eslint-disable-next-line
+              <img
+                alt="avatar"
+                src={data?.user?.image}
+                className="h-6 border-2 rounded-full border-violet-500"
+              />
+            }
             <p className="font-heading">{data?.user?.name}</p>
           </div>
           <ChevronDownIcon className="w-5 h-5 ml-2 -mr-1" aria-hidden="true" />
@@ -262,6 +269,7 @@ const JoinGitHubButton = () => {
       className="transition-all duration-75 hover:scale-110 hover:shadow-lg transform-gpu hover:rotate-12"
     >
       <Image
+        alt="GitHub"
         width="25"
         height="25"
         src={require('../public/images/github-logo.png')}

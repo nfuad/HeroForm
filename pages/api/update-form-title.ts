@@ -74,7 +74,6 @@ const publishFormHandler = async (
     })
   } catch (error) {
     console.error({ error })
-    console.log(error.response.data)
     return res.status(500).json({
       success: false,
       message: 'Internal Server Error',

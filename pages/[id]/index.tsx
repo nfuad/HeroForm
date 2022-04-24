@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-// https://firebase.google.com/docs/web/setup#available-libraries
 import prisma from '@lib/prisma'
 import Questions from '@components/survey/questions'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
@@ -255,8 +254,9 @@ const PreviewBanner = () => {
           <WarningIcon />
         </span>
         <p className="mx-auto ml-2 text-sm tracking-wide text-center font-body">
-          Preview Mode. Answers won't be submitted unless the actual form link
-          is used.
+          {
+            "Preview Mode. Answers won't be submitted unless the actual form link is used."
+          }
         </p>
       </div>
     </div>

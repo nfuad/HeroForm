@@ -6,7 +6,7 @@ export const Authenticated = ({
   handleSignOutClick,
 }) => (
   <>
-    <h1 className="text-2xl ">You're Logged In</h1>
+    <h1 className="text-2xl ">{"You're Logged In"}</h1>
     <div className="w-full">
       <h2 className="pb-2 tracking-wide">Continue with -</h2>
       <button
@@ -14,7 +14,9 @@ export const Authenticated = ({
         className="flex items-center justify-between w-full px-6 py-3 transition-all duration-75 border border-gray-200 rounded-lg hover:shadow-lg gap-x-2 hover:scale-105"
       >
         <div className="flex justify-between gap-x-2">
+          {/* eslint-disable-next-line */}
           <img
+            alt="avatar"
             src={session?.user?.image}
             className="h-12 border-2 rounded-full border-violet-500"
           />{' '}

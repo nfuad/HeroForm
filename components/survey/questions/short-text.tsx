@@ -15,7 +15,7 @@ const ShortText: FC<Props> = ({ properties, onChange, value, autoFocus }) => {
 
   useEffect(() => {
     if (autoFocus) ref.current?.focus()
-  }, [])
+  }, [autoFocus])
 
   return (
     <input

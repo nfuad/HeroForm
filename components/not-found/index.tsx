@@ -7,15 +7,16 @@ export const Header = () => (
       404 - Not Found
     </h1>
     <h2 className="text-lg tracking-wide text-gray-900 lg:text-2xl">
-      Tough luck, the page you're looking for doesn't exist.
+      {"Tough luck, the page you're looking for doesn't exist."}
     </h2>
   </div>
 )
 
 export const Description = () => (
   <p className="max-w-sm text-base lg:text-lg font-body">
-    You must've clicked on a wrong link. You only had one job, and you messed it
-    up. You should probably go back to the{' '}
+    {
+      "You must've clicked on a wrong link. You only had one job, and you messed it up. You should probably go back to the "
+    }
     <Link href={ROUTES.HOME}>
       <a className="px-1 italic underline bg-red-200 py-0.5 rounded-md">
         home page

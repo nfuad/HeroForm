@@ -160,8 +160,8 @@ const FreeAnimations = () => {
 export const SubHeading = () => (
   <p className="max-w-full md:max-w-2xl lg:max-w-3xl text-[#545465] text-xs px-10 sm:px-2 sm:text-sm md:text-xl xl:text-xl font-heading tracking-wider xl:leading-tight mt-8 lg:mt-12 mb-8 text-center mx-auto">
     Asking questions with good looking forms should’ve never been{' '}
-    <em>pricey</em>, <em>bloated</em> or <em>heavily branded</em>. With Inquire,
-    it finally isn't.
+    <em>pricey</em>, <em>bloated</em> or <em>heavily branded</em>.{' '}
+    {"With Inquire, it finally isn't."}
     <style jsx>{`
       em {
         background: #ffd9d9;
@@ -219,6 +219,7 @@ export const Video = () => {
               }}
             >
               <Image
+                alt="Inquire Video"
                 className="rounded-xl"
                 quality={100}
                 src={require('/public/images/demo.png')}
@@ -300,7 +301,7 @@ export const HowItWorks = () => {
   ]
   return (
     <div className="flex flex-col items-center justify-center mx-auto">
-      <h2 className="text-3xl">Here's How It Works</h2>
+      <h2 className="text-3xl">{"Here's How It Works"}</h2>
 
       {data.map((item, index) => {
         const position = index + 1
@@ -344,7 +345,7 @@ const HowItWorksSection = ({ position, title, points, image }) => {
         }`}
       >
         <div className={`mb-10 sm:mb-0 ${isEven ? 'sm:ml-24' : ''}`}>
-          <Image {...image} />
+          <Image {...image} alt="" />
         </div>
         <div className="flex flex-col max-w-sm space-y-10">
           {renderPoints()}
@@ -358,7 +359,7 @@ export const SelfHosting = () => {
   return (
     <div className="flex flex-col items-center justify-center mx-auto my-40 text-center px-7 gap-y-10">
       <h2 className="text-3xl text-center sm:text-4xl md:text-5xl">
-        <span>Don't Like This?</span>
+        <span>{"Don't Like This?"}</span>
         <br />
         <span className="text-gray-400">
           Embrace the unlimited customization
@@ -406,8 +407,9 @@ export const SelfHosting = () => {
         </p>
       </div>
       <p className="max-w-md tracking-wide text-gray-500 font-body text-md">
-        There's zero vendor lock-in going on. And everything is well documented.
-        You're free to modify the source code or self host anytime you want
+        {
+          "There's zero vendor lock-in going on. And everything is well documented. You're free to modify the source code or self host anytime you want"
+        }
       </p>
     </div>
   )
@@ -427,6 +429,7 @@ const Quote = ({ block, image, citation }) => (
         height={30}
         objectFit="cover"
         className="rounded-full"
+        alt="Author"
       />{' '}
       <cite className="text-xs sm:text-sm">{citation}</cite>
     </figcaption>
@@ -509,8 +512,9 @@ export const LastCTA = () => {
         Ready to Create Amazing Forms?
       </h2>
       <p className="text-sm text-center sm:text-base font-body">
-        It's free. It's fast. It's privacy-focused &amp; it's Open Source. Get
-        started now 👇
+        {
+          "It's free. It's fast. It's privacy-focused & it's Open Source. Get started now 👇"
+        }
       </p>
       <GetStartedButton />
     </div>
