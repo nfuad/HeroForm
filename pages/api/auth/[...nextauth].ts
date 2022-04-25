@@ -30,5 +30,27 @@ export default NextAuth({
       else if (url.startsWith('/')) return new URL(url, baseUrl).toString()
       return baseUrl
     },
+    async signIn({ user, account }) {
+      const accounts = await prisma.user
+        .findUnique({
+          where: {
+            email: user.email,
+          },
+        })
+        .accounts()
+
+      await prisma.account.update({
+        where: {
+          id: accounts[0].id,
+        },
+        data: {
+          refresh_token: account.refresh_token,
+          access_token: account.access_token,
+        },
+      })
+
+      // return a promise that resolves to make typescript happy
+      return Promise.resolve(true)
+    },
   },
 })
