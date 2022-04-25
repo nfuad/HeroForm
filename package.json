@@ -1,28 +1,51 @@
 {
   "name": "inquire",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write '**/*.{js,jsx,ts,tsx}' .",
+    "seed": "node prisma/seed.js",
+    "db:push": "npx prisma db push",
+    "db:generate": "npx prisma generate"
   },
   "dependencies": {
+    "@headlessui/react": "^1.5.0",
+    "@next-auth/prisma-adapter": "^1.0.3",
+    "@prisma/client": "^3.12.0",
+    "@sentry/nextjs": "^6.19.6",
+    "@types/umami": "^0.1.0",
+    "autosize": "^5.0.1",
     "axios": "^0.26.0",
-    "firebase": "^9.6.7",
-    "google-spreadsheet": "^3.2.0",
+    "cal-sans": "^1.0.1",
     "googleapis": "^95.0.0",
-    "next": "12.1.0",
+    "js-confetti": "^0.10.2",
+    "lodash.isempty": "^4.4.0",
+    "lodash.set": "^4.3.2",
+    "nanoid": "^3.3.1",
+    "next": "^12.0.0",
+    "next-auth": "latest",
+    "next-seo": "^5.2.0",
+    "nextjs-progressbar": "^0.0.14",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-hot-toast": "^2.2.0",
+    "react-page-scroller": "^2.2.1",
+    "react-query": "^3.34.19"
   },
   "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.3.1",
+    "@types/node": "^17.0.25",
     "@types/react": "^17.0.39",
     "autoprefixer": "^10.4.2",
     "eslint": "8.10.0",
     "eslint-config-next": "12.1.0",
     "postcss": "^8.4.7",
+    "prettier": "^2.5.1",
+    "prisma": "^3.12.0",
     "tailwindcss": "^3.0.23",
     "typescript": "^4.5.5"
   }
