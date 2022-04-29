@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import Editor from '@components/admin/editor'
 import Header from '@components/admin/editor/header'
-import Toast from '@components/toast'
 import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
 import { Container, Loader } from '@components/continue'
@@ -142,7 +141,6 @@ const EditorPage = () => {
             setUnsaved={setUnsaved}
           />
         </div>
-        <Toast />
       </div>
     </>
   )

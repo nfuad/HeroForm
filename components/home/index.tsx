@@ -11,6 +11,7 @@ import { GetStartedButton } from '@components/common'
 import { useState } from 'react'
 import { PlayIcon, CloseIcon } from '@components/icons'
 import { showConfettiAnimation } from '@lib/show-confetti-animation'
+import { SITE_DATA } from '@constants/site-data'
 
 const QuickFactItem = ({ renderIcon, children }) => {
   return (
@@ -160,8 +161,8 @@ const FreeAnimations = () => {
 export const SubHeading = () => (
   <p className="max-w-full md:max-w-2xl lg:max-w-3xl text-[#545465] text-xs px-10 sm:px-2 sm:text-sm md:text-xl xl:text-xl font-heading tracking-wider xl:leading-tight mt-8 lg:mt-12 mb-8 text-center mx-auto">
     Asking questions with good looking forms should’ve never been{' '}
-    <em>pricey</em>, <em>bloated</em> or <em>heavily branded</em>.{' '}
-    {"With Inquire, it finally isn't."}
+    <em>pricey</em>, <em>bloated</em> or <em>heavily branded</em>. With{' '}
+    {SITE_DATA.name} it finally isn&apos;t.
     <style jsx>{`
       em {
         background: #ffd9d9;
@@ -219,7 +220,7 @@ export const Video = () => {
               }}
             >
               <Image
-                alt="Inquire Video"
+                alt={`${SITE_DATA.name} Video`}
                 className="rounded-xl"
                 quality={100}
                 src={require('/public/images/demo.png')}
@@ -278,7 +279,7 @@ export const HowItWorks = () => {
         },
         {
           heading: 'Simple & Minimal UI',
-          body: "Unlike all the other tools, we don't have a bloated UI. Inquire is simple and Minimal - so it's to get things done.",
+          body: `Unlike all the other tools, we don't have a bloated UI. ${SITE_DATA.name} is simple and Minimal - so it's to get things done.`,
         },
         {
           heading: 'Super Fast & Accessible',

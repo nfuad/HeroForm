@@ -103,7 +103,8 @@ const Footer = () => {
         </p>
       )}
       <p className="text-xs text-gray-500 sm:text-sm">
-        Copyright Ⓒ {new Date().getFullYear()} Inquire. All rights reserved.
+        Copyright Ⓒ {new Date().getFullYear()} {SITE_DATA.name}. All rights
+        reserved.
       </p>
     </footer>
   )
@@ -192,7 +193,7 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between px-5 py-5 mx-auto max-w-7xl">
       <Link href={ROUTES.HOME}>
-        <a className="text-lg sm:text-xl font-heading">Inquire</a>
+        <a className="text-lg sm:text-xl font-heading">{SITE_DATA.name}</a>
       </Link>
       {isHome ? (
         <div className="flex items-center justify-center gap-x-5">

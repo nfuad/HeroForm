@@ -1,6 +1,6 @@
-# [Inquire](https://inquire.sh)
+# [Herform](https://heroform.io)
 
-![Inquire Preview](/image.webp)
+![Herform Preview](/image.webp)
 
 ## License
 

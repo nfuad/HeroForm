@@ -1,3 +1,4 @@
+import { SITE_DATA } from '@constants/site-data'
 import Image from 'next/image'
 
 export const UnAuthenticated = ({ handleSignInClick }) => (
@@ -25,8 +26,8 @@ export const UnAuthenticated = ({ handleSignInClick }) => (
     </button>
 
     <div className="block max-w-md px-6 py-3 mt-12 text-sm rounded-lg bg-indigo-50">
-      📌 &nbsp;Inquire will *only* be able to view the spreadsheets that are
-      going to be created with our tool and nothing else.
+      📌 &nbsp;{SITE_DATA.name} will *only* be able to view the spreadsheets
+      that are going to be created with our tool and nothing else.
     </div>
   </>
 )

@@ -1,3 +1,4 @@
+import { SITE_DATA } from '@constants/site-data'
 import { OAuth2Client } from 'google-auth-library'
 import { sheets_v4 } from 'googleapis'
 import { GaxiosPromise } from 'googleapis/build/src/apis/abusiveexperiencereport'
@@ -15,7 +16,7 @@ export const initForm = async (
   return sheets.spreadsheets.create({
     requestBody: {
       properties: {
-        title: 'Inquire Form',
+        title: `${SITE_DATA.name} Form`,
       },
       sheets: [
         {
