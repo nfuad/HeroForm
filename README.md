@@ -1,6 +1,6 @@
-# [Herform](https://heroform.io)
+# [Heroform](https://heroform.io)
 
-![Herform Preview](/image.webp)
+![Heroform Preview](/image.webp)
 
 ## License
 
