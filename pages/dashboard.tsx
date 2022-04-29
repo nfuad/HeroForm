@@ -30,9 +30,7 @@ const DashboardPage: NextPage = () => {
   } = useQuery(ROUTES.API.GET_FORMS, {
     enabled: isAuthenticated,
     onError: (error) => {
-      console.log({ error: error.toJSON() })
       console.error(error)
-      // new Error(error)
       toast.error('Could not get forms')
     },
   })
