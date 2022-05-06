@@ -17,9 +17,10 @@ const CONFETTI_ARGS = [
   { emojis: ['🎉'] },
 ]
 
-export const showConfettiAnimation = async ({ emojis = [] } = {}) => {
+export const showConfettiAnimation = async ({ emojis = ['🎉'] } = {}) => {
   const JSConfetti = (await import('js-confetti')).default
 
+  console.log(generateRandomArrayElement([...CONFETTI_ARGS, { emojis }]))
   const jsConfetti = new JSConfetti()
   jsConfetti.addConfetti(
     generateRandomArrayElement([...CONFETTI_ARGS, { emojis }]),
