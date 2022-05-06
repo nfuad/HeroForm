@@ -30,17 +30,17 @@ const SurveyQuestion: FC<Props> = ({
   const { properties, prompt } = question
 
   useKeydown({
-    onKeyDown({ nativeEvent, isEnterKeyPressed, isShiftKeyPressed }) {
+    onKeyDown({ isEnterKeyPressed, isShiftKeyPressed }) {
       const isLongText = question.type === QuestionType.LONG_TEXT
 
       if (isLongText) {
-        if (isEnterKeyPressed && isShiftKeyPressed) {
-          nativeEvent.preventDefault()
+        if (isEnterKeyPressed && !isShiftKeyPressed) {
           handleEnter()
         }
-      } else if (isEnterKeyPressed && !isShiftKeyPressed) {
-        handleEnter()
+        return
       }
+
+      if (isEnterKeyPressed) handleEnter()
     },
     stopListening: !isVisible,
   })
@@ -98,7 +98,7 @@ const SurveyQuestion: FC<Props> = ({
         <Button onClick={handleEnter}>
           {isLastPage ? 'Submit' : 'Continue'}
         </Button>
-        <p className="text-xs text-center ml-4">
+        <p className="ml-4 text-xs text-center">
           Press <b>Enter ↵</b>
         </p>
       </TransitionWrapper>

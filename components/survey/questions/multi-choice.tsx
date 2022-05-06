@@ -16,7 +16,7 @@ const MultiChoice: FC<Props> = ({ question, selected, setSelected }) => {
       const index = key.toUpperCase().charCodeAt(0) - CHAR_CODE_OFFSET
       const isIndexInRange = index >= 0 && index < question.options.length
 
-      if (isIndexInRange) setSelected(question.options[index].id)
+      if (isIndexInRange) setSelected(question.options[index].value)
     },
   })
 

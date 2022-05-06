@@ -1,4 +1,10 @@
-import { ChangeEventHandler, FC, useEffect, useRef } from 'react'
+import {
+  ChangeEventHandler,
+  FC,
+  KeyboardEventHandler,
+  useEffect,
+  useRef,
+} from 'react'
 import autosize from 'autosize'
 
 type Props = {
@@ -16,12 +22,20 @@ const LongText: FC<Props> = ({ properties, value, onChange, autoFocus }) => {
 
   useEffect(() => {
     if (autoFocus) ref.current?.focus()
-
-    autosize(ref.current)
   }, [autoFocus])
 
+  useEffect(() => {
+    autosize(ref.current)
+  }, [])
+
+  const handleKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
+    const isEnterKeyPressed = e.key === 'Enter'
+    const isShiftKeyPressed = e.shiftKey
+    if (isEnterKeyPressed && !isShiftKeyPressed) return e.preventDefault()
+  }
+
   return (
-    <div className="w-full flex flex-col justify-center items-center gap-y-3">
+    <div className="flex flex-col items-center justify-center w-full gap-y-3">
       <textarea
         ref={ref}
         value={value}
@@ -29,9 +43,10 @@ const LongText: FC<Props> = ({ properties, value, onChange, autoFocus }) => {
         placeholder={placeholder}
         maxLength={isMaxLengthSpecified ? maxCharacters : undefined}
         rows={1}
-        className="bg-transparent text-lg max-w-lg w-full transition-all duration-200 ease-in-out border-b-2 border-gray-300 outline-none focus:border-gray-900 pb-1 h-min"
+        className="w-full max-w-lg pb-1 text-lg transition-all duration-200 ease-in-out bg-transparent border-b-2 border-gray-300 outline-none focus:border-gray-900 h-min"
+        onKeyDown={handleKeyDown}
       />
-      <p className="text-xs text-center ml-4 text-gray-600">
+      <p className="ml-4 text-xs text-center text-gray-600">
         Press <b>Shift ⇧ + Enter ↵</b> for line break
       </p>
     </div>
