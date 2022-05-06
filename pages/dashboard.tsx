@@ -143,15 +143,30 @@ export default DashboardPage
 
 const Form = ({ publicId, metadata: { title, responseCount } }) => {
   const href = `${publicId}${ROUTES.EDIT}`
+  const handleUnsupportedViewportClick = () => {
+    alert(href)
+  }
+
   return (
-    <Link href={href}>
-      <a className="flex flex-col items-center justify-center w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer hover:shadow-xl">
+    <>
+      <Link href={href}>
+        <a className="flex-col items-center justify-center hidden w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer lg:flex hover:shadow-xl">
+          <h1>{title}</h1>
+          <p className="mt-2 text-xs text-gray-500">
+            {responseCount} response{responseCount > 1 && 's'}
+          </p>
+        </a>
+      </Link>
+      <div
+        onClick={handleUnsupportedViewportClick}
+        className="flex-col items-center justify-center hidden w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer lg:flex hover:shadow-xl"
+      >
         <h1>{title}</h1>
         <p className="mt-2 text-xs text-gray-500">
           {responseCount} response{responseCount > 1 && 's'}
         </p>
-      </a>
-    </Link>
+      </div>
+    </>
   )
 }
 
