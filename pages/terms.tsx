@@ -2,7 +2,7 @@ import Layout from '@components/layout'
 import { SITE_DATA } from '@constants/site-data'
 
 const TermsOfServicePage = () => (
-  <Layout title="Terms of Service">
+  <Layout title="Terms of Service" showFooter>
     <div className="flex flex-col items-start justify-center w-full h-full max-w-3xl p-10 mx-auto text-left gap-y-4">
       <h1 className="text-3xl">Website Terms and Conditions of Use</h1>
 

@@ -30,13 +30,15 @@
     "nanoid": "^3.3.1",
     "next": "^12.0.0",
     "next-auth": "latest",
+    "next-plausible": "^3.1.9",
     "next-seo": "^5.2.0",
     "nextjs-progressbar": "^0.0.14",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-hot-toast": "^2.2.0",
     "react-page-scroller": "^2.2.1",
-    "react-query": "^3.34.19"
+    "react-query": "^3.34.19",
+    "sharp": "^0.30.4"
   },
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.3.1",

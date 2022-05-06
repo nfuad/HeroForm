@@ -39,6 +39,7 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
     },
   )
 
+  const isInitialPage = currentPage === 0
   const isPreview = (router.query.preview as string) === 'true'
 
   if (isPreview) {
@@ -88,19 +89,23 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
   return (
     <Container>
       {isPreview && <PreviewBanner />}
-      <ProgressBar scrollIndicator={scrollIndicator} />
-      <DotIndicators
-        {...{ totalQuestions, currentPage, setCurrentPage, isSubmitted }}
-      />
-      <ArrowNavigator
-        {...{
-          handlePrev,
-          handleNext,
-          isFirstPage,
-          isLastPage,
-          isSubmitted,
-        }}
-      />
+      {!isInitialPage && (
+        <>
+          <ProgressBar scrollIndicator={scrollIndicator} />
+          <DotIndicators
+            {...{ totalQuestions, currentPage, setCurrentPage, isSubmitted }}
+          />
+          <ArrowNavigator
+            {...{
+              handlePrev,
+              handleNext,
+              isFirstPage,
+              isLastPage,
+              isSubmitted,
+            }}
+          />
+        </>
+      )}
       <Questions
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

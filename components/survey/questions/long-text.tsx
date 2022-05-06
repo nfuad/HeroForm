@@ -1,4 +1,5 @@
 import { ChangeEventHandler, FC, useEffect, useRef } from 'react'
+import autosize from 'autosize'
 
 type Props = {
   properties: any
@@ -15,21 +16,25 @@ const LongText: FC<Props> = ({ properties, value, onChange, autoFocus }) => {
 
   useEffect(() => {
     if (autoFocus) ref.current?.focus()
+
+    autosize(ref.current)
   }, [autoFocus])
 
   return (
-    <textarea
-      ref={ref}
-      className="w-full max-w-xs px-3 py-3 text-lg md:text-xl md:px-5 md:py-5 md:max-w-lg md:rounded-2xl lg:max-w-3xl rounded-xl lg:text-2xl lg:px-7 lg:py-7 font-heading lg:rounded-3xl placeholder:text-gray-300 placeholder:font-body"
-      value={value}
-      onChange={handleChange}
-      placeholder={placeholder}
-      maxLength={isMaxLengthSpecified ? maxCharacters : undefined}
-      style={{
-        boxShadow: '0px 14px 39px 10px rgba(235, 145, 145, 0.2)',
-      }}
-      rows={3}
-    />
+    <div className="w-full flex flex-col justify-center items-center gap-y-3">
+      <textarea
+        ref={ref}
+        value={value}
+        onChange={handleChange}
+        placeholder={placeholder}
+        maxLength={isMaxLengthSpecified ? maxCharacters : undefined}
+        rows={1}
+        className="bg-transparent text-lg max-w-lg w-full transition-all duration-200 ease-in-out border-b-2 border-gray-300 outline-none focus:border-gray-900 pb-1 h-min"
+      />
+      <p className="text-xs text-center ml-4 text-gray-600">
+        Press <b>Shift ⇧ + Enter ↵</b> for line break
+      </p>
+    </div>
   )
 }
 
