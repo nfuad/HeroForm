@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import axios from 'axios'
 import NextNProgress from 'nextjs-progressbar'
 import Script from 'next/script'
+import Toast from '@components/toast'
 
 const defaultQueryFn = async ({ queryKey }) => {
   const { data } = await axios.get(`${queryKey[0]}`)
@@ -46,6 +47,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
           <Component {...pageProps} />
         </SessionProvider>
       </QueryClientProvider>
+      <Toast />
     </>
   )
 }

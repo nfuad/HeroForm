@@ -29,7 +29,8 @@ const DashboardPage: NextPage = () => {
     isSuccess: boolean
   } = useQuery(ROUTES.API.GET_FORMS, {
     enabled: isAuthenticated,
-    onError: () => {
+    onError: (error) => {
+      console.error(error)
       toast.error('Could not get forms')
     },
   })
@@ -47,6 +48,9 @@ const DashboardPage: NextPage = () => {
     onError(error: any) {
       console.log({ error })
       toast.error('Could not create form. Try again later :)')
+      alert(
+        "Couldn't create form, probably because you haven't given us access to all the required permissions from Google Sheets.",
+      )
     },
   })
 

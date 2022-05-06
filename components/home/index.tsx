@@ -11,6 +11,7 @@ import { GetStartedButton } from '@components/common'
 import { useState } from 'react'
 import { PlayIcon, CloseIcon } from '@components/icons'
 import { showConfettiAnimation } from '@lib/show-confetti-animation'
+import { SITE_DATA } from '@constants/site-data'
 
 const QuickFactItem = ({ renderIcon, children }) => {
   return (
@@ -23,7 +24,7 @@ const QuickFactItem = ({ renderIcon, children }) => {
 export const QuickFacts = () => {
   return (
     <ul className="flex flex-wrap items-center justify-center mx-auto text-xs tracking-wide xl:text-sm font-heading gap-x-6">
-      <QuickFactItem renderIcon={HeartIcon}>Free Forever</QuickFactItem>
+      <QuickFactItem renderIcon={HeartIcon}>Free Tier</QuickFactItem>
       <QuickFactItem renderIcon={LightningBoltIcon}>
         Ultra Fast (100ms)
       </QuickFactItem>
@@ -34,19 +35,19 @@ export const QuickFacts = () => {
 }
 
 export const SeeDemoButton = () => {
-  const demoURL = 'https://inquie.sh/vH8ds0b3'
+  const demoURL = 'https://heroform.io/' // TODO: update with actual one here
 
   return (
     <a
       target={'_blank'}
       rel={'noopener noreferrer'}
       href={demoURL}
-      className="flex items-center justify-center mx-auto my-10 text-lg tracking-wide text-center text-indigo-600 hover:text-indigo-900 xl:text-xl font-heading group"
+      className="flex items-center justify-center mx-auto mt-2 xl:text-7xl xl:leading-[1.1] tracking-wide text-center text-blue-500 hover:text-indigo-900 font-heading group"
     >
-      <span className="transition-all duration-75 group-hover:mr-2">
+      <span className="transition-all duration-75 group-hover:mr-4">
         See It In Action
       </span>
-      <ChevronRightIcon />
+      <ChevronRightIcon strokeWidth={4} className={'w-16 h-16 mt-3'} />
     </a>
   )
 }
@@ -160,8 +161,8 @@ const FreeAnimations = () => {
 export const SubHeading = () => (
   <p className="max-w-full md:max-w-2xl lg:max-w-3xl text-[#545465] text-xs px-10 sm:px-2 sm:text-sm md:text-xl xl:text-xl font-heading tracking-wider xl:leading-tight mt-8 lg:mt-12 mb-8 text-center mx-auto">
     Asking questions with good looking forms should’ve never been{' '}
-    <em>pricey</em>, <em>bloated</em> or <em>heavily branded</em>.{' '}
-    {"With Inquire, it finally isn't."}
+    <em>pricey</em>, <em>bloated</em> or <em>heavily branded</em>. With{' '}
+    {SITE_DATA.name} it finally isn&apos;t.
     <style jsx>{`
       em {
         background: #ffd9d9;
@@ -178,11 +179,11 @@ export const Heading = () => {
   const onHover = () => showConfettiAnimation({ emojis: ['🎉', '🤯', '🔥'] })
 
   return (
-    <h1 className="mt-32 leading-9 text-center text-[26px] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl xl:leading-[1.1]">
+    <h1 className="mt-40 leading-9 text-center text-[26px] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl xl:leading-[1.2]">
       <span className="text-black">
         <span>Create</span>{' '}
         <span className="relative">
-          <span className="text-indigo-500 cursor-help" onMouseOver={onHover}>
+          <span className="text-pink-500 cursor-help" onMouseOver={onHover}>
             Free
           </span>{' '}
           <FreeAnimations />
@@ -190,7 +191,7 @@ export const Heading = () => {
         <span>Forms &amp; Surveys.</span>
       </span>
       <br />
-      <span>On Brand, Without Coding.</span>
+      <span>On Brand. Zero Coding.</span>
     </h1>
   )
 }
@@ -201,12 +202,12 @@ export const Video = () => {
 
   return (
     <div className="w-full mx-auto my-20 overflow-hidden bg-transparent sm:w-3/4 rounded-6xl">
-      <div className="px-10 py-8 sm:px-4">
+      <div className="px-10 py-16 sm:px-4">
         <div className="grid items-start justify-center gap-8 ">
           <div className="relative group">
-            <div className="absolute transition duration-1000 opacity-75 rounded-2xl -inset-1 bg-gradient-to-r from-pink-300 via-red-200 to-purple-300 blur group-hover:opacity-100 group-hover:duration-200 animate-tilt" />
+            {/* <div className="absolute transition duration-1000 opacity-75 rounded-2xl -inset-1 bg-gradient-to-r from-pink-300 via-red-200 to-purple-300 blur group-hover:opacity-100 group-hover:duration-200 animate-tilt" /> */}
             <div
-              className="w-full mx-auto cursor-pointer rounded-xl max-w-7xl"
+              className="w-full mx-auto cursor-pointer rounded-xl max-w-7xl shadow-3xl"
               onClick={() => {
                 setShowVideo(true)
                 setIsHovering(false)
@@ -219,7 +220,7 @@ export const Video = () => {
               }}
             >
               <Image
-                alt="Inquire Video"
+                alt={`${SITE_DATA.name} Video`}
                 className="rounded-xl"
                 quality={100}
                 src={require('/public/images/demo.png')}
@@ -227,11 +228,16 @@ export const Video = () => {
               <div
                 className={`absolute ${
                   isHovering
-                    ? 'text-indigo-900 shadow-lg rotate-45 scale-110'
+                    ? 'text-indigo-900 shadow-lg scale-95'
                     : 'text-indigo-600 shadow-md '
-                } -translate-x-1/2 -translate-y-1/2 bg-white rounded-full top-1/2 left-1/2 transition-all duration-75`}
+                } -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 transition-all duration-75 flex justify-center items-center`}
               >
-                <PlayIcon />
+                <Image
+                  src={require('/public/images/play.svg')}
+                  width={100}
+                  height={100}
+                  alt={'Play Icon'}
+                />
               </div>
             </div>
           </div>
@@ -244,111 +250,61 @@ export const Video = () => {
 }
 
 export const HowItWorks = () => {
-  const data = [
-    {
-      title: 'Connect Google Sheets',
-      points: [
-        {
-          heading: 'Integrate Google Sheets',
-          body: 'Operate with tools you and your team are familiar with. No need to use any other software.',
-        },
-        {
-          heading: 'Own Your Data',
-          body: "Your data gets stored on your Google Sheets. We don't store any responses on our database.",
-        },
-        {
-          heading: 'Process Responses',
-          body: 'Give your teammates access to the spreadsheet or export responses in CSV/JSON formats right from Google Sheets.',
-        },
-      ],
-      image: {
-        src: require('/public/images/connect.png'),
-        alt: 'Connect Google Sheets',
-        height: 750,
-        objectFit: 'contain',
-        objectPosition: 'center',
-      },
-    },
-    {
-      title: 'Create Amazing Forms',
-      points: [
-        {
-          heading: 'Unlimited Forms',
-          body: "Create as many forms as you want. And as many questions as you want. We don't limit you.",
-        },
-        {
-          heading: 'Simple & Minimal UI',
-          body: "Unlike all the other tools, we don't have a bloated UI. Inquire is simple and Minimal - so it's to get things done.",
-        },
-        {
-          heading: 'Super Fast & Accessible',
-          body: 'Forms load faster than you can blink. How cool is that? :) And accessibility features coming soon.',
-        },
-      ],
-      image: {
-        src: require('/public/images/create.png'),
-        alt: 'Create Amazing Forms',
-      },
-    },
-    {
-      title: 'Share Everywhere',
-      points: null,
-      image: {
-        src: require('/public/images/share.png'),
-        alt: 'Share Everywhere',
-      },
-    },
-  ]
   return (
-    <div className="flex flex-col items-center justify-center mx-auto">
-      <h2 className="text-3xl">{"Here's How It Works"}</h2>
-
-      {data.map((item, index) => {
-        const position = index + 1
-        return <HowItWorksSection {...item} position={position} key={index} />
-      })}
-    </div>
-  )
-}
-
-const HowItWorksSection = ({ position, title, points, image }) => {
-  const isEven = position % 2 === 0
-  const withPoints = points?.length > 0 // one doesn't have points :)
-
-  const renderPoints = () =>
-    points?.map(({ heading, body }, index) => {
-      return (
-        <div className="space-y-2" key={index}>
-          <h4 className="text-lg sm:text-xl lg:text-2xl">{heading}</h4>
-          <p className="text-sm text-gray-600 font-body">{body}</p>
-        </div>
-      )
-    })
-
-  return (
-    <div className="flex flex-col items-center justify-center px-20 my-10">
-      <div className="flex flex-col items-center justify-center">
-        <span className="w-1 h-24 rounded-full bg-gradient-to-t from-indigo-500 via-purple-200 to-transparent" />
-        <span className="flex items-center justify-center w-10 h-10 -mt-2 text-white rounded-full bg-gradient-to-r from-indigo-500 to-purple-500">
-          {position}
-        </span>
+    <div className="flex flex-col justify-center items-center py-40">
+      <div className="max-w-5xl w-full mx-auto">
+        <h2 className="text-7xl text-center w-full tracking-wide text-gradient-blue-two mb-20 leading-tight">
+          Here&apos;s How It Works 👇
+        </h2>
       </div>
-      <h3 className="mt-5 mb-10 text-3xl text-center text-indigo-900 sm:text-4xl lg:text-5xl font-heading">
-        {title}
-      </h3>
-
-      <div
-        className={`flex sm:flex-row flex-col ${
-          isEven ? 'flex-row-reverse' : ''
-        } items-center justify-between my-20 ${
-          withPoints ? 'space-x-0 sm:space-x-16' : ''
-        }`}
-      >
-        <div className={`mb-10 sm:mb-0 ${isEven ? 'sm:ml-24' : ''}`}>
-          <Image {...image} alt="" />
+      <div className="max-w-5xl py-20 gap-y-40 flex flex-col">
+        <div className="flex justify-between items-center gap-x-10">
+          <div className="max-w-lg w-full">
+            <h3 className="text-6xl leading-tight">
+              Connect Sheets to collect responses from everyone.
+            </h3>
+          </div>
+          <div className="w-full">
+            <Image
+              src={require('/public/images/connect-sheets.png')}
+              alt={'Connect Sheets'}
+              width={800}
+              height={500}
+              quality={100}
+            />
+          </div>
         </div>
-        <div className="flex flex-col max-w-sm space-y-10">
-          {renderPoints()}
+        <div className="flex justify-between items-center gap-x-10">
+          <div className="w-full">
+            <Image
+              src={require('/public/images/create-great-forms.png')}
+              alt={'Connect Sheets'}
+              width={800}
+              height={500}
+              quality={100}
+            />
+          </div>
+          <div className="max-w-lg w-full">
+            <h3 className="text-6xl text-right leading-tight">
+              Create forms ultra fast with a very minimal editor UI.
+            </h3>
+          </div>
+        </div>
+        <div className="flex justify-between items-center gap-x-10">
+          <div className="max-w-lg w-full">
+            <h3 className="text-6xl leading-tight">
+              Get a short link to share all over the internet.
+            </h3>
+          </div>
+          <div className="w-full">
+            <Image
+              src={require('/public/images/share-everywhere.png')}
+              alt={'Connect Sheets'}
+              width={800}
+              height={500}
+              quality={100}
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -416,10 +372,10 @@ export const SelfHosting = () => {
 }
 
 const Quote = ({ block, image, citation }) => (
-  <figure className="px-10">
+  <figure className="p-7 shadow-[rgba(0,0,0,0.05)_0px_20px_40px_0px] rounded-xl w-1/3 grow">
     <blockquote>
-      <p className="max-w-xl my-4 text-sm tracking-wide text-gray-900 sm:text-md lg:text-xl font-heading">
-        &quot; {block} &quot;{' '}
+      <p className="my-4 text-base tracking-wider leading-normal text-gray-900 font-heading">
+        {block}
       </p>
     </blockquote>
     <figcaption className="flex items-center justify-center gap-x-2">
@@ -439,33 +395,52 @@ const Quote = ({ block, image, citation }) => (
 export const Testimonials = () => {
   return (
     <div className="flex flex-col items-center justify-center mx-auto my-40 text-center gap-y-10">
-      <h2 className="text-3xl text-center sm:text-4xl md:text-5xl">
-        <span>What People Think</span>
-        <br />
-        <span className="text-gray-400">Good stuff...</span>
+      <h2 className="text-center text-7xl text-black leading-[1.4] mb-10">
+        Here&apos;s what folks are saying
       </h2>
 
-      <Quote
-        block={
-          'Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.'
-        }
-        image="/images/whatever.png"
-        citation={'Monika Mayer - CEO, Whatever'}
-      />
-      <Quote
-        block={
-          'Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.'
-        }
-        image="/images/whatever.png"
-        citation={'Monika Mayer - CEO, Whatever'}
-      />
-      <Quote
-        block={
-          'Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.'
-        }
-        image="/images/whatever.png"
-        citation={'Monika Mayer - CEO, Whatever'}
-      />
+      <div className="flex justify-between items-start max-w-5xl w-full gap-x-10 gap-y-12 flex-row flex-wrap ">
+        <Quote
+          block={
+            'Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.'
+          }
+          image="/images/avatar.png"
+          citation={'Monika Mayer - CEO, Whatever'}
+        />
+        <Quote
+          block={
+            'Words can be like X-rays, if you use them properly—they’ll go through an be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.'
+          }
+          image="/images/avatar.png"
+          citation={'Monika Mayer - CEO, Whatever'}
+        />
+        <Quote
+          block={'Words can be like X-rays, if≈ßu’re pierced.'}
+          image="/images/avatar.png"
+          citation={'Monika Mayer - CEO, Whatever'}
+        />
+        <Quote
+          block={
+            'Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.'
+          }
+          image="/images/avatar.png"
+          citation={'Monika Mayer - CEO, Whatever'}
+        />
+        <Quote
+          block={
+            'Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.'
+          }
+          image="/images/avatar.png"
+          citation={'Monika Mayer - CEO, Whatever'}
+        />
+        <Quote
+          block={
+            'Words can be like X-rays, if you use them properly—they’ll go through anything. You read and you’re pierced.'
+          }
+          image="/images/avatar.png"
+          citation={'Monika Mayer - CEO, Whatever'}
+        />
+      </div>
     </div>
   )
 }
@@ -507,16 +482,16 @@ const YTVideoEmbed = ({ setShowVideo }) => {
 
 export const LastCTA = () => {
   return (
-    <div className="flex flex-col items-center justify-center max-w-5xl py-20 mx-auto my-32 shadow-sm px-7 rounded-xl bg-yellow-50 gap-y-6">
-      <h2 className="text-3xl text-center sm:text-4xl md:text-5xl">
+    <div className="flex flex-col items-center justify-center max-w-5xl py-20 mx-auto my-32 shadow-sm px-7 rounded-xl bg-gradient-to-r from-[#eecda3] to-[#ffacd0] gap-y-6">
+      <h2 className="text-5xl text-center text-red-900">
         Ready to Create Amazing Forms?
       </h2>
-      <p className="text-sm text-center sm:text-base font-body">
+      <p className="text-center text-2xl font-heading tracking-wide py-2 max-w-lg text-red-900">
         {
           "It's free. It's fast. It's privacy-focused & it's Open Source. Get started now 👇"
         }
       </p>
-      <GetStartedButton />
+      <GetStartedButton large />
     </div>
   )
 }

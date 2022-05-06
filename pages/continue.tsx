@@ -7,7 +7,7 @@ import {
   Loader,
   Authenticated,
   UnAuthenticated,
-} from '@components/continue'
+} from '@components/auth-screens'
 
 const ContinuePage = () => {
   const router = useRouter()

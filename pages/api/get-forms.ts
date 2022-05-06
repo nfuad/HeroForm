@@ -59,10 +59,14 @@ const getFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     })
   } catch (error) {
     Sentry.captureException(error)
-    console.error({ error })
+    console.error(error)
+
+    const code = error.response.data.error
+
     res.status(500).json({
       success: false,
-      message: 'Internal Server Error',
+      code,
+      error,
     })
   }
 }

@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import Editor from '@components/admin/editor'
 import Header from '@components/admin/editor/header'
-import Toast from '@components/toast'
 import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
-import { Container, Loader } from '@components/continue'
+import { Container, Loader } from '@components/auth-screens'
 import toast from 'react-hot-toast'
 import { useMutation } from 'react-query'
 import axios from 'axios'
@@ -142,7 +141,6 @@ const EditorPage = () => {
             setUnsaved={setUnsaved}
           />
         </div>
-        <Toast />
       </div>
     </>
   )
