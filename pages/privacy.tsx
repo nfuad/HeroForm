@@ -3,7 +3,7 @@ import { SITE_DATA } from 'constants/site-data'
 
 const PrivacyPage = () => {
   return (
-    <Layout title="Privacy Policy">
+    <Layout title="Privacy Policy" showFooter>
       <div className="flex flex-col items-start justify-center w-full h-full max-w-3xl p-10 mx-auto text-left gap-y-4">
         <h1 className="text-3xl">Privacy Policy for Heroform</h1>
 
@@ -209,6 +209,13 @@ const PrivacyPage = () => {
           website, we strongly encourage you to contact us immediately and we
           will do our best efforts to promptly remove such information from our
           records.
+        </p>
+
+        <h2>Limited Use of Google APIs</h2>
+        <p>
+          {SITE_DATA.name}&apos;s use and transfer to any other app of
+          information received from Google APIs will adhere to the Google API
+          Services User Data Policy, including the Limited Use requirements.
         </p>
       </div>
     </Layout>

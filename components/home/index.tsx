@@ -186,7 +186,7 @@ export const Heading = () => {
           <span className="text-pink-500 cursor-help" onMouseOver={onHover}>
             Free
           </span>{' '}
-          <FreeAnimations />
+          {/* <FreeAnimations /> */}
         </span>
         <span>Forms &amp; Surveys.</span>
       </span>
@@ -483,7 +483,7 @@ const YTVideoEmbed = ({ setShowVideo }) => {
 export const LastCTA = () => {
   return (
     <div className="flex flex-col items-center justify-center max-w-5xl py-20 mx-auto my-32 shadow-sm px-7 rounded-xl bg-gradient-to-r from-[#eecda3] to-[#ffacd0] gap-y-6">
-      <h2 className="text-5xl text-center text-red-900">
+      <h2 className="text-5xl text-center text-black">
         Ready to Create Amazing Forms?
       </h2>
       <p className="text-center text-2xl font-heading tracking-wide py-2 max-w-lg text-red-900">

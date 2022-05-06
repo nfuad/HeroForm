@@ -86,6 +86,28 @@ const Footer = () => {
 
   return (
     <footer className="flex flex-col items-center justify-center w-full mx-auto mt-auto text-center my-14">
+      <div className="flex justify-center items-center my-5 gap-x-6">
+        <Link href="/privacy">
+          <a className="text-sm text-gray-600 hover:text-gray-900 hover:tracking-wider transition-all">
+            Privacy Policy
+          </a>
+        </Link>
+        <Link href="/terms">
+          <a className="text-sm text-gray-600 hover:text-gray-900 hover:tracking-wider transition-all">
+            Terms of Service
+          </a>
+        </Link>
+        <Link href="/contact">
+          <a className="text-sm text-gray-600 hover:text-gray-900 hover:tracking-wider transition-all">
+            Contact
+          </a>
+        </Link>
+        <Link href="/about">
+          <a className="text-sm text-gray-600 hover:text-gray-900 hover:tracking-wider transition-all">
+            About
+          </a>
+        </Link>
+      </div>
       {isHome && (
         <p className="pb-6 text-sm leading-tight sm:text-base font-heading">
           <span>Created with</span>
@@ -99,9 +121,10 @@ const Footer = () => {
             </Link>
           </span>
           <br />
-          <span>You dare not sue or copy us 👀</span>
+          <span>You dare not copy us or we&apos;ll sue you 👀</span>
         </p>
       )}
+
       <p className="text-xs text-gray-500 sm:text-sm">
         Copyright Ⓒ {new Date().getFullYear()} {SITE_DATA.name}. All rights
         reserved.
