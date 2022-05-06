@@ -170,25 +170,24 @@ const Editor: FC<Props> = ({
 
           {isShortText && (
             <input
-              className="flex-shrink-0 w-full max-w-3xl mx-auto mt-8 text-2xl bg-white px-7 py-7 font-heading rounded-3xl placeholder:text-gray-300 placeholder:font-body"
+              className="w-full max-w-lg pb-1 mt-12 text-lg transition-all duration-200 ease-in-out bg-transparent border-b-2 border-gray-300 outline-none focus:border-gray-900"
               placeholder={placeholder}
               type="text"
-              style={{
-                boxShadow: '0px 14px 39px 10px rgba(235, 145, 145, 0.2)',
-              }}
               disabled
             />
           )}
           {isLongText && (
-            <textarea
-              className="flex-shrink-0 w-full max-w-3xl mx-auto mt-8 text-2xl bg-white resize-none px-7 py-7 font-heading rounded-3xl placeholder:text-gray-300 placeholder:font-body"
-              placeholder={placeholder}
-              style={{
-                boxShadow: '0px 14px 39px 10px rgba(235, 145, 145, 0.2)',
-              }}
-              rows={5}
-              disabled
-            />
+            <div className="flex flex-col items-center justify-center w-full mt-12 gap-y-3">
+              <textarea
+                className="w-full max-w-lg pb-1 text-lg transition-all duration-200 ease-in-out bg-transparent border-b-2 border-gray-300 outline-none resize-none focus:border-gray-900 h-min"
+                placeholder={placeholder}
+                rows={1}
+                disabled
+              />
+              <p className="ml-4 text-xs text-center text-gray-600">
+                Press <b>Shift ⇧ + Enter ↵</b> for line break
+              </p>
+            </div>
           )}
           {isMultiChoice && (
             <Options
