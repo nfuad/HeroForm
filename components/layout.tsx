@@ -193,22 +193,22 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between px-5 py-5 mx-auto max-w-7xl">
       <Link href={ROUTES.HOME}>
-        <a className="text-lg sm:text-xl font-heading hover:text-gray-500 transition-all duration-100">
+        <a className="text-lg transition-all duration-100 sm:text-xl font-heading hover:text-gray-500">
           {SITE_DATA.name}
         </a>
       </Link>
 
       {isHome ? (
         <div className="flex items-center justify-center gap-x-6">
-          <div className="flex justify-center items-center gap-x-4">
+          <div className="flex items-center justify-center gap-x-4">
             <JoinDiscordButton />
             <JoinGitHubButton />
             {/* <GitHubStars /> */}
           </div>
 
-          <div className="flex justify-center items-center gap-x-5">
+          <div className="flex items-center justify-center gap-x-5">
             <Link href={ROUTES.LOGIN}>
-              <a className="text-base font-body hover:text-gray-500 transition-all duration-100">
+              <a className="hidden text-base transition-all duration-100 sm:block font-body hover:text-gray-500">
                 {ROUTES.LOGIN}
               </a>
             </Link>
@@ -289,13 +289,11 @@ const JoinGitHubButton = () => {
           width={80}
           height={80}
           viewBox="0 0 250 250"
+          className="absolute top-0 right-0"
           style={{
             fill: '#151513',
             color: '#fff',
-            position: 'absolute',
-            top: 0,
             border: 0,
-            right: 0,
           }}
           aria-hidden="true"
         >

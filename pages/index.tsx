@@ -24,10 +24,10 @@ const HomePage = () => {
       {/* <QuickFacts /> */}
       <Video />
       <HowItWorks />
-      <div className="bg-[#FAFAFA] shadow-sm py-40 flex flex-col justify-center items-center my-20">
-        <div className="max-w-4xl mx-auto mb-24">
+      <div className="bg-[#FAFAFA] shadow-sm py-14 px-5 md:py-32 lg:py-40 flex flex-col justify-center items-center lg:my-20">
+        <div className="max-w-4xl mx-auto mb-8 md:mb-16 lg:mb-24">
           {/* <h2 className="leading-9 text-center text-[26px] sm:text-4xl md:text-5xl xl:leading-[1.4]"> */}
-          <h2 className="text-center text-7xl text-black leading-[1.4]">
+          <h2 className="text-center text-2xl sm:text-3xl md:text-5xl max-w-sm md:max-w-full lg:text-7xl text-black leading-[1.4]">
             No more <span>pricey&nbsp;💸 </span> , <span>bloated&nbsp;😫</span>,{' '}
             <span>ugly&nbsp;🤮</span> forms.
             <style jsx>{`
@@ -40,15 +40,15 @@ const HomePage = () => {
             `}</style>
           </h2>
         </div>
-        <div className="space-y-8 flex flex-col justify-center items-center max-w-5xl w-full">
-          <div className="flex justify-center items-center gap-x-9 w-full">
+        <div className="flex flex-col items-center justify-center w-full max-w-5xl space-y-8">
+          <div className="flex flex-col items-center justify-center w-full gap-y-4 md:flex-row gap-x-9">
             <Section
               type="narrow"
               heading="Free (costs $0) 🤯"
               subHeading="We don't charge you to use our platform. We're just indie hackers who love to make things."
               renderBody={() => {
                 return (
-                  <div className="mx-auto">
+                  <div className="mx-auto mt-8 md:mt-0">
                     <Image
                       src={require('/public/images/free.png')}
                       alt={'Own Data'}
@@ -66,7 +66,7 @@ const HomePage = () => {
               heading="Own Your Data 🤴"
               subHeading="All your form data is stored in your Google Sheets, no vendor lock-in."
               renderBody={() => (
-                <div className="mx-auto">
+                <div className="mx-auto mt-8 md:mt-0">
                   <Image
                     src={require('/public/images/own-data.png')}
                     alt={'Own Data'}
@@ -78,7 +78,7 @@ const HomePage = () => {
               )}
             />
           </div>
-          <div className="flex justify-center items-center gap-x-9 w-full">
+          <div className="flex flex-col items-center justify-center w-full md:flex-row gap-y-4 gap-x-9">
             <Section
               link={'https://github.com/nfuad/HeroForm'}
               className="bg-gradient-to-bl text-white from-[#FFC902] to-[#FF5991] relative cursor-pointer"
@@ -89,7 +89,7 @@ const HomePage = () => {
               subHeadingClassName="text-white opacity-75"
               renderBody={() => (
                 <>
-                  <div className="mx-auto group-hover:scale-95 transition-all transform-gpu">
+                  <div className="mx-auto mt-8 transition-all md:mt-0 group-hover:scale-95 transform-gpu">
                     <Image
                       src={require('/public/images/open-source.png')}
                       alt={'Open Source'}
@@ -98,7 +98,7 @@ const HomePage = () => {
                       quality={100}
                     />
                   </div>
-                  <div className="absolute top-10 right-10 group-hover:-rotate-45 transform-gpu transition-all">
+                  <div className="absolute transition-all top-6 right-6 md:top-7 md:right-7 lg:top-10 lg:right-10 group-hover:-rotate-45 transform-gpu">
                     <Image
                       src={require('/public/images/github-icon.svg')}
                       alt=""
@@ -118,24 +118,26 @@ const HomePage = () => {
               subHeading="See how the form is performing, and how it is being used."
               renderBody={() => {
                 return (
-                  <Image
-                    src={require('/public/images/analytics.png')}
-                    className=""
-                    width={335 / 1.5}
-                    height={337 / 1.5}
-                    alt={'LightHouse Performance Score'}
-                  />
+                  <div className="mt-8 md:mt-0">
+                    <Image
+                      src={require('/public/images/analytics.png')}
+                      className=""
+                      width={335 / 1.5}
+                      height={337 / 1.5}
+                      alt={'LightHouse Performance Score'}
+                    />
+                  </div>
                 )
               }}
             />
           </div>
-          <div className="flex justify-center items-center gap-x-9 w-full">
+          <div className="flex flex-col items-center justify-center w-full md:flex-row gap-y-4 gap-x-9">
             <Section
               type="narrow"
               heading="Ultra Fast ⚡️"
               subHeading="Loads faster than any other alternative."
               renderBody={() => (
-                <div className=" flex justify-center items-center relative">
+                <div className="relative flex items-center justify-center mt-8 lg:mt-0">
                   <Image
                     src={require('/public/images/score.svg')}
                     className=""
@@ -143,7 +145,7 @@ const HomePage = () => {
                     height={200}
                     alt={'LightHouse Performance Score'}
                   />
-                  <span className="text-7xl text-white font-heading absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                  <span className="absolute text-white transform -translate-x-1/2 -translate-y-1/2 text-7xl font-heading top-1/2 left-1/2">
                     99
                   </span>
                 </div>
@@ -154,13 +156,15 @@ const HomePage = () => {
               heading="100% Responsive 💯"
               subHeading="Your form feels great to use on any device, regardless of size."
               renderBody={() => (
-                <Image
-                  src={require('/public/images/responsive.png')}
-                  alt={'Fully Responsive'}
-                  width={2428}
-                  height={1250}
-                  quality={100}
-                />
+                <div className="mt-8 lg:mt-0">
+                  <Image
+                    src={require('/public/images/responsive.png')}
+                    alt={'Fully Responsive'}
+                    width={2428}
+                    height={1250}
+                    quality={100}
+                  />
+                </div>
               )}
             />
           </div>
@@ -191,16 +195,18 @@ const Section = ({
       onClick={clickable ? () => window.open(link, '_blank') : null}
       className={`p-9 ${
         type === 'narrow'
-          ? 'max-w-[300px] w-full'
-          : 'max-w-[700px] w-full  grow'
-      } bg-white h-[600px] rounded-3xl shadow-[rgba(0,0,0,0.05)_0px_20px_40px_0px] flex flex-col justify-between group ${className}`}
+          ? 'sm:max-w-[400px] md:max-w-[300px] w-full'
+          : 'sm:max-w-[400px] md:max-w-[700px] w-full  grow'
+      } bg-white md:h-[600px] rounded-3xl shadow-[rgba(0,0,0,0.05)_0px_20px_40px_0px] flex flex-col justify-between group ${className}`}
     >
       <div>
-        <h3 className={`text-2xl mb-2 tracking-wide ${headingClassName}`}>
+        <h3
+          className={`text-xl md:text-2xl mb-2 tracking-wide ${headingClassName}`}
+        >
           {heading}
         </h3>
         <h4
-          className={`text-gray-500 opacity-75 tracking-wide text-lg ${subHeadingClassName}`}
+          className={`text-gray-500 opacity-75 tracking-wide text-base md:text-lg ${subHeadingClassName}`}
         >
           {subHeading}
         </h4>
