@@ -5,6 +5,7 @@ import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
 import { Container, Loader } from '@components/auth-screens'
 import toast from 'react-hot-toast'
+import Toast from '@components/toast'
 import { useMutation } from 'react-query'
 import axios from 'axios'
 import { ROUTES } from '@constants/routes'
@@ -142,6 +143,7 @@ const EditorPage = () => {
           />
         </div>
       </div>
+      <Toast />
     </>
   )
 }

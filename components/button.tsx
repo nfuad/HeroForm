@@ -9,9 +9,9 @@ type Props = {
   borderRadius?: string
 }
 
-const Button: FC<Props> = ({ onClick, children = null }) => {
+const Button: FC<Props> = ({ onClick, children = null, className = '' }) => {
   return (
-    <button onClick={onClick} className="button">
+    <button onClick={onClick} className={`${className}`}>
       <span className="text-xs tracking-wider md:text-sm lg:text-base">
         {children}
       </span>
@@ -31,9 +31,9 @@ const Button: FC<Props> = ({ onClick, children = null }) => {
       </span>
       <style jsx>
         {`
-          .button {
-            all: unset;
-            height: 30px;
+          button {
+            min-height: 30px;
+            height: full;
             font-size: 16px;
             background: transparent;
             border: none;
@@ -51,8 +51,8 @@ const Button: FC<Props> = ({ onClick, children = null }) => {
             touch-action: manipulation;
           }
 
-          .button::after,
-          .button::before {
+          button::after,
+          button::before {
             content: '';
             position: absolute;
             bottom: 0;
@@ -61,7 +61,7 @@ const Button: FC<Props> = ({ onClick, children = null }) => {
             transition: all 0.4s;
           }
 
-          .button::before {
+          button::before {
             transform: translate(0%, 0%);
             width: 100%;
             height: 100%;
@@ -69,7 +69,7 @@ const Button: FC<Props> = ({ onClick, children = null }) => {
             border-radius: 10px;
           }
 
-          .button::after {
+          button::after {
             transform: translate(-13.5px, -8px);
             width: 33px;
             height: 33px;
@@ -79,20 +79,20 @@ const Button: FC<Props> = ({ onClick, children = null }) => {
             border-radius: 50px;
           }
 
-          .button:hover::before {
+          button:hover::before {
             transform: translate(5%, 20%);
             width: 110%;
             height: 110%;
           }
 
-          .button:hover::after {
+          button:hover::after {
             border-radius: 10px;
             transform: translate(0, 0);
             width: 100%;
             height: 100%;
           }
 
-          .button:active::after {
+          button:active::after {
             transition: 0s;
             transform: translate(0, 5%);
           }

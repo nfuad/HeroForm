@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes } from 'react'
+import { FC, HTMLAttributes, useState } from 'react'
 import { NextSeo } from 'next-seo'
 import { signOut } from 'next-auth/react'
 import { SITE_DATA } from '@constants/site-data'
@@ -8,10 +8,7 @@ import { useRouter } from 'next/router'
 import { ROUTES } from '@constants/routes'
 import toast from 'react-hot-toast'
 import { Container, Loader } from './auth-screens'
-import Image from 'next/image'
 import Link from 'next/link'
-import { Fragment } from 'react'
-import { Menu, Transition } from '@headlessui/react'
 import { LogOutIcon, ChevronDownIcon } from './icons'
 
 type Props = {
@@ -133,82 +130,6 @@ const Footer = () => {
   )
 }
 
-const DropDown = () => {
-  const { data } = useSession()
-
-  function classNames(...classes) {
-    return classes.filter(Boolean).join(' ')
-  }
-
-  // see: https://tailwindui.com/components/application-ui/elements/dropdowns
-  return (
-    <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
-          <div className="flex items-center justify-start gap-x-2">
-            {
-              // have to use <img> tag here because we don't know the google domains :)
-              // eslint-disable-next-line
-              <img
-                alt="avatar"
-                src={data?.user?.image}
-                className="h-6 border-2 rounded-full border-violet-500"
-              />
-            }
-            <p className="font-heading">{data?.user?.name}</p>
-          </div>
-          <ChevronDownIcon className="w-5 h-5 ml-2 -mr-1" aria-hidden="true" />
-        </Menu.Button>
-      </div>
-
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Menu.Items className="absolute right-0 w-56 mt-2 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <div
-                  className={classNames(
-                    'block px-4 py-4 text-sm border-b border-b-gray-200',
-                  )}
-                >
-                  <p>Signed in as</p>
-                  <p className="tracking-wide break-all font-heading">
-                    {data?.user?.email}
-                  </p>
-                </div>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <div
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm',
-                  )}
-                >
-                  <button
-                    className="flex items-center justify-between w-full"
-                    onClick={() => signOut()}
-                  >
-                    <span>Sign Out</span> <LogOutIcon />
-                  </button>
-                </div>
-              )}
-            </Menu.Item>
-          </div>
-        </Menu.Items>
-      </Transition>
-    </Menu>
-  )
-}
 const Header = () => {
   const router = useRouter()
   const isHome = router.pathname === ROUTES.HOME
@@ -368,3 +289,53 @@ const JoinGitHubButton = () => {
 
 // add twitter, discord, github, etc. like raycast.com
 // mention "Open Source Community"
+
+const DropDown = () => {
+  const [open, setOpen] = useState(false)
+  const { data } = useSession()
+
+  return (
+    <div className="relative transition-all">
+      <div
+        className={`rounded-md border px-3 py-2 hover:border-gray-900 transition-all cursor-pointer ${
+          open ? 'border-gray-500' : 'border-gray-200'
+        }`}
+        onClick={() => setOpen((st) => !st)}
+      >
+        <div className="flex items-center justify-start gap-x-2">
+          {
+            // have to use <img> tag here because we don't know the google domains :)
+            // eslint-disable-next-line
+            <img
+              alt="avatar"
+              src={data?.user?.image}
+              className="h-6 border-2 rounded-full border-violet-500"
+            />
+          }
+          <p className="font-heading">{data?.user?.name}</p>
+          <ChevronDownIcon className="w-5 h-5 ml-2 -mr-1" aria-hidden="true" />
+        </div>
+      </div>
+      <div
+        className={`min-w-min shadow-lg rounded-md border transform-gpu transition-all ${
+          open ? 'scale-100 translate-y-0' : 'scale-0 -translate-y-1/2'
+        } `}
+      >
+        <div className={'block px-4 py-4 text-sm border-b border-b-gray-200'}>
+          <p>Signed in as</p>
+          <p className="tracking-wide break-all font-heading">
+            {data?.user?.email}
+          </p>
+        </div>
+        <div className={'text-gray-700 block px-4 py-2 text-sm'}>
+          <button
+            className="flex items-center justify-between w-full"
+            onClick={() => signOut()}
+          >
+            <span>Sign Out</span> <LogOutIcon />
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -4,4 +4,4 @@
 
 ## License
 
-AGPU - Tough luck :)
+AGPL

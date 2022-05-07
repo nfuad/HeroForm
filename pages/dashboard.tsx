@@ -2,6 +2,8 @@ import { NextPage } from 'next'
 import Layout from '@components/layout'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
+import Toast from '@components/toast'
+
 import { useSession } from 'next-auth/react'
 import { ROUTES } from '@constants/routes'
 import { LoadingIcon } from '@components/icons'
@@ -9,6 +11,7 @@ import { useMutation, useQuery } from 'react-query'
 import axios from 'axios'
 import isEmpty from 'lodash.isempty'
 import Link from 'next/link'
+import { SITE_DATA } from '@constants/site-data'
 
 const DashboardPage: NextPage = () => {
   const { data, status } = useSession()
@@ -135,6 +138,7 @@ const DashboardPage: NextPage = () => {
           </div>
         </div>
       </div>
+      <Toast />
     </Layout>
   )
 }
@@ -143,14 +147,31 @@ export default DashboardPage
 
 const Form = ({ publicId, metadata: { title, responseCount } }) => {
   const href = `${publicId}${ROUTES.EDIT}`
-  const handleUnsupportedViewportClick = () => {
-    alert(href)
+  const handleUnSupportedViewportClick = () => {
+    toast(
+      `Editing is not supported on smaller screens. The form URL will be copied to your clipboard: ${SITE_DATA.domain}/${publicId}`,
+      {
+        duration: 6000,
+      },
+    )
+
+    navigator.clipboard
+      .writeText(`https://${SITE_DATA.domain}/${publicId}`)
+      .then(
+        () => {
+          // do nothing on success
+        },
+        (err) => {
+          // freak out on error
+          toast.error('Could not copy to clipboard')
+        },
+      )
   }
 
   return (
     <>
       <Link href={href}>
-        <a className="flex-col items-center justify-center hidden w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer lg:flex hover:shadow-xl">
+        <a className="flex-col items-center justify-center w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer hidden lg:flex hover:shadow-xl">
           <h1>{title}</h1>
           <p className="mt-2 text-xs text-gray-500">
             {responseCount} response{responseCount > 1 && 's'}
@@ -158,8 +179,8 @@ const Form = ({ publicId, metadata: { title, responseCount } }) => {
         </a>
       </Link>
       <div
-        onClick={handleUnsupportedViewportClick}
-        className="flex-col items-center justify-center hidden w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer lg:flex hover:shadow-xl"
+        onClick={handleUnSupportedViewportClick}
+        className="flex-col items-center justify-center w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer hover:shadow-xl flex lg:hidden"
       >
         <h1>{title}</h1>
         <p className="mt-2 text-xs text-gray-500">
