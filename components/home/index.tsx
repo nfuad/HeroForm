@@ -691,7 +691,7 @@ export const Integrations = () => (
   <div className="flex flex-row items-center justify-center w-full gap-10 px-5 lg:flex-col py-14 md:py-32 lg:py-40 lg:my-20">
     <h2 className="max-w-sm text-2xl text-left text-black sm:text-3xl md:text-5xl md:max-w-full lg:text-7xl">
       Integrations? <br /> You Name It. <br />
-      <span className="text-gray-400">Coming soon.</span>
+      <span className="text-gray-400">Coming Soon.</span>
     </h2>
     <div>
       <Image
