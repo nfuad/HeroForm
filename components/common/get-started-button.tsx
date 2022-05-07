@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { ROUTES } from '@constants/routes'
-import { EVENTS } from '@constants/events'
 
 export const GetStartedButton = ({ large = false }) => {
   return (

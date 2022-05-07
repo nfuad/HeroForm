@@ -182,7 +182,7 @@ export const Heading = () => {
   const onHover = () => showConfettiAnimation({ emojis: ['🎉', '🤯', '🔥'] })
 
   return (
-    <h1 className="mt-24 md:mt-32 lg:mt-40 leading-9 text-center text-[26px] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl xl:leading-[1.2]">
+    <h1 className="mt-24 md:mt-32 lg:mt-40 leading-9 text-center text-[28px] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl xl:leading-[1.2]">
       <span className="text-black">
         <span>Create</span>{' '}
         <span className="relative">
@@ -229,7 +229,7 @@ export const Video = () => {
                 src={require('/public/images/demo.png')}
               />
               <div
-                className={`absolute ${
+                className={`hidden lg:block absolute ${
                   isHovering
                     ? 'text-indigo-900 shadow-lg scale-95'
                     : 'text-indigo-600 shadow-md '
@@ -239,6 +239,34 @@ export const Video = () => {
                   src={require('/public/images/play.svg')}
                   width={100}
                   height={100}
+                  alt={'Play Icon'}
+                />
+              </div>
+              <div
+                className={`hidden sm:block lg:hidden absolute ${
+                  isHovering
+                    ? 'text-indigo-900 shadow-lg scale-95'
+                    : 'text-indigo-600 shadow-md '
+                } -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 transition-all duration-75 flex justify-center items-center`}
+              >
+                <Image
+                  src={require('/public/images/play.svg')}
+                  width={64}
+                  height={64}
+                  alt={'Play Icon'}
+                />
+              </div>
+              <div
+                className={`block sm:hidden absolute ${
+                  isHovering
+                    ? 'text-indigo-900 shadow-lg scale-95'
+                    : 'text-indigo-600 shadow-md '
+                } -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 transition-all duration-75 flex justify-center items-center`}
+              >
+                <Image
+                  src={require('/public/images/play.svg')}
+                  width={48}
+                  height={48}
                   alt={'Play Icon'}
                 />
               </div>
@@ -254,7 +282,7 @@ export const Video = () => {
 
 export const HowItWorks = () => {
   return (
-    <div className="flex flex-col items-center justify-center px-5 py-10 sm:px-8 md:px-12 lg:px-0 md:py-32 lg:py-40">
+    <div className="flex flex-col items-center justify-center px-5 py-10 sm:px-8 md:px-12 lg:px-16 md:py-32 lg:py-40">
       <div className="w-full max-w-5xl mx-auto mb-6 md:mb-0">
         <h2 className="w-full mb-4 text-3xl leading-tight tracking-wide text-center sm:text-4xl md:text-5xl md:mb-20 lg:text-7xl text-gradient-blue-two">
           Here&apos;s How It Works 👇
@@ -262,12 +290,12 @@ export const HowItWorks = () => {
       </div>
       <div className="flex flex-col max-w-5xl py-4 gap-y-12 md:py-8 md:gap-y-24 lg:py-20 lg:gap-y-40">
         <div className="flex flex-col items-center justify-between md:flex-row gap-y-6 gap-x-10">
-          <div className="w-full max-w-lg">
+          <div className="w-full md:max-w-lg">
             <h3 className="text-xl leading-tight text-center sm:text-2xl md:text-4xl md:text-left lg:text-6xl">
               Connect Sheets to collect responses from everyone.
             </h3>
           </div>
-          <div className="w-full sm:max-w-[450px] md:max-w-full">
+          <div className="w-full max-w-[450px] md:max-w-full">
             <Image
               src={require('/public/images/connect-sheets.png')}
               alt={'Connect Sheets'}
@@ -278,7 +306,7 @@ export const HowItWorks = () => {
           </div>
         </div>
         <div className="flex flex-col-reverse items-center justify-between md:flex-row gap-y-6 gap-x-10">
-          <div className="w-full sm:max-w-[450px] md:max-w-full">
+          <div className="w-full max-w-[450px] md:max-w-full">
             <Image
               src={require('/public/images/create-great-forms.png')}
               alt={'Connect Sheets'}
@@ -287,19 +315,19 @@ export const HowItWorks = () => {
               quality={100}
             />
           </div>
-          <div className="w-full max-w-lg">
+          <div className="w-full md:max-w-lg">
             <h3 className="text-xl leading-tight text-center sm:text-2xl md:text-4xl md:text-right lg:text-6xl">
               Create forms ultra fast with a very minimal editor UI.
             </h3>
           </div>
         </div>
         <div className="flex flex-col items-center justify-between md:flex-row gap-y-6 gap-x-10">
-          <div className="w-full max-w-lg">
+          <div className="w-full md:max-w-lg">
             <h3 className="text-xl leading-tight text-center sm:text-2xl md:text-4xl md:text-left lg:text-6xl">
               Get a short link to share all over the internet.
             </h3>
           </div>
-          <div className="w-full sm:max-w-[450px] md:max-w-full">
+          <div className="w-full max-w-[450px] md:max-w-full">
             <Image
               src={require('/public/images/share-everywhere.png')}
               alt={'Connect Sheets'}
@@ -375,7 +403,7 @@ export const SelfHosting = () => {
 }
 
 const Quote = ({ block, image, citation }) => (
-  <figure className="sm:max-w-[400px] md:max-w-full p-5 lg:p-7 shadow-[rgba(0,0,0,0.05)_0px_20px_40px_0px] rounded-xl w-full md:w-1/3 grow">
+  <figure className="max-w-[400px] md:max-w-full p-5 lg:p-7 shadow-[rgba(0,0,0,0.05)_0px_20px_40px_0px] rounded-xl mx-auto sm:mx-0 w-full md:w-1/3 grow">
     <blockquote>
       <p className="my-4 text-base leading-normal tracking-wider text-gray-900 font-heading">
         {block}
@@ -515,8 +543,8 @@ const Section = ({
       onClick={clickable ? () => window.open(link, '_blank') : null}
       className={`p-9 ${
         type === 'narrow'
-          ? 'sm:max-w-[400px] md:max-w-[300px] w-full'
-          : 'sm:max-w-[400px] md:max-w-[700px] w-full  grow'
+          ? 'max-w-[400px] sm:max-w-[400px] md:max-w-[300px] w-full'
+          : 'max-w-[400px] sm:max-w-[400px] md:max-w-[700px] w-full  grow'
       } bg-white md:h-[600px] rounded-3xl shadow-[rgba(0,0,0,0.05)_0px_20px_40px_0px] flex flex-col justify-between group ${className}`}
     >
       <div>
@@ -542,7 +570,7 @@ export const Features = () => (
   <div className="bg-[#FAFAFA] shadow-sm py-14 px-5 md:py-32 lg:py-40 flex flex-col justify-center items-center lg:my-20">
     <div className="max-w-4xl mx-auto mb-8 md:mb-16 lg:mb-24">
       {/* <h2 className="leading-9 text-center text-[26px] sm:text-4xl md:text-5xl xl:leading-[1.4]"> */}
-      <h2 className="text-center text-2xl sm:text-3xl md:text-5xl max-w-sm md:max-w-full lg:text-7xl text-black leading-[1.6] sm:leading-[1.6] md:leading-[1.6] lg:leading-[1.5]">
+      <h2 className="text-center text-3xl md:text-5xl max-w-sm md:max-w-xl lg:max-w-full lg:text-7xl text-black leading-[1.6] sm:leading-[1.6] md:leading-[1.6] lg:leading-[1.5]">
         No more <span>pricey&nbsp;💸 </span> , <span>bloated&nbsp;😫</span>,{' '}
         <span>ugly&nbsp;🤮</span> forms.
         <style jsx>{`
@@ -563,15 +591,26 @@ export const Features = () => (
           subHeading="We don't charge you to use our platform. We're just indie hackers who love to make things."
           renderBody={() => {
             return (
-              <div className="mx-auto mt-8 md:mt-0">
-                <Image
-                  src={require('/public/images/free.png')}
-                  alt={'Own Data'}
-                  width={505}
-                  height={554}
-                  quality={100}
-                />
-              </div>
+              <>
+                <div className="hidden mx-auto mt-8 md:block md:mt-0">
+                  <Image
+                    src={require('/public/images/free.png')}
+                    alt={'Own Data'}
+                    width={505}
+                    height={554}
+                    quality={100}
+                  />
+                </div>
+                <div className="block mx-auto mt-8 md:hidden md:mt-0">
+                  <Image
+                    src={require('/public/images/free.png')}
+                    alt={'Own Data'}
+                    width={250}
+                    height={274}
+                    quality={100}
+                  />
+                </div>
+              </>
             )
           }}
         />
@@ -613,12 +652,20 @@ export const Features = () => (
                   quality={100}
                 />
               </div>
-              <div className="absolute transition-all top-6 right-6 md:top-7 md:right-7 lg:top-10 lg:right-10 group-hover:-rotate-45 transform-gpu">
+              <div className="absolute hidden transition-all lg:block top-6 right-6 md:top-7 md:right-7 lg:top-10 lg:right-10 group-hover:-rotate-45 transform-gpu">
                 <Image
                   src={require('/public/images/github-icon.svg')}
                   alt=""
                   width={45}
                   height={45}
+                />
+              </div>
+              <div className="absolute block transition-all lg:hidden top-7 right-7 md:top-8 md:right-6 lg:top-10 lg:right-10 group-hover:-rotate-45 transform-gpu">
+                <Image
+                  src={require('/public/images/github-icon.svg')}
+                  alt=""
+                  width={32}
+                  height={32}
                 />
               </div>
             </>
@@ -688,17 +735,26 @@ export const Features = () => (
 )
 
 export const Integrations = () => (
-  <div className="flex flex-row items-center justify-center w-full gap-10 px-5 lg:flex-col py-14 md:py-32 lg:py-40 lg:my-20">
-    <h2 className="max-w-sm text-2xl text-left text-black sm:text-3xl md:text-5xl md:max-w-full lg:text-7xl">
+  <div className="flex flex-col items-center justify-center w-full gap-4 px-5 sm:gap-10 sm:flex-row lg:flex-col py-14 md:py-32 lg:py-40 lg:my-20">
+    <h2 className="text-3xl text-center text-black md:text-left sm:text-4xl md:text-5xl md:max-w-full lg:text-7xl">
       Integrations? <br /> You Name It. <br />
       <span className="text-gray-400">Coming Soon.</span>
     </h2>
-    <div>
+    <div className="hidden md:block">
       <Image
         src={require('/public/images/integrations.png')}
         alt={'Integrations'}
         width={550}
         height={500}
+        quality={100}
+      />
+    </div>
+    <div className="block md:hidden">
+      <Image
+        src={require('/public/images/integrations.png')}
+        alt={'Integrations'}
+        width={330}
+        height={300}
         quality={100}
       />
     </div>

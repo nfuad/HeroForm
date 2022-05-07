@@ -83,24 +83,24 @@ const Footer = () => {
 
   return (
     <footer className="flex flex-col items-center justify-center w-full mx-auto mt-auto text-center my-14">
-      <div className="flex justify-center items-center my-5 gap-x-6">
+      <div className="flex items-center justify-center my-5 gap-x-6">
         <Link href="/privacy">
-          <a className="text-sm text-gray-600 hover:text-gray-900 hover:tracking-wider transition-all">
+          <a className="text-sm text-gray-600 transition-all hover:text-gray-900 hover:tracking-wider">
             Privacy Policy
           </a>
         </Link>
         <Link href="/terms">
-          <a className="text-sm text-gray-600 hover:text-gray-900 hover:tracking-wider transition-all">
+          <a className="text-sm text-gray-600 transition-all hover:text-gray-900 hover:tracking-wider">
             Terms of Service
           </a>
         </Link>
         <Link href="/contact">
-          <a className="text-sm text-gray-600 hover:text-gray-900 hover:tracking-wider transition-all">
+          <a className="text-sm text-gray-600 transition-all hover:text-gray-900 hover:tracking-wider">
             Contact
           </a>
         </Link>
         <Link href="/about">
-          <a className="text-sm text-gray-600 hover:text-gray-900 hover:tracking-wider transition-all">
+          <a className="text-sm text-gray-600 transition-all hover:text-gray-900 hover:tracking-wider">
             About
           </a>
         </Link>
@@ -143,23 +143,25 @@ const Header = () => {
       </Link>
 
       {isHome ? (
-        <div className="flex items-center justify-center gap-x-6">
-          <div className="flex items-center justify-center gap-x-4">
-            <JoinDiscordButton />
-            <JoinGitHubButton />
-            {/* <GitHubStars /> */}
-          </div>
+        <>
+          <div className="flex items-center justify-center mr-16 xl:mr-12 2xl:mr-0 sm:gap-x-6">
+            <div className="flex items-center justify-center gap-x-4">
+              <JoinDiscordButton />
+              <JoinGitHubButton />
+              {/* <GitHubStars /> */}
+            </div>
 
-          <div className="flex items-center justify-center gap-x-5">
-            <Link href={ROUTES.LOGIN}>
-              <a className="hidden text-base transition-all duration-100 sm:block font-body hover:text-gray-500">
-                {ROUTES.LOGIN}
-              </a>
-            </Link>
+            <div className="flex items-center justify-center gap-x-5">
+              <Link href={ROUTES.LOGIN}>
+                <a className="hidden text-base transition-all duration-100 sm:block font-body hover:text-gray-500">
+                  {ROUTES.LOGIN}
+                </a>
+              </Link>
 
-            <GetStartedButton />
+              <GetStartedButton />
+            </div>
           </div>
-        </div>
+        </>
       ) : (
         <DropDown />
       )}
@@ -221,7 +223,7 @@ const JoinDiscordButton = () => {
 
 const JoinGitHubButton = () => {
   return (
-    <div>
+    <div className="absolute top-0 right-0">
       <a
         target="_blank"
         rel="noopener noreferrer"
