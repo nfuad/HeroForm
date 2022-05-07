@@ -6,7 +6,7 @@ export const GetStartedButton = ({ large = false }) => {
   return (
     <Link href={ROUTES.CONTINUE}>
       <a
-        onClick={() => umami(EVENTS.SIGN_UP_BUTTON_CLICKED)}
+        // onClick={() => umami(EVENTS.SIGN_UP_BUTTON_CLICKED)}
         className={`bg-[#2c2c2c] hover:bg-gradient-to-r hover:from-gray-900 hover:to-indigo-800 transition-all duration-1000 text-white rounded-lg px-5 py-2 transform-gpu font-heading tracking-wider shadow-md hover:shadow-lg flex justify-center items-center group ${
           large
             ? 'text-sm md:text-lg px-6 py-3 lg:py-5 lg:px-10'

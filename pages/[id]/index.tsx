@@ -7,10 +7,7 @@ import { getQuestionsBySheetId } from '@lib/sheets/get-questions-by-sheet-id'
 import { ChevronIcon, WarningIcon } from '@components/icons'
 import { useRouter } from 'next/router'
 import { LOCAL_STORAGE } from '@constants/local-storage'
-import toast from 'react-hot-toast'
 import { showConfettiAnimation } from '@lib/show-confetti-animation'
-import { useMutation } from 'react-query'
-import axios from 'axios'
 import { ROUTES } from '@constants/routes'
 
 type Props = {
@@ -30,14 +27,19 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
   })
   const router = useRouter()
 
-  const { mutate: createResponse } = useMutation(
-    (body: any) => axios.post(ROUTES.API.CREATE_RESPONSE, body),
-    {
-      onError: () => {
-        toast.error('Cannot save response.')
-      },
-    },
-  )
+  const createResponse = async (body: any) => {
+    try {
+      await fetch(ROUTES.API.CREATE_RESPONSE, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      })
+    } catch (error) {
+      alert("The response couldn't be saved. Please try again later.")
+    }
+  }
 
   const isInitialPage = currentPage === 0
   const isPreview = (router.query.preview as string) === 'true'
@@ -65,7 +67,7 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
     const canGoNext = (!isRequired || responses[id]) && !isLastPage
 
     if (!canGoNext) {
-      toast.error('This question is required.')
+      alert('The question is required. Please answer it before proceeding.')
       return
     }
 

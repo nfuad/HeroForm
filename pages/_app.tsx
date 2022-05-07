@@ -2,28 +2,23 @@ import '../styles/globals.css'
 import 'cal-sans'
 import { FC } from 'react'
 import type { AppProps } from 'next/app'
-import { SessionProvider } from 'next-auth/react'
-import { DefaultSeo } from 'next-seo'
 import SEO from '../next-seo.config'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import axios from 'axios'
-import NextNProgress from 'nextjs-progressbar'
 import Script from 'next/script'
-import Toast from '@components/toast'
 import { SITE_DATA } from '@constants/site-data'
-import PlausibleProvider from 'next-plausible'
+import { useRouter } from 'next/router'
+import dynamic from 'next/dynamic'
 
-const defaultQueryFn = async ({ queryKey }) => {
-  const { data } = await axios.get(`${queryKey[0]}`)
-  return data
-}
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      queryFn: defaultQueryFn,
-    },
-  },
-})
+const DynamicNextNProgress = dynamic(() => import('nextjs-progressbar'), {})
+const DynamicDefaultSEO = dynamic(() =>
+  import('next-seo').then((mod) => mod.DefaultSeo),
+) as any
+const DynamicSessionProvider = dynamic(() =>
+  import('next-auth/react').then((mod) => mod.SessionProvider),
+) as any
+const DynamicQueryClientProvider = dynamic(
+  () => import('@lib/query-client-provider'),
+) as any
+const DynamicPlausibleProvider = dynamic(() => import('next-plausible')) as any
 
 const PROGRESSBAR_OPTIONS = {
   color: '#b11fa8',
@@ -34,14 +29,37 @@ const PROGRESSBAR_OPTIONS = {
 }
 
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
+  const router = useRouter()
+
+  const isQuestionOutput = router.pathname === '/[id]'
+
+  if (isQuestionOutput) {
+    return (
+      <>
+        <Script
+          id="load-posthog"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init('phc_3v15G8Lafkkh8YUqegXNUEpuF6dDJdyOccliIwGMgvU',{api_host:'https://app.posthog.com'})
+  `,
+          }}
+        />
+        <DynamicDefaultSEO {...SEO} />
+        <DynamicPlausibleProvider
+          domain={SITE_DATA.domain}
+          trackLocalhost={true}
+          selfHosted={false}
+        >
+          <Component {...pageProps} />
+        </DynamicPlausibleProvider>
+      </>
+    )
+  }
+
   return (
     <>
-      <Script
-        async
-        defer
-        data-website-id={process.env.NEXT_PUBLIC_UMAMI_DATA_WEBSITE_ID}
-        src={process.env.NEXT_PUBLIC_UMAMI_SCRIPT_URL}
-      />
       <Script
         id="load-posthog"
         strategy="afterInteractive"
@@ -52,20 +70,19 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
       `,
         }}
       />
-      <NextNProgress {...PROGRESSBAR_OPTIONS} />
-      <DefaultSeo {...SEO} />
-      <QueryClientProvider client={queryClient}>
-        <SessionProvider session={pageProps.session} refetchInterval={0}>
-          <PlausibleProvider
+      <DynamicNextNProgress {...PROGRESSBAR_OPTIONS} />
+      <DynamicDefaultSEO {...SEO} />
+      <DynamicQueryClientProvider>
+        <DynamicSessionProvider session={pageProps.session} refetchInterval={0}>
+          <DynamicPlausibleProvider
             domain={SITE_DATA.domain}
             trackLocalhost={true}
             selfHosted={false}
           >
             <Component {...pageProps} />
-          </PlausibleProvider>
-        </SessionProvider>
-      </QueryClientProvider>
-      <Toast />
+          </DynamicPlausibleProvider>
+        </DynamicSessionProvider>
+      </DynamicQueryClientProvider>
     </>
   )
 }

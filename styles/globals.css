@@ -2,16 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* use same font for all headings */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: 'Cal Sans';
-}
-
 /* change selection color */
 ::selection {
   color: white;
@@ -20,4 +10,16 @@ h6 {
 ::-moz-selection {
   color: white;
   background: black;
+}
+
+@layer base {
+  /* use same font for all headings */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Cal Sans';
+  }
 }
