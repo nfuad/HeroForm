@@ -1,4 +1,5 @@
 import { NextPage } from 'next'
+import copy from 'copy-to-clipboard'
 import Layout from '@components/layout'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
@@ -9,6 +10,7 @@ import { useMutation, useQuery } from 'react-query'
 import axios from 'axios'
 import isEmpty from 'lodash.isempty'
 import Link from 'next/link'
+import { useState } from 'react'
 
 const DashboardPage: NextPage = () => {
   const { data, status } = useSession()
@@ -142,10 +144,12 @@ const DashboardPage: NextPage = () => {
 export default DashboardPage
 
 const Form = ({ publicId, metadata: { title, responseCount } }) => {
+  const [open, setOpen] = useState(false)
   const href = `${publicId}${ROUTES.EDIT}`
-  const handleUnsupportedViewportClick = () => {
-    alert(href)
-  }
+  const openModal = () => setOpen(true)
+  const closeModal = () => setOpen(false)
+
+  const handleCopy = () => copy(`${window.location.origin}/${publicId}`)
 
   return (
     <>
@@ -158,14 +162,27 @@ const Form = ({ publicId, metadata: { title, responseCount } }) => {
         </a>
       </Link>
       <div
-        onClick={handleUnsupportedViewportClick}
-        className="flex-col items-center justify-center hidden w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer lg:flex hover:shadow-xl"
+        onClick={openModal}
+        className="flex flex-col items-center justify-center w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer lg:hidden hover:shadow-xl"
       >
         <h1>{title}</h1>
         <p className="mt-2 text-xs text-gray-500">
           {responseCount} response{responseCount > 1 && 's'}
         </p>
       </div>
+      {open && (
+        <div
+          className="fixed inset-0 flex items-start px-5 bg-black bg-opacity-30 sm:px-6 md:px-8"
+          onClick={closeModal}
+        >
+          <div className="p-8 mx-auto mt-16 bg-white rounded-xl">
+            <p>I am not designed</p>
+            <button type="button" onClick={handleCopy}>
+              click me to copy link
+            </button>
+          </div>
+        </div>
+      )}
     </>
   )
 }
