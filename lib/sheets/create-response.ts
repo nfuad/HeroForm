@@ -10,13 +10,16 @@ type Params = {
 export const createResponse = async (params: Params): Promise<void> => {
   const { spreadsheetId, auth, responses } = params
 
+  const metadata = {
+    createdAt: new Date().toISOString(),
+  }
   await sheets.spreadsheets.values.append({
     spreadsheetId,
     valueInputOption: 'RAW',
     range: 'Responses',
     requestBody: {
       range: 'Responses',
-      values: [Object.values(responses)],
+      values: [[...Object.values(responses), JSON.stringify(metadata)]],
     },
     auth,
   })

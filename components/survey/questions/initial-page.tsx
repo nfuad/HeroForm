@@ -1,4 +1,3 @@
-import useIntersectionObserver from '@hooks/use-intersection-observer'
 import { useKeydown } from '@hooks/use-keydown'
 import { FC, useRef } from 'react'
 import Button from '@components/button'
@@ -6,18 +5,15 @@ import ShortcutHint from '@components/shortcut-hint'
 
 type Props = {
   handleNext: () => void
+  currentPage: number
 }
 
-const InitialPage: FC<Props> = ({ handleNext }) => {
-  const ref = useRef()
-  const entryScreen1 = useIntersectionObserver(ref, {})
-  const isVisible = !!entryScreen1?.isIntersecting
-
+const InitialPage: FC<Props> = ({ handleNext, currentPage }) => {
   useKeydown({
     onKeyDown({ isEnterKeyPressed }) {
       if (isEnterKeyPressed) handleNext()
     },
-    stopListening: !isVisible,
+    stopListening: currentPage !== 0,
   })
 
   return (
@@ -25,7 +21,7 @@ const InitialPage: FC<Props> = ({ handleNext }) => {
       <h1 className="text-xl md:text-3xl lg:text-5xl lg:leading-tight">
         Hey, we got a few questions for you. Ready to get started?
       </h1>
-      <div className="flex justify-center items-center">
+      <div className="flex items-center justify-center">
         <Button onClick={handleNext}>OK, Let&apos;s Go!</Button>
         <ShortcutHint />
       </div>

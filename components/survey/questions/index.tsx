@@ -63,7 +63,7 @@ const Questions: FC<Props> = ({
         blockScrollUp
         blockScrollDown
       >
-        <InitialPage handleNext={handleNext} />
+        <InitialPage handleNext={handleNext} currentPage={currentPage} />
         {renderQuestions()}
         <SuccessPage />
       </ReactPageScroller>

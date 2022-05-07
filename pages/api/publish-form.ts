@@ -113,7 +113,9 @@ const publishFormHandler = async (
       range: 'Responses',
       requestBody: {
         range: 'Responses',
-        values: [Object.values(questions).map(({ prompt }) => prompt)],
+        values: [
+          [...Object.values(questions).map(({ prompt }) => prompt), 'Metadata'],
+        ],
       },
       auth,
     })
