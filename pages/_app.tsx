@@ -31,9 +31,9 @@ const PROGRESSBAR_OPTIONS = {
 const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   const router = useRouter()
 
-  const isQuestionOutput = router.pathname === '/[id]'
+  const isSurveyPage = router.pathname === '/[id]'
 
-  if (isQuestionOutput) {
+  if (isSurveyPage) {
     return (
       <>
         <Script

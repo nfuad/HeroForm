@@ -9,10 +9,23 @@ import {
   Features,
   Integrations,
 } from '@components/home'
+import { useEffect } from 'react'
 
 const HomePage = () => {
+  useEffect(() => {
+    ;(async function () {
+      const ScrollReveal = (await import('scrollreveal')).default
+      ScrollReveal({ reset: true }).reveal('div')
+      ScrollReveal({ reset: true }).reveal('h1')
+      ScrollReveal({ reset: true }).reveal('h2')
+      ScrollReveal({ reset: true }).reveal('footer')
+      ScrollReveal({ reset: true }).reveal('header')
+      ScrollReveal({ reset: true }).reveal('button')
+    })()
+  }, [])
+
   return (
-    <Layout showHeader showFooter>
+    <Layout className="reveal-on-scroll" showHeader showFooter>
       <Heading />
       <SeeDemoButton />
       <Video />

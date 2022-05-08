@@ -70,7 +70,7 @@ const Button: FC<Props> = ({ onClick, children = null, className = '' }) => {
           }
 
           button::after {
-            transform: translate(-13.5px, -8px);
+            transform: translate(-13.5px, -6px);
             width: 33px;
             height: 33px;
             background: #ffffff15;
@@ -95,6 +95,14 @@ const Button: FC<Props> = ({ onClick, children = null, className = '' }) => {
           button:active::after {
             transition: 0s;
             transform: translate(0, 5%);
+          }
+
+          @media not all and (hover: hover) and (pointer: fine) {
+            // button::before,
+            button::after {
+              display: none;
+              all: unset;
+            }
           }
         `}
       </style>

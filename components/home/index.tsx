@@ -35,7 +35,7 @@ export const QuickFacts = () => {
 }
 
 export const SeeDemoButton = () => {
-  const demoURL = 'https://heroform.io/' // TODO: update with actual one here
+  const demoURL = 'https://heroform.io/A6e-FRQ-'
 
   return (
     <a
@@ -161,28 +161,11 @@ const FreeAnimations = () => {
   )
 }
 
-export const SubHeading = () => (
-  <p className="max-w-full md:max-w-2xl lg:max-w-3xl text-[#545465] text-xs px-10 sm:px-2 sm:text-sm md:text-xl xl:text-xl font-heading tracking-wider xl:leading-tight mt-8 lg:mt-12 mb-8 text-center mx-auto">
-    Asking questions with good looking forms should’ve never been{' '}
-    <em>pricey</em>, <em>bloated</em> or <em>heavily branded</em>. With{' '}
-    {SITE_DATA.name} it finally isn&apos;t.
-    <style jsx>{`
-      em {
-        background: #ffd9d9;
-        padding-left: 0.25rem;
-        padding-right: 0.25rem;
-        border-radius: 0.2em;
-        color: #3b06a5;
-        font-weight: bold;
-      }
-    `}</style>
-  </p>
-)
 export const Heading = () => {
   const onHover = () => showConfettiAnimation({ emojis: ['🎉', '🤯', '🔥'] })
 
   return (
-    <h1 className="mt-24 md:mt-32 lg:mt-40 leading-9 text-center text-[28px] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl xl:leading-[1.2]">
+    <h1 className="reveal-on-scroll mt-24 md:mt-32 lg:mt-40 leading-9 text-center text-[28px] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl xl:leading-[1.2]">
       <span className="text-black">
         <span>Create</span>{' '}
         <span className="relative">
@@ -230,9 +213,7 @@ export const Video = () => {
               />
               <div
                 className={`hidden lg:block absolute ${
-                  isHovering
-                    ? 'text-indigo-900 shadow-lg scale-95'
-                    : 'text-indigo-600 shadow-md '
+                  isHovering ? 'text-indigo-900 scale-95' : 'text-indigo-600 '
                 } -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 transition-all duration-75 flex justify-center items-center`}
               >
                 <Image
@@ -245,7 +226,7 @@ export const Video = () => {
               <div
                 className={`hidden sm:block lg:hidden absolute ${
                   isHovering
-                    ? 'text-indigo-900 shadow-lg scale-95'
+                    ? 'text-indigo-900 scale-95'
                     : 'text-indigo-600 shadow-md '
                 } -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 transition-all duration-75 flex justify-center items-center`}
               >
@@ -259,7 +240,7 @@ export const Video = () => {
               <div
                 className={`block sm:hidden absolute ${
                   isHovering
-                    ? 'text-indigo-900 shadow-lg scale-95'
+                    ? 'text-indigo-900 scale-95'
                     : 'text-indigo-600 shadow-md '
                 } -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 transition-all duration-75 flex justify-center items-center`}
               >
@@ -282,7 +263,7 @@ export const Video = () => {
 
 export const HowItWorks = () => {
   return (
-    <div className="flex flex-col items-center justify-center px-5 py-10 sm:px-8 md:px-12 lg:px-16 md:py-32 lg:py-40">
+    <div className="reveal-on-scroll flex flex-col items-center justify-center px-5 py-10 sm:px-8 md:px-12 lg:px-16 md:py-32 lg:py-40">
       <div className="w-full max-w-5xl mx-auto mb-6 md:mb-0">
         <h2 className="w-full mb-4 text-3xl leading-tight tracking-wide text-center sm:text-4xl md:text-5xl md:mb-20 lg:text-7xl text-gradient-blue-two">
           Here&apos;s How It Works 👇
