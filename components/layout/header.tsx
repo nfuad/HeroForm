@@ -1,136 +1,14 @@
-import { FC, HTMLAttributes, useState } from 'react'
-import { NextSeo } from 'next-seo'
+import { useState } from 'react'
 import { signOut } from 'next-auth/react'
 import { SITE_DATA } from '@constants/site-data'
 import { GetStartedButton } from '@components/common'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { ROUTES } from '@constants/routes'
-import toast from 'react-hot-toast'
-import { Container, Loader } from './auth-screens'
 import Link from 'next/link'
-import { LogOutIcon, ChevronDownIcon } from './icons'
+import { LogOutIcon, ChevronDownIcon } from '../icons'
 
-type Props = {
-  title?: string
-  showHeader?: boolean
-  showFooter?: boolean
-  isProtected?: boolean
-}
-
-type LayoutProps = Props & HTMLAttributes<HTMLElement>
-
-const Layout: FC<LayoutProps> = ({
-  children,
-  title,
-  showHeader = false,
-  showFooter = false,
-  isProtected = false, // for protected routes like admin
-}) => {
-  const router = useRouter()
-  const { status } = useSession({
-    required: isProtected,
-    onUnauthenticated: () => {
-      toast.error('You must be signed in to continue')
-      router.push(ROUTES.CONTINUE)
-    },
-  })
-
-  const isLoading = status === 'loading'
-  const isUnauthenticated = status === 'unauthenticated'
-
-  if (isProtected) {
-    if (isLoading) {
-      return (
-        <Container>
-          <Loader />
-        </Container>
-      )
-    }
-    if (isUnauthenticated) return null
-  }
-
-  const pageTitle = title ? `${title} | ${SITE_DATA.title}` : SITE_DATA.title
-
-  return (
-    <>
-      <NextSeo
-        title={pageTitle}
-        canonical={SITE_DATA.canonical_url}
-        description={SITE_DATA.description}
-        twitter={{
-          handle: SITE_DATA.twitter_user,
-        }}
-        openGraph={{
-          type: 'website',
-          locale: 'en_US',
-          url: SITE_DATA.canonical_url,
-          site_name: SITE_DATA.title,
-        }}
-      />
-      {showHeader && <Header />}
-      <main>{children}</main>
-      {showFooter && <Footer />}
-    </>
-  )
-}
-
-export default Layout
-
-const Footer = () => {
-  const router = useRouter()
-  const isHome = router.pathname === ROUTES.HOME
-
-  return (
-    <footer className="flex flex-col items-center justify-center w-full mx-auto mt-auto text-center my-14">
-      <div className="flex items-center justify-center my-5 gap-x-6">
-        <Link href="/privacy">
-          <a className="text-sm text-gray-600 transition-all hover:text-gray-900 hover:tracking-wider">
-            Privacy Policy
-          </a>
-        </Link>
-        <Link href="/terms">
-          <a className="text-sm text-gray-600 transition-all hover:text-gray-900 hover:tracking-wider">
-            Terms of Service
-          </a>
-        </Link>
-        <Link href="/contact">
-          <a className="text-sm text-gray-600 transition-all hover:text-gray-900 hover:tracking-wider">
-            Contact
-          </a>
-        </Link>
-        <Link href="/about">
-          <a className="text-sm text-gray-600 transition-all hover:text-gray-900 hover:tracking-wider">
-            About
-          </a>
-        </Link>
-      </div>
-      {isHome && (
-        <p className="pb-6 text-sm leading-tight sm:text-base font-heading">
-          <span>Created with</span>
-          &nbsp;<span className="animate animate-pulse">❤️</span>
-          &nbsp;&nbsp;
-          <span>
-            {' '}
-            by{' '}
-            <Link href="/folks">
-              <a>folks.</a>
-            </Link>
-          </span>
-          <br />
-          <span>You dare not copy us or we&apos;ll sue you 👀</span>
-        </p>
-      )}
-
-      <p className="text-xs text-gray-500 sm:text-sm">
-        Copyright Ⓒ {new Date().getFullYear()} {SITE_DATA.name}. All rights
-        reserved.
-      </p>
-    </footer>
-  )
-}
-
-const Header = () => {
+export const Header = () => {
   const router = useRouter()
   const isHome = router.pathname === ROUTES.HOME
 
@@ -289,9 +167,6 @@ const JoinGitHubButton = () => {
   )
 }
 
-// add twitter, discord, github, etc. like raycast.com
-// mention "Open Source Community"
-
 const DropDown = () => {
   const [open, setOpen] = useState(false)
   const { data } = useSession()
@@ -319,8 +194,10 @@ const DropDown = () => {
         </div>
       </div>
       <div
-        className={`min-w-min shadow-lg rounded-md border transform-gpu transition-all ${
-          open ? 'scale-100 translate-y-0' : 'scale-0 -translate-y-1/2'
+        className={`min-w-max shadow-lg rounded-md border transform-gpu transition-all absolute z-[101] bg-white ${
+          open
+            ? 'scale-100 translate-y-0 visible'
+            : 'scale-0 -translate-y-1/2 hidden'
         } `}
       >
         <div className={'block px-4 py-4 text-sm border-b border-b-gray-200'}>

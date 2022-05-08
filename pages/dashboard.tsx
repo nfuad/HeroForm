@@ -12,6 +12,7 @@ import axios from 'axios'
 import isEmpty from 'lodash.isempty'
 import Link from 'next/link'
 import { SITE_DATA } from '@constants/site-data'
+import { PlusIcon } from '@components/icons'
 
 const DashboardPage: NextPage = () => {
   const { data, status } = useSession()
@@ -107,9 +108,6 @@ const DashboardPage: NextPage = () => {
   return (
     <Layout showFooter showHeader isProtected title="Dashboard">
       <div className="flex flex-col items-start justify-start flex-grow w-full px-5 mx-auto my-20 overflow-hidden max-w-7xl">
-        <h2 className="mx-auto mb-2 text-xl text-gray-700 xl:mx-0 xl:mb-10">
-          Welcome, {data?.user?.name}&nbsp;&nbsp;🎉
-        </h2>
         <div className="w-full">
           <div className="flex flex-col items-center max-w-full xl:flex-row xl:justify-between">
             <h3 className="py-2 text-3xl font-heading">
@@ -212,16 +210,3 @@ const AddFormButton = ({ handleCreateClick, creatingForm }) => {
     </button>
   )
 }
-
-const PlusIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="w-8 h-8"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={3}
-  >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-  </svg>
-)

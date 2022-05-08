@@ -34,7 +34,7 @@ module.exports = {
         fadeIn: {
           '0%': {
             opacity: 0,
-            transform: 'translateY(100px)',
+            transform: 'translateY(20px)',
           },
           '100%': {
             opacity: 1,

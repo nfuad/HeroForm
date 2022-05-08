@@ -4,10 +4,10 @@ import { ROUTES } from '@constants/routes'
 import Layout from '@components/layout'
 import {
   Container,
-  Loader,
   Authenticated,
   UnAuthenticated,
 } from '@components/auth-screens'
+import { Loader } from '@components/loader'
 
 const ContinuePage = () => {
   const router = useRouter()

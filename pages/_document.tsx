@@ -4,7 +4,7 @@ import Meta from '@components/meta'
 class MyDocument extends Document {
   render(): JSX.Element {
     return (
-      <Html>
+      <Html lang="en">
         <Head>
           <Meta />
         </Head>
