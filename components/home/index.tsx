@@ -187,72 +187,63 @@ export const Video = () => {
   const [isHovering, setIsHovering] = useState(false)
 
   return (
-    <div className="w-full mx-auto my-4 overflow-hidden bg-transparent lg:my-20 sm:w-3/4 rounded-6xl">
-      <div className="px-10 py-16 sm:px-4">
-        <div className="grid items-start justify-center gap-8 ">
-          <div className="relative group">
-            {/* <div className="absolute transition duration-1000 opacity-75 rounded-2xl -inset-1 bg-gradient-to-r from-pink-300 via-red-200 to-purple-300 blur group-hover:opacity-100 group-hover:duration-200 animate-tilt" /> */}
-            <div
-              className="w-full mx-auto cursor-pointer rounded-xl max-w-7xl shadow-3xl"
-              onClick={() => {
-                setShowVideo(true)
-                setIsHovering(false)
-              }}
-              onMouseEnter={() => {
-                setIsHovering(true)
-              }}
-              onMouseLeave={() => {
-                setIsHovering(false)
-              }}
-            >
-              <Image
-                alt={`${SITE_DATA.name} Video`}
-                className="rounded-xl"
-                quality={100}
-                src={require('/public/images/demo.png')}
-              />
-              <div
-                className={`hidden lg:block absolute ${
-                  isHovering ? 'text-indigo-900 scale-95' : 'text-indigo-600 '
-                } -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 transition-all duration-75 flex justify-center items-center`}
-              >
-                <Image
-                  src={require('/public/images/play.svg')}
-                  width={100}
-                  height={100}
-                  alt={'Play Icon'}
-                />
-              </div>
-              <div
-                className={`hidden sm:block lg:hidden absolute ${
-                  isHovering
-                    ? 'text-indigo-900 scale-95'
-                    : 'text-indigo-600 shadow-md '
-                } -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 transition-all duration-75 flex justify-center items-center`}
-              >
-                <Image
-                  src={require('/public/images/play.svg')}
-                  width={64}
-                  height={64}
-                  alt={'Play Icon'}
-                />
-              </div>
-              <div
-                className={`block sm:hidden absolute ${
-                  isHovering
-                    ? 'text-indigo-900 scale-95'
-                    : 'text-indigo-600 shadow-md '
-                } -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 transition-all duration-75 flex justify-center items-center`}
-              >
-                <Image
-                  src={require('/public/images/play.svg')}
-                  width={48}
-                  height={48}
-                  alt={'Play Icon'}
-                />
-              </div>
-            </div>
-          </div>
+    <div className="w-full mx-auto my-4 overflow-hidden bg-transparent lg:my-20 sm:w-3/4 rounded-6xl px-4 py-16">
+      <div
+        onClick={() => {
+          setShowVideo(true)
+          setIsHovering(false)
+        }}
+        onMouseEnter={() => {
+          setIsHovering(true)
+        }}
+        onMouseLeave={() => {
+          setIsHovering(false)
+        }}
+        className="items-start justify-center gap-8 max-w-[1500px] mx-auto shadow-3xl  relative group cursor-pointer flex rounded-xl"
+      >
+        <Image
+          alt={`${SITE_DATA.name} Video`}
+          className="rounded-xl h-full m-0 p-0 aspect-video"
+          quality={100}
+          src={require('/public/images/og-image.webp')}
+          width={1920}
+          height={1080}
+        />
+        <div
+          className={`hidden lg:block absolute ${
+            isHovering ? 'text-indigo-900 scale-95' : 'text-indigo-600 '
+          } -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 transition-all duration-75 flex justify-center items-center`}
+        >
+          <Image
+            src={require('/public/images/play.svg')}
+            width={100}
+            height={100}
+            alt={'Play Icon'}
+          />
+        </div>
+        <div
+          className={`hidden sm:block lg:hidden absolute ${
+            isHovering ? 'text-indigo-900 scale-95' : 'text-indigo-600 '
+          } -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 transition-all duration-75 flex justify-center items-center`}
+        >
+          <Image
+            src={require('/public/images/play.svg')}
+            width={64}
+            height={64}
+            alt={'Play Icon'}
+          />
+        </div>
+        <div
+          className={`block sm:hidden absolute ${
+            isHovering ? 'text-indigo-900 scale-95' : 'text-indigo-600 '
+          } -translate-x-1/2 -translate-y-1/2 rounded-full top-1/2 left-1/2 transition-all duration-75 flex justify-center items-center`}
+        >
+          <Image
+            src={require('/public/images/play.svg')}
+            width={48}
+            height={48}
+            alt={'Play Icon'}
+          />
         </div>
       </div>
 
