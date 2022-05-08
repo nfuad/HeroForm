@@ -221,6 +221,25 @@ const Editor: FC<Props> = ({
                 }}
               />
             </div>
+            {(isShortText || isLongText) && (
+              <div className="flex flex-col justify-between my-2">
+                <label htmlFor={'placeholder'} className="text-sm font-body">
+                  Placeholder
+                </label>
+                <input
+                  onChange={(e) =>
+                    handleQuestionChange(
+                      'properties.placeholder',
+                      e.target.value,
+                    )
+                  }
+                  value={placeholder}
+                  className="w-full px-2 py-1 mt-2 text-sm border-2 rounded-md"
+                  name="placeholder"
+                  id="placeholder"
+                />
+              </div>
+            )}
             <div className="flex items-center justify-between my-2">
               <label htmlFor={'required'} className="text-sm font-body">
                 Required
