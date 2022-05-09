@@ -19,7 +19,7 @@ On brand, blazing fast and easy to use.
 
 ## Demo
 
-<video width="100%" height="100%" src="https://cleanshot-cloud-fra.accelerator.net/media/33596/BpigOyxuWdEJ2uS9s6KkmX1AdrLAIkoBAZAfLg2k.mp4" />
+Link to a live form [here](https://heroform.io/A6e-FRQ-).
 
 ## Contributing
 
