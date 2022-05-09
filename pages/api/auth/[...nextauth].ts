@@ -39,6 +39,9 @@ export default NextAuth({
         })
         .accounts()
 
+      // for first-timers, the account isn't there yet, so we return early
+      if (accounts.length === 0) return Promise.resolve(true)
+
       await prisma.account.update({
         where: {
           id: accounts[0].id,
