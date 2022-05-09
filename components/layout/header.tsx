@@ -101,7 +101,7 @@ const JoinDiscordButton = () => {
 
 const JoinGitHubButton = () => {
   return (
-    <div className="absolute top-0 right-0">
+    <div className="absolute top-0 right-0 ignore-reveal">
       <a
         target="_blank"
         rel="noopener noreferrer"

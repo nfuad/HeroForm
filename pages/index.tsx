@@ -15,7 +15,7 @@ const HomePage = () => {
   useEffect(() => {
     ;(async function () {
       const ScrollReveal = (await import('scrollreveal')).default
-      ScrollReveal().reveal('div')
+      ScrollReveal().reveal('div:not(.ignore-reveal)')
       ScrollReveal().reveal('h1')
       ScrollReveal().reveal('h2')
       ScrollReveal().reveal('footer')

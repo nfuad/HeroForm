@@ -42,14 +42,16 @@ export const SeeDemoButton = () => {
       target={'_blank'}
       rel={'noopener noreferrer'}
       href={demoURL}
-      className="flex items-center justify-center mx-auto mt-2 md:text-3xl xl:text-7xl xl:leading-[1.1] tracking-wide text-center text-blue-500 hover:text-indigo-900 font-heading group"
+      className="flex items-center justify-center mx-auto mt-2 text-[28px] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl xl:leading-[1.1] tracking-wide text-center text-blue-500 hover:text-indigo-900 font-heading group"
     >
       <span className="transition-all duration-75 group-hover:mr-2 lg:group-hover:mr-4">
         See It In Action
       </span>
       <ChevronRightIcon
         strokeWidth={4}
-        className={'w-6 h-6 md:w-8 md:h-8 lg:w-16 lg:h-16 lg:mt-3'}
+        className={
+          'w-6 h-6 sm:w-7 sm:h-7 md:w-10 md:h-10 lg:w-16 lg:h-16 lg:mt-2 xl:mt-3'
+        }
       />
     </a>
   )
@@ -187,7 +189,7 @@ export const Video = () => {
   const [isHovering, setIsHovering] = useState(false)
 
   return (
-    <div className="w-full mx-auto my-4 overflow-hidden bg-transparent lg:my-20 sm:w-3/4 rounded-6xl px-4 py-16">
+    <div className="w-full px-4 py-16 mx-auto my-4 overflow-hidden bg-transparent lg:my-20 sm:w-3/4 rounded-6xl">
       <div
         onClick={() => {
           setShowVideo(true)
@@ -203,7 +205,7 @@ export const Video = () => {
       >
         <Image
           alt={`${SITE_DATA.name} Video`}
-          className="rounded-xl h-full m-0 p-0 aspect-video"
+          className="h-full p-0 m-0 rounded-xl aspect-video"
           quality={100}
           src={require('/public/images/og-image.webp')}
           width={1920}
@@ -254,7 +256,7 @@ export const Video = () => {
 
 export const HowItWorks = () => {
   return (
-    <div className="reveal-on-scroll flex flex-col items-center justify-center px-5 py-10 sm:px-8 md:px-12 lg:px-16 md:py-32 lg:py-40">
+    <div className="flex flex-col items-center justify-center px-5 py-10 reveal-on-scroll sm:px-8 md:px-12 lg:px-16 md:py-32 lg:py-40">
       <div className="w-full max-w-5xl mx-auto mb-6 md:mb-0">
         <h2 className="w-full mb-4 text-3xl leading-tight tracking-wide text-center sm:text-4xl md:text-5xl md:mb-20 lg:text-7xl text-gradient-blue-two">
           Here&apos;s How It Works 👇
@@ -652,7 +654,7 @@ export const Features = () => (
           subHeading="See how the form is performing, and how it is being used."
           renderBody={() => {
             return (
-              <div className="mt-8 md:mt-0">
+              <div className="mx-auto mt-8 md:mt-0">
                 <Image
                   src={require('/public/images/analytics.png')}
                   className=""
