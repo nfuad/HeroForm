@@ -1,5 +1,7 @@
 <div align="center">
-  <img width="80px" height="80px" src="https://raw.githubusercontent.com/nfuad/HeroForm/main/public/images/favicon.png" />
+  <a target="_blank" href="https://herform.io">
+    <img width="80px" height="80px" src="https://raw.githubusercontent.com/nfuad/HeroForm/main/public/images/favicon.png" />
+  </a>
   
 # HeroForm
 
@@ -15,17 +17,9 @@ On brand, blazing fast and easy to use.
 
 ![Heroform Preview](/public/images/og-image.webp)
 
-## Appendix
-
-Any additional information goes here
-
-## Badges
-
-Add badges from somewhere like: [shields.io](https://shields.io/)
-
 ## Demo
 
-Insert gif or link to demo
+<video width="100%" height="100%" src="https://cleanshot-cloud-fra.accelerator.net/media/33596/BpigOyxuWdEJ2uS9s6KkmX1AdrLAIkoBAZAfLg2k.mp4" />
 
 ## Contributing
 
