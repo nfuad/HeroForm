@@ -4,7 +4,7 @@ import {
   SeeDemoButton,
   Video,
   HowItWorks,
-  Testimonials,
+  // Testimonials,
   LastCTA,
   Features,
   Integrations,
@@ -15,12 +15,12 @@ const HomePage = () => {
   useEffect(() => {
     ;(async function () {
       const ScrollReveal = (await import('scrollreveal')).default
-      ScrollReveal({ reset: true }).reveal('div')
-      ScrollReveal({ reset: true }).reveal('h1')
-      ScrollReveal({ reset: true }).reveal('h2')
-      ScrollReveal({ reset: true }).reveal('footer')
-      ScrollReveal({ reset: true }).reveal('header')
-      ScrollReveal({ reset: true }).reveal('button')
+      ScrollReveal().reveal('div')
+      ScrollReveal().reveal('h1')
+      ScrollReveal().reveal('h2')
+      ScrollReveal().reveal('footer')
+      ScrollReveal().reveal('header')
+      ScrollReveal().reveal('button')
     })()
   }, [])
 
@@ -31,7 +31,7 @@ const HomePage = () => {
       <Video />
       <HowItWorks />
       <Features />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Integrations />
       <LastCTA />
     </Layout>
