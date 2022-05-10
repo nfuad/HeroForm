@@ -19,37 +19,35 @@ On brand, blazing fast and easy to use.
 
 ## Demo
 
-Link to a live form [here](https://heroform.io/A6e-FRQ-).
+Link to a live form <a href="https://heroform.io/A6e-FRQ-" target="_blank/">here</a>.
 
 ## Contributing
 
-Contributions are always welcome!
+Any contribution is more than welcome, even if it's just opening a new issue or filing a bug report. Keep them coming!
 
-See `contributing.md` for ways to get started.
+Check out the [`contribution guidelines`](./docs/CONTRIBUTING.md) to get started. And make sure to follow the [`code of conduct`](./docs/CODE_OF_CONDUCT.md).
 
-Please adhere to this project's `code of conduct`.
+# Bug Reports
 
-## Installation
+Please try to create bug reports that are:
 
-Install my-project with npm
+- _Reproducible:_ Include steps to reproduce the problem.
+- _Specific:_ Include as much detail as possible: which version, what environment, etc.
+- _Unique:_ Do not duplicate existing opened issues.
+- _Properly Scoped:_ One issue per bug report.
 
-```bash
-  npm install my-project
-  cd my-project
-```
-
-## Run Locally
+## Running Locally
 
 Clone the project
 
 ```bash
-  git clone https://link-to-project
+  git clone https://github.com/nfuad/HeroForm.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd my-project
+  cd HeroForm
 ```
 
 Install dependencies
@@ -58,69 +56,52 @@ Install dependencies
   npm install
 ```
 
-Start the server
+Create a .env file (following the [.env.example](./.env.example) file) and add the required environment variables.
+
+Start the development server
 
 ```bash
-  npm run start
+  npm run dev
 ```
 
-## Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`API_KEY`
-
-`ANOTHER_API_KEY`
+You should see the application running on http://localhost:3000 🎉
 
 ## Authors
 
-- [@katherinepeterson](https://www.github.com/octokatherine)
+- [@nfuad](https://www.github.com/nfuad)
+- [@werdna521](https://www.github.com/werdna521)
+- [@T4533N](https://github.com/T4533N)
 
 ## Acknowledgements
 
-- [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
-- [Awesome README](https://github.com/matiassingers/awesome-readme)
-- [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
-
-# Project Title
-
-A brief description of what this project does and who it's for
+coming soon.
 
 ## Tech Stack
 
-**Client:** React, Redux, TailwindCSS
-
-**Server:** Node, Express
+- Next.js
+- React
+- Typescript
+- TailwindCSS
+- Planetscale
+- Prisma
+- NextAuth.js
 
 ## Deployment
 
-To deploy this project run
-
-```bash
-  npm run deploy
-```
-
-## Documentation
-
-[Documentation](https://linktodocumentation)
+The project is currently deployed with Vercel 🚀
+But can be deployed / hosted on any platform of choice.
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
-
-## Optimizations
-
-What optimizations did you make in your code? E.g. refactors, performance improvements, accessibility
+[AGPLv3](https://github.com/nfuad/HeroForm/blob/main/LICENSE)
 
 ## Support
 
-For support, email fake@fake.com or join our Slack channel.
+For support, email hey@heroform.io or [join the discord server](https://discord.com/invite/tgTcHHEh9s).
 
 ## Roadmap
 
-- Additional browser support
-
-- Add more integrations
+Coming soon.
 
 ## Haiku 🤓
 
