@@ -1,5 +1,5 @@
 <div align="center">
-  <a target="_blank" href="https://herform.io">
+  <a target="_blank" href="https://heroform.io">
     <img width="80px" height="80px" src="https://raw.githubusercontent.com/nfuad/HeroForm/main/public/images/favicon.png" />
   </a>
   
