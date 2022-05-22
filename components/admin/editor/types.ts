@@ -2,6 +2,7 @@ export enum QuestionType {
   SHORT_TEXT = 'short-text',
   LONG_TEXT = 'long-text',
   MULTI_CHOICE = 'multi-choice',
+  SCHEDULING = 'scheduling',
 }
 
 export type Option = {

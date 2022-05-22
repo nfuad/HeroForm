@@ -9,6 +9,7 @@ import Options from './question-editor/options'
 import toast from 'react-hot-toast'
 import set from 'lodash.set'
 import { AddIcon } from '@components/icons'
+import Scheduling from '@components/survey/questions/scheduling'
 
 type Props = {
   questions: any
@@ -106,6 +107,8 @@ const Editor: FC<Props> = ({
     questions[selectedQuestionID]?.type === QuestionType.LONG_TEXT
   const isMultiChoice =
     questions[selectedQuestionID]?.type === QuestionType.MULTI_CHOICE
+  const isScheduling =
+    questions[selectedQuestionID]?.type === QuestionType.SCHEDULING
 
   const question = questions[selectedQuestionID]
 
@@ -119,6 +122,7 @@ const Editor: FC<Props> = ({
     placeholder,
     maxCharacters,
     order,
+    schedulingLink,
   } = question?.properties || {}
 
   const handleQuestionChange = (key: string, value: any) => {
@@ -142,6 +146,9 @@ const Editor: FC<Props> = ({
 
       case QuestionType.MULTI_CHOICE:
         return 'Select an option'
+
+      case QuestionType.SCHEDULING:
+        return 'https://calendly.com/your-link'
 
       default:
         throw new Error(`Unknown question type: ${type}`)
@@ -197,6 +204,7 @@ const Editor: FC<Props> = ({
               }}
             />
           )}
+          {isScheduling && <Scheduling properties={question?.properties} />}
         </Container>
       </div>
 
@@ -335,6 +343,29 @@ const Editor: FC<Props> = ({
               </div>
             )}
 
+            {isScheduling && (
+              <div className="flex flex-col justify-between my-2">
+                <label
+                  htmlFor={'scheduling-link'}
+                  className="text-sm font-body"
+                >
+                  Scheduling Link (Calendly / Cal.com)
+                </label>
+                <input
+                  onChange={(e) =>
+                    handleQuestionChange(
+                      'properties.schedulingLink',
+                      e.target.value,
+                    )
+                  }
+                  value={schedulingLink}
+                  placeholder={placeholder}
+                  className="w-full px-2 py-1 mt-2 text-sm border-2 rounded-md"
+                  name="scheduling-link"
+                  id="scheduling-link"
+                />
+              </div>
+            )}
             <DeleteButton onClick={handleDelete} />
           </div>
         )}

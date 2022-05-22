@@ -21,6 +21,10 @@ const options = [
     id: QuestionType.MULTI_CHOICE,
     label: 'Multi Select',
   },
+  {
+    id: QuestionType.SCHEDULING,
+    label: 'Scheduling',
+  },
 ]
 
 const QuestionTypeSelection: FC<Props> = ({

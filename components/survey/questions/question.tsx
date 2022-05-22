@@ -8,6 +8,9 @@ import MultiChoice from './multi-choice'
 import { useKeydown } from '@hooks/use-keydown'
 import Button from '@components/button'
 import ShortcutHint from '@components/shortcut-hint'
+import dynamic from 'next/dynamic'
+
+const DynamicSchedulingQuestion = dynamic(() => import('./scheduling'), {})
 
 type Props = {
   question: any
@@ -71,6 +74,14 @@ const SurveyQuestion: FC<Props> = ({
             question={question}
             selected={response}
             setSelected={handleResponseChange}
+          />
+        )
+
+      case QuestionType.SCHEDULING:
+        return (
+          <DynamicSchedulingQuestion
+            properties={properties}
+            handleEventScheduled={handleResponseChange}
           />
         )
     }

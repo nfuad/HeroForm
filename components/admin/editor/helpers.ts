@@ -21,6 +21,7 @@ export const createQuestion = ({ order }): any => {
       isOtherOptionAllowed: false,
       isMaxLengthSpecified: false,
       maxCharacters: 0,
+      schedulingLink: '',
     },
   }
 }

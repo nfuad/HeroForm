@@ -76,7 +76,7 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
     const canGoNext = (!isRequired || responses[id]) && !isLastPage
 
     if (!canGoNext) {
-      alert('The question is required. Please answer it before proceeding.')
+      alert('This is required. Please answer before proceeding.')
       return
     }
 

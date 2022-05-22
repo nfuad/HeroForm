@@ -496,7 +496,7 @@ export const LastCTA = () => {
           "It's free. It's fast. It's privacy-focused & it's Open Source. Get started now 👇"
         }
       </p>
-      <GetStartedButton large />
+      <GetStartedButton />
     </div>
   )
 }
