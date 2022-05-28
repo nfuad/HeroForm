@@ -23,12 +23,19 @@ const EditorPage = () => {
   const router = useRouter()
   const { id } = router.query
   const {
-    data: preloadedQuestionsData,
-    isFetching: isFetchingQuestions,
+    data: preloadedFormData,
+    isFetching: isFetchingForm,
     isError,
     error,
   }: {
-    data: { questions: any; metadata: any; spreadsheetId: any }
+    data: {
+      data: {
+        publicId: string
+        name: string
+        questions: any[]
+        _count: { responses: number }
+      }
+    }
     isFetching: boolean
     isError: boolean
     error: Error
@@ -38,11 +45,11 @@ const EditorPage = () => {
     refetchOnWindowFocus: false,
     retry: false,
     enabled: !!id,
-    onSuccess(data) {
+    onSuccess({ data }) {
       setQuestions(data.questions)
       const firstQuestionID = Object.keys(data.questions)[0] // need to sort this properly!
       setSelectedQuestionID(firstQuestionID)
-      setFormName(data.metadata.title)
+      setFormName(data.name)
     },
   })
 
@@ -100,7 +107,7 @@ const EditorPage = () => {
     )
   }, [questions])
 
-  if (isFetchingQuestions) {
+  if (isFetchingForm) {
     return (
       <Container>
         <Loader />
@@ -117,8 +124,8 @@ const EditorPage = () => {
     )
   }
 
-  const { spreadsheetId = '', metadata = {} } = preloadedQuestionsData || {}
-  const { responseCount } = metadata
+  const { data: form } = preloadedFormData || {}
+  const { responses: responseCount = 0 } = form?._count || {}
 
   return (
     <>
@@ -133,7 +140,6 @@ const EditorPage = () => {
             formName={formName}
             responseCount={responseCount}
             publishFormLoading={publishFormLoading}
-            spreadSheetLink={`https://docs.google.com/spreadsheets/d/${spreadsheetId}`}
           />
           <Editor
             questions={questions}

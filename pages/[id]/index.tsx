@@ -153,8 +153,24 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { id } = params as Record<string, string>
+  const prisma = (await import('@lib/prisma')).default
 
-  const form = await getFormBySurveyId(id)
+  const form = await prisma.form.findUnique({
+    where: {
+      publicId: id,
+    },
+    select: {
+      questions: {
+        select: {
+          id: true,
+          type: true,
+          prompt: true,
+          options: true,
+          properties: true,
+        },
+      },
+    },
+  })
 
   // see: https://nextjs.org/docs/api-reference/data-fetching/get-static-props#notfound
   if (!form) {
@@ -163,12 +179,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   }
 
-  const questions = await getQuestions(form)
-
   return {
     props: {
       // pass the questions to the page
-      questions,
+      questions: form.questions,
     },
     // re-generate the post at most once every 10 seconds if a request comes in
     revalidate: 10,

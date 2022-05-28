@@ -1,7 +1,5 @@
 import prisma from '@lib/prisma'
 import { NextApiHandler } from 'next'
-import { google } from 'googleapis'
-import { createResponse, getMetadata, updateMetadata } from '@lib/sheets'
 import * as Sentry from '@sentry/nextjs'
 
 type Body = {
@@ -20,48 +18,47 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
   }
 
   try {
-    const form = await prisma().form.findUnique({
+    const responseDetailsData = Object.entries(responses).map(
+      ([questionId, responseValue]) => ({
+        questionId,
+        value: responseValue,
+      }),
+    )
+    await prisma.form.update({
       where: {
         publicId: id,
       },
-      include: {
-        user: {
-          include: {
-            accounts: true,
+      data: {
+        responses: {
+          create: {
+            responseDetails: {
+              createMany: {
+                data: responseDetailsData,
+              },
+            },
           },
         },
       },
     })
-    if (!form) {
-      return res.status(404).json({
-        success: false,
-        message: 'Not Found',
-      })
-    }
 
-    const account = form.user.accounts[0]
-    const refreshToken = account.refresh_token
+    // const auth = new google.auth.OAuth2({
+    //   clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+    //   clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+    // })
 
-    const auth = new google.auth.OAuth2({
-      clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-    })
+    // auth.setCredentials({
+    //   refresh_token: refreshToken,
+    // })
 
-    auth.setCredentials({
-      refresh_token: refreshToken,
-    })
-
-    const { spreadsheetId } = form
-
-    await createResponse({ auth, spreadsheetId, responses })
-    const metadata = await getMetadata({ auth, spreadsheetId })
-    await updateMetadata({
-      auth,
-      spreadsheetId,
-      metadata: {
-        responseCount: metadata.responseCount + 1,
-      },
-    })
+    // await createResponse({ auth, spreadsheetId, responses })
+    // const metadata = await getMetadata({ auth, spreadsheetId })
+    // await updateMetadata({
+    //   auth,
+    //   spreadsheetId,
+    //   metadata: {
+    //     responseCount: metadata.responseCount + 1,
+    //   },
+    // })
 
     return res.status(200).json({
       success: true,

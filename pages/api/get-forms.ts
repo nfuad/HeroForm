@@ -1,6 +1,4 @@
 import prisma from '@lib/prisma'
-import { getMetadata } from '@lib/sheets'
-import { google } from 'googleapis'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
 import * as Sentry from '@sentry/nextjs'
@@ -17,55 +15,51 @@ const getFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     }
 
-    const { forms = [] } = await prisma().user.findUnique({
+    const { forms = [] } = await prisma.user.findUnique({
       where: {
         email,
       },
       select: {
-        forms: true,
+        forms: {
+          select: {
+            _count: {
+              select: {
+                responses: true,
+              },
+            },
+            id: true,
+            name: true,
+            publicId: true,
+          },
+        },
       },
     })
 
-    const accounts = await prisma()
-      .user.findUnique({
-        where: {
-          email,
-        },
-      })
-      .accounts()
+    // const auth = new google.auth.OAuth2({
+    //   clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+    //   clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+    // })
+    // auth.setCredentials({ refresh_token: refreshToken })
 
-    const account = accounts[0]
-    const refreshToken = account.refresh_token
-
-    const auth = new google.auth.OAuth2({
-      clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-    })
-    auth.setCredentials({ refresh_token: refreshToken })
-
-    const formsWithMetadata = await Promise.all(
-      forms.map(async (form) => ({
-        ...form,
-        metadata: await getMetadata({
-          auth,
-          spreadsheetId: form.spreadsheetId,
-        }),
-      })),
-    )
+    // const formsWithMetadata = await Promise.all(
+    //   forms.map(async (form) => ({
+    //     ...form,
+    //     metadata: await getMetadata({
+    //       auth,
+    //       spreadsheetId: form.spreadsheetId,
+    //     }),
+    //   })),
+    // )
 
     res.status(200).json({
       success: true,
-      forms: formsWithMetadata,
+      forms,
     })
   } catch (error) {
     Sentry.captureException(error)
     console.error(error)
-
-    const code = error.response.data.error
-
     res.status(500).json({
       success: false,
-      code,
       error,
     })
   }

@@ -14,7 +14,6 @@ type Props = {
   formName: string
   responseCount: number
   publishFormLoading: boolean
-  spreadSheetLink: string
 }
 
 const Header: FC<Props> = ({
@@ -22,7 +21,6 @@ const Header: FC<Props> = ({
   publishButtonDisabled,
   formName = 'Untitled',
   responseCount,
-  spreadSheetLink,
   publishFormLoading,
 }) => {
   return (
@@ -34,10 +32,7 @@ const Header: FC<Props> = ({
         <EditableFormName currentName={formName} />
       </div>
       <div className="flex gap-x-3">
-        <ViewResponses
-          spreadSheetLink={spreadSheetLink}
-          responseCount={responseCount}
-        />
+        <ViewResponses responseCount={responseCount} />
         <PreviewButton processing={publishFormLoading} />
         <PublishButton
           processing={publishFormLoading}
@@ -119,16 +114,11 @@ const EditableFormName = ({ currentName }) => {
   )
 }
 
-const ViewResponses = ({ responseCount, spreadSheetLink }) => {
+const ViewResponses = ({ responseCount }) => {
   return (
-    <a
-      href={spreadSheetLink}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center justify-center py-0 my-0 mr-2 text-center text-gray-700 transition-all duration-75 cursor-pointer max-h-min hover:text-black font-body hover:border-b-2"
-    >
-      <span className="text-sm">View Responses ({responseCount})</span>
-    </a>
+    <p className="flex items-center justify-center py-0 my-0 mr-2 text-center text-gray-700 transition-all duration-75 cursor-pointer max-h-min hover:text-black font-body hover:border-b-2">
+      <span className="text-sm">{responseCount} Responses</span>
+    </p>
   )
 }
 const PreviewButton = ({ processing }) => {
