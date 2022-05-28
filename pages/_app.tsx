@@ -61,6 +61,13 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
       <Script
+        defer
+        id="plausible"
+        strategy="afterInteractive"
+        src="https://plausible.naf.is/js/plausible.js"
+        data-domain={SITE_DATA.domain}
+      />
+      <Script
         id="load-posthog"
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
@@ -74,18 +81,17 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
       <DynamicDefaultSEO {...SEO} />
       <DynamicQueryClientProvider>
         <DynamicSessionProvider session={pageProps.session} refetchInterval={0}>
-          <DynamicPlausibleProvider
+          {/* <DynamicPlausibleProvider
             selfHosted
             domain={SITE_DATA.domain}
             trackLocalhost={process.env.NEXT_PUBLIC_PLAUSIBLE_TRACK_LOCALHOST}
-            customDomain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
             enabled={process.env.NODE_ENV === 'production'}
             scriptProps={{
               src: 'https://plausible.naf.is/js/plausible.js',
             }}
-          >
-            <Component {...pageProps} />
-          </DynamicPlausibleProvider>
+          > */}
+          <Component {...pageProps} />
+          {/* </DynamicPlausibleProvider> */}
         </DynamicSessionProvider>
       </DynamicQueryClientProvider>
     </>
