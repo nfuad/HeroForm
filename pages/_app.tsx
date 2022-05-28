@@ -75,9 +75,10 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
       <DynamicQueryClientProvider>
         <DynamicSessionProvider session={pageProps.session} refetchInterval={0}>
           <DynamicPlausibleProvider
+            selfHosted
             domain={SITE_DATA.domain}
-            trackLocalhost={true}
-            selfHosted={false}
+            trackLocalhost={process.env.NEXT_PUBLIC_PLAUSIBLE_TRACK_LOCALHOST}
+            customDomain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
           >
             <Component {...pageProps} />
           </DynamicPlausibleProvider>
