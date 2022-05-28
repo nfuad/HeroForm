@@ -79,6 +79,10 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
             domain={SITE_DATA.domain}
             trackLocalhost={process.env.NEXT_PUBLIC_PLAUSIBLE_TRACK_LOCALHOST}
             customDomain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
+            enabled={process.env.NODE_ENV === 'production'}
+            scriptProps={{
+              src: 'https://plausible.naf.is/js/plausible.js',
+            }}
           >
             <Component {...pageProps} />
           </DynamicPlausibleProvider>
