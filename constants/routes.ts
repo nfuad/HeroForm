@@ -6,6 +6,12 @@ export const ROUTES = {
   EDIT: '/edit',
   PREVIEW: '/preview',
   API: {
+    INTEGRATIONS: {
+      WEBHOOK: {
+        INDEX: '/api/integrations/webhook',
+        REDIRECT_URL: '/api/integrations/webhook/redirect-url',
+      },
+    },
     GET_FORM: '/api/get-form',
     PUBLISH_FORM: '/api/publish-form',
     GET_FORMS: '/api/get-forms',

@@ -41,6 +41,24 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
       },
     })
 
+    const { webhookUrl } = await prisma.form.findUnique({
+      where: {
+        publicId: id,
+      },
+    })
+
+    if (webhookUrl) {
+      await fetch(webhookUrl, {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: responseDetailsData,
+        }),
+      })
+    }
+
     // const auth = new google.auth.OAuth2({
     //   clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
     //   clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,

@@ -1,10 +1,19 @@
+import Button from '@components/button'
 import useIntersectionObserver from '@hooks/use-intersection-observer'
 import { FC, useRef } from 'react'
 
-const SuccessPage: FC = () => {
+type Props = {
+  redirectUrl?: string
+}
+
+const SuccessPage: FC<Props> = ({ redirectUrl }) => {
   const ref = useRef()
   const entryScreen1 = useIntersectionObserver(ref, {})
   const isVisible = !!entryScreen1?.isIntersecting
+
+  const handleRedirect = () => {
+    window.top.location.href = redirectUrl
+  }
 
   return (
     <div
@@ -16,6 +25,7 @@ const SuccessPage: FC = () => {
         <h1 className="text-xl md:text-3xl lg:text-5xl lg:leading-tight">
           Your response has been submitted. Thanks for your time!
         </h1>
+        {redirectUrl && <Button onClick={handleRedirect}>Continue</Button>}
       </div>
     </div>
   )

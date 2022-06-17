@@ -13,16 +13,13 @@ import {
   ArrowNavigator,
   PreviewBanner,
 } from '@components/survey'
-import {
-  getFormBySurveyId,
-  getQuestions,
-} from '@lib/get-questions-by-survey-id'
 import { Loader } from '@components/loader'
 
 type Props = {
+  redirectUrl?: string
   questions: any[]
 }
-const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
+const SurveyPage: NextPage<Props> = ({ redirectUrl, questions = [] }) => {
   const [currentPage, setCurrentPage] = useState(0)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [responses, setResponses] = useState(() => {
@@ -134,6 +131,7 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
         handleNext={handleNext}
         responses={responses}
         setResponses={setResponses}
+        redirectUrl={redirectUrl}
       />
     </Container>
   )
@@ -160,6 +158,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       publicId: id,
     },
     select: {
+      redirectUrl: true,
       questions: {
         select: {
           id: true,
@@ -183,6 +182,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       // pass the questions to the page
       questions: form.questions,
+      redirectUrl: form.redirectUrl,
     },
     // re-generate the post at most once every 10 seconds if a request comes in
     revalidate: 10,

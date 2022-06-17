@@ -60,6 +60,8 @@ model Form {
   publicId      String     @unique
   userId        String
   spreadsheetId String?    @unique
+  webhookUrl    String?
+  redirectUrl   String?
   name          String
   user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   responses     Response[]
