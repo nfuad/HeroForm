@@ -6,7 +6,6 @@
     "dev": "next dev -p 3001",
     "dev:secure": "local-ssl-proxy --source 3000 --target 3001",
     "emulators:start": "firebase emulators:start",
-    "dev:emulators": "npm run dev && npm run emulators:start",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
