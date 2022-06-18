@@ -19,6 +19,8 @@ const EditorPage = () => {
   const [formName, setFormName] = useState('')
   const [questions, setQuestions] = useState({})
   const [selectedQuestionID, setSelectedQuestionID] = useState('')
+  const [redirectUrl, setRedirectUrl] = useState('')
+  const [webhookUrl, setWebhookUrl] = useState('')
 
   const router = useRouter()
   const { id } = router.query
@@ -32,6 +34,8 @@ const EditorPage = () => {
       data: {
         publicId: string
         name: string
+        webhookUrl?: string
+        redirectUrl?: string
         questions: any[]
         _count: { responses: number }
       }
@@ -50,6 +54,8 @@ const EditorPage = () => {
       const firstQuestionID = Object.keys(data.questions)[0] // need to sort this properly!
       setSelectedQuestionID(firstQuestionID)
       setFormName(data.name)
+      setRedirectUrl(data.redirectUrl)
+      setWebhookUrl(data.webhookUrl)
     },
   })
 
@@ -147,6 +153,10 @@ const EditorPage = () => {
             selectedQuestionID={selectedQuestionID}
             setSelectedQuestionID={setSelectedQuestionID}
             setUnsaved={setUnsaved}
+            redirectUrl={redirectUrl}
+            setRedirectUrl={setRedirectUrl}
+            webhookUrl={webhookUrl}
+            setWebhookUrl={setWebhookUrl}
           />
         </div>
       </div>

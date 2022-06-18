@@ -1,36 +1,15 @@
 import prisma from '@lib/prisma'
-import { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/react'
 import * as Sentry from '@sentry/nextjs'
+import { ApiHandlerWithSession, withSession } from '@helpers/api/session'
 
 type Query = {
   id: string
 }
 
-const getQuestionsHandler = async (
-  req: NextApiRequest,
-  res: NextApiResponse,
-) => {
+const getQuestionsHandler: ApiHandlerWithSession = async (req, res, _) => {
   const { id } = req.query as Query
 
-  if (!id) {
-    return res.status(422).json({
-      success: false,
-      message: 'Unprocessable Entity',
-    })
-  }
-
   try {
-    const session = await getSession({ req })
-    const { email } = session.user || {}
-
-    if (!email) {
-      return res.status(401).json({
-        success: false,
-        message: 'Unauthorized',
-      })
-    }
-
     // const auth = new google.auth.OAuth2({
     //   clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
     //   clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
@@ -49,6 +28,8 @@ const getQuestionsHandler = async (
         },
         publicId: true,
         name: true,
+        webhookUrl: true,
+        redirectUrl: true,
         questions: {
           select: {
             id: true,
@@ -106,4 +87,4 @@ const getQuestionsHandler = async (
   }
 }
 
-export default Sentry.withSentry(getQuestionsHandler)
+export default Sentry.withSentry(withSession(getQuestionsHandler))

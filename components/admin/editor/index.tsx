@@ -19,6 +19,10 @@ type Props = {
   selectedQuestionID: string
   setSelectedQuestionID: Dispatch<SetStateAction<string>>
   setUnsaved: Dispatch<SetStateAction<boolean>>
+  redirectUrl?: string
+  webhookUrl?: string
+  setRedirectUrl: Dispatch<SetStateAction<string>>
+  setWebhookUrl: Dispatch<SetStateAction<string>>
 }
 const Editor: FC<Props> = ({
   questions,
@@ -26,10 +30,11 @@ const Editor: FC<Props> = ({
   selectedQuestionID,
   setSelectedQuestionID,
   setUnsaved,
+  redirectUrl,
+  webhookUrl,
+  setWebhookUrl,
+  setRedirectUrl,
 }) => {
-  const [redirectUrl, setRedirectUrl] = useState('')
-  const [webhookUrl, setWebhookUrl] = useState('')
-
   const router = useRouter()
   const { id: publicId } = router.query as Record<string, string>
 
