@@ -4,14 +4,15 @@ export const ROUTES = {
   CONTINUE: '/continue',
   EDIT: '/edit',
   PREVIEW: '/preview',
+  SETTINGS: '/settings',
   API: {
     AUTH: {
       SIGN_UP: '/api/auth/sign-up',
     },
     INTEGRATIONS: {
       WEBHOOK: {
-        INDEX: '/api/integrations/webhook',
-        REDIRECT_URL: '/api/integrations/webhook/redirect-url',
+        GET_URLS: '/api/integrations/webhook/get-urls',
+        UPDATE_URLS: '/api/integrations/webhook/update-urls',
       },
     },
     GET_FORM: '/api/get-form',

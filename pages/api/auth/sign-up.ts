@@ -37,6 +37,7 @@ const signUpHandler: NextApiHandler = async (req, res) => {
       success: true,
     })
   } catch (error) {
+    console.log({ error })
     Sentry.captureException(error)
     return res.status(500).json({
       success: false,

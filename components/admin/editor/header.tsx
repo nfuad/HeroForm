@@ -7,6 +7,8 @@ import axios from 'axios'
 import { LoadingIcon } from '@components/icons'
 import { PARAMS } from '@constants/params'
 import { BackIcon, SaveIcon, EditIcon } from '@components/icons'
+import { useAuth } from '@lib/auth/provider'
+import Link from 'next/link'
 
 type Props = {
   handlePublishClick: () => void
@@ -32,6 +34,7 @@ const Header: FC<Props> = ({
         <EditableFormName currentName={formName} />
       </div>
       <div className="flex gap-x-3">
+        <DeveloperSettings />
         <ViewResponses responseCount={responseCount} />
         <PreviewButton processing={publishFormLoading} />
         <PublishButton
@@ -46,12 +49,30 @@ const Header: FC<Props> = ({
 
 export default Header
 
+const DeveloperSettings = () => {
+  const router = useRouter()
+  const href = `/${router.query.id}${ROUTES.SETTINGS}`
+
+  return (
+    <Link href={href}>
+      <a className="flex items-center justify-center py-0 my-0 mr-2 text-center text-gray-700 transition-all duration-75 cursor-pointer max-h-min hover:text-black font-body hover:border-b-2">
+        <span className="text-sm">Developer Settings</span>
+      </a>
+    </Link>
+  )
+}
+
 const EditableFormName = ({ currentName }) => {
+  const { user } = useAuth()
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState('')
   const { mutate: updateMetadata, isLoading } = useMutation(
     ({ title, id }: any) =>
-      axios.post(ROUTES.API.UPDATE_FORM_TITLE, { title, id }),
+      axios.post(ROUTES.API.UPDATE_FORM_TITLE, {
+        title,
+        id,
+        email: user?.email,
+      }),
     {
       onSuccess() {
         toast.success('Form Name Updated!')

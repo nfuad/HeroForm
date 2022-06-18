@@ -29,8 +29,6 @@ const getQuestionsHandler: NextApiHandler = async (req, res) => {
         },
         publicId: true,
         name: true,
-        webhookUrl: true,
-        redirectUrl: true,
         questions: {
           select: {
             id: true,

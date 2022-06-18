@@ -42,20 +42,23 @@ const DashboardPage: NextPage = () => {
     mutate: createForm,
     isLoading: creatingForm,
     isSuccess: createdForm,
-  } = useMutation(() => axios.post(ROUTES.API.CREATE_FORM), {
-    onSuccess({ data: { publicId } }) {
-      console.log({ publicId })
-      toast.success('Form created!')
-      router.push(`${publicId}/${ROUTES.EDIT}`)
+  } = useMutation(
+    () =>
+      axios.post(ROUTES.API.CREATE_FORM, {
+        email: user?.email,
+      }),
+    {
+      onSuccess({ data: { publicId } }) {
+        console.log({ publicId })
+        toast.success('Form created!')
+        router.push(`${publicId}/${ROUTES.EDIT}`)
+      },
+      onError(error: any) {
+        console.log({ error })
+        toast.error('Could not create form. Try again later :)')
+      },
     },
-    onError(error: any) {
-      console.log({ error })
-      toast.error('Could not create form. Try again later :)')
-      alert(
-        "Couldn't create form, probably because you haven't given us access to all the required permissions from Google Sheets.",
-      )
-    },
-  })
+  )
 
   const handleCreateClick = () => createForm()
 

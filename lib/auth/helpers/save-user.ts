@@ -20,6 +20,7 @@ export const saveUser = async ({ isNewUser, uid, accessToken }: Params) => {
     })
 
     if (!response.ok) {
+      console.log(await response.json())
       // handle error here
       throw new Error('Auth error')
     }

@@ -1,4 +1,4 @@
-import { Dispatch, FC, FormEventHandler, SetStateAction, useState } from 'react'
+import { Dispatch, FC, SetStateAction } from 'react'
 import { createQuestion } from './helpers'
 import QuestionTypeSelection from './property-editor/type/question-type-selection'
 import Container from './question-editor/container'
@@ -10,8 +10,6 @@ import toast from 'react-hot-toast'
 import set from 'lodash.set'
 import { AddIcon } from '@components/icons'
 import Scheduling from '@components/survey/questions/scheduling'
-import { ROUTES } from '@constants/routes'
-import { useRouter } from 'next/router'
 
 type Props = {
   questions: any
@@ -19,10 +17,6 @@ type Props = {
   selectedQuestionID: string
   setSelectedQuestionID: Dispatch<SetStateAction<string>>
   setUnsaved: Dispatch<SetStateAction<boolean>>
-  redirectUrl?: string
-  webhookUrl?: string
-  setRedirectUrl: Dispatch<SetStateAction<string>>
-  setWebhookUrl: Dispatch<SetStateAction<string>>
 }
 const Editor: FC<Props> = ({
   questions,
@@ -30,14 +24,7 @@ const Editor: FC<Props> = ({
   selectedQuestionID,
   setSelectedQuestionID,
   setUnsaved,
-  redirectUrl,
-  webhookUrl,
-  setWebhookUrl,
-  setRedirectUrl,
 }) => {
-  const router = useRouter()
-  const { id: publicId } = router.query as Record<string, string>
-
   const handleAdd = () => {
     const newQuestion = createQuestion({
       order: Object.keys(questions).length + 1,
@@ -168,41 +155,6 @@ const Editor: FC<Props> = ({
     }
   }
 
-  const handleWebhookURLSave: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault()
-
-    await fetch(ROUTES.API.INTEGRATIONS.WEBHOOK.INDEX, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        webhookUrl,
-        publicId,
-      }),
-    })
-
-    toast.success('nice')
-  }
-  const handleRedirectURLSave: FormEventHandler<HTMLFormElement> = async (
-    e,
-  ) => {
-    e.preventDefault()
-
-    await fetch(ROUTES.API.INTEGRATIONS.WEBHOOK.REDIRECT_URL, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        redirectUrl,
-        publicId,
-      }),
-    })
-
-    toast.success('nice')
-  }
-
   return (
     <div className="flex items-center justify-between">
       <div className="h-screen max-w-[300px] w-full px-3 pt-5 pb-20 text-gray-900 bg-white border-r border-gray-200 overflow-auto">
@@ -215,24 +167,6 @@ const Editor: FC<Props> = ({
       </div>
 
       <div className="w-full max-w-7xl">
-        <form onSubmit={handleWebhookURLSave}>
-          <input
-            type="text"
-            placeholder="Webhook URL"
-            value={webhookUrl}
-            onChange={(e) => setWebhookUrl(e.target.value)}
-          />
-          <button>Save</button>
-        </form>
-        <form onSubmit={handleRedirectURLSave}>
-          <input
-            type="text"
-            placeholder="Redirect URL"
-            value={redirectUrl}
-            onChange={(e) => setRedirectUrl(e.target.value)}
-          />
-          <button>Save</button>
-        </form>
         <Container>
           <QuestionPrompt
             prompt={prompt}

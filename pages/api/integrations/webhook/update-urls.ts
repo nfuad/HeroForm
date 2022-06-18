@@ -1,15 +1,19 @@
-import { ApiHandlerWithSession, withSession } from '@helpers/api/session'
 import prisma from '@lib/prisma'
+import { NextApiHandler } from 'next'
 
 type Body = {
   redirectUrl: string
-  publicId: string
+  webhookUrl: string
+  id: string
 }
 
-const setRedirectUrlHandler: ApiHandlerWithSession = async (req, res, _) => {
-  const { redirectUrl, publicId } = req.body as Body
+const updateWebhookIntegrationURLsHandler: NextApiHandler = async (
+  req,
+  res,
+) => {
+  const { redirectUrl, webhookUrl, id } = req.body as Body
 
-  if (!redirectUrl || !publicId) {
+  if (!id) {
     return res.status(400).json({
       success: false,
       message: 'Bad request',
@@ -19,10 +23,11 @@ const setRedirectUrlHandler: ApiHandlerWithSession = async (req, res, _) => {
   try {
     await prisma.form.update({
       where: {
-        publicId,
+        publicId: id,
       },
       data: {
         redirectUrl,
+        webhookUrl,
       },
     })
 
@@ -37,4 +42,4 @@ const setRedirectUrlHandler: ApiHandlerWithSession = async (req, res, _) => {
   }
 }
 
-export default withSession(setRedirectUrlHandler)
+export default updateWebhookIntegrationURLsHandler
