@@ -143,7 +143,7 @@ const DashboardPage: NextPage = () => {
 
 export default DashboardPage
 
-const Form = ({ publicId, metadata: { title, responseCount } }) => {
+const Form = ({ publicId, name, _count: { responses: responseCount } }) => {
   const href = `${publicId}${ROUTES.EDIT}`
   const handleUnSupportedViewportClick = () => {
     toast(
@@ -170,7 +170,7 @@ const Form = ({ publicId, metadata: { title, responseCount } }) => {
     <>
       <Link href={href}>
         <a className="flex-col items-center justify-center hidden w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer lg:flex hover:shadow-xl">
-          <h1>{title}</h1>
+          <h1>{name}</h1>
           <p className="mt-2 text-xs text-gray-500">
             {responseCount} response{responseCount > 1 && 's'}
           </p>
@@ -180,7 +180,7 @@ const Form = ({ publicId, metadata: { title, responseCount } }) => {
         onClick={handleUnSupportedViewportClick}
         className="flex flex-col items-center justify-center w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer hover:shadow-xl lg:hidden"
       >
-        <h1>{title}</h1>
+        <h1>{name}</h1>
         <p className="mt-2 text-xs text-gray-500">
           {responseCount} response{responseCount > 1 && 's'}
         </p>

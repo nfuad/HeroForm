@@ -13,16 +13,13 @@ import {
   ArrowNavigator,
   PreviewBanner,
 } from '@components/survey'
-import {
-  getFormBySurveyId,
-  getQuestions,
-} from '@lib/get-questions-by-survey-id'
 import { Loader } from '@components/loader'
 
 type Props = {
+  redirectUrl?: string
   questions: any[]
 }
-const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
+const SurveyPage: NextPage<Props> = ({ redirectUrl, questions = [] }) => {
   const [currentPage, setCurrentPage] = useState(0)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [responses, setResponses] = useState(() => {
@@ -134,6 +131,7 @@ const SurveyPage: NextPage<Props> = ({ questions = [] }) => {
         handleNext={handleNext}
         responses={responses}
         setResponses={setResponses}
+        redirectUrl={redirectUrl}
       />
     </Container>
   )
@@ -153,8 +151,25 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { id } = params as Record<string, string>
+  const prisma = (await import('@lib/prisma')).default
 
-  const form = await getFormBySurveyId(id)
+  const form = await prisma.form.findUnique({
+    where: {
+      publicId: id,
+    },
+    select: {
+      redirectUrl: true,
+      questions: {
+        select: {
+          id: true,
+          type: true,
+          prompt: true,
+          options: true,
+          properties: true,
+        },
+      },
+    },
+  })
 
   // see: https://nextjs.org/docs/api-reference/data-fetching/get-static-props#notfound
   if (!form) {
@@ -163,12 +178,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   }
 
-  const questions = await getQuestions(form)
-
   return {
     props: {
       // pass the questions to the page
-      questions,
+      questions: form.questions,
+      redirectUrl: form.redirectUrl,
     },
     // re-generate the post at most once every 10 seconds if a request comes in
     revalidate: 10,

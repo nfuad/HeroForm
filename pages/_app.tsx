@@ -6,6 +6,7 @@ import SEO from '../next-seo.config'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import TrackingScripts from '@components/tracking-scripts'
+import { NextUIProvider } from '@nextui-org/react'
 
 const DynamicNextNProgress = dynamic(() => import('nextjs-progressbar'), {})
 const DynamicDefaultSEO = dynamic(() =>
@@ -48,7 +49,9 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
       <DynamicDefaultSEO {...SEO} />
       <DynamicQueryClientProvider>
         <DynamicSessionProvider session={pageProps.session} refetchInterval={0}>
-          <Component {...pageProps} />
+          <NextUIProvider>
+            <Component {...pageProps} />
+          </NextUIProvider>
         </DynamicSessionProvider>
       </DynamicQueryClientProvider>
     </>

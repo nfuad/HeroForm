@@ -13,6 +13,7 @@ type Props = {
   setResponses: Dispatch<SetStateAction<Record<string, string>>>
   questions: any[]
   handleNext: () => void
+  redirectUrl?: string
 }
 
 const Questions: FC<Props> = ({
@@ -22,6 +23,7 @@ const Questions: FC<Props> = ({
   setResponses,
   questions,
   handleNext,
+  redirectUrl,
 }) => {
   const handleResponseChange = (id: string) => (value: any) => {
     setResponses((prevState) => ({
@@ -65,7 +67,7 @@ const Questions: FC<Props> = ({
       >
         <InitialPage handleNext={handleNext} currentPage={currentPage} />
         {renderQuestions()}
-        <SuccessPage />
+        <SuccessPage redirectUrl={redirectUrl} />
       </ReactPageScroller>
       <Toast />
     </>

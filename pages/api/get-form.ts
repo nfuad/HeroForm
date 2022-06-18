@@ -1,59 +1,55 @@
 import prisma from '@lib/prisma'
-import { NextApiRequest, NextApiResponse } from 'next'
-import { google } from 'googleapis'
-import { getSession } from 'next-auth/react'
-import { getQuestionsBySheetId } from '@lib/sheets/get-questions-by-sheet-id'
-import { getMetadata } from '@lib/sheets'
 import * as Sentry from '@sentry/nextjs'
+import { ApiHandlerWithSession, withSession } from '@helpers/api/session'
 
 type Query = {
   id: string
 }
 
-const getQuestionsHandler = async (
-  req: NextApiRequest,
-  res: NextApiResponse,
-) => {
+const getQuestionsHandler: ApiHandlerWithSession = async (req, res, _) => {
   const { id } = req.query as Query
 
-  if (!id) {
-    return res.status(422).json({
-      success: false,
-      message: 'Unprocessable Entity',
-    })
-  }
-
   try {
-    const session = await getSession({ req })
-    const { email } = session.user || {}
+    // const auth = new google.auth.OAuth2({
+    //   clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+    //   clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+    // })
+    // auth.setCredentials({ refresh_token: refreshToken })
 
-    if (!email) {
-      return res.status(401).json({
-        success: false,
-        message: 'Unauthorized',
-      })
-    }
-
-    const accounts = await prisma()
-      .user.findUnique({
-        where: {
-          email,
-        },
-      })
-      .accounts()
-
-    const account = accounts[0]
-    const refreshToken = account.refresh_token
-
-    const auth = new google.auth.OAuth2({
-      clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-    })
-    auth.setCredentials({ refresh_token: refreshToken })
-
-    const form = await prisma().form.findUnique({
+    const form = await prisma.form.findUnique({
       where: {
         publicId: id,
+      },
+      select: {
+        _count: {
+          select: {
+            responses: true,
+          },
+        },
+        publicId: true,
+        name: true,
+        webhookUrl: true,
+        redirectUrl: true,
+        questions: {
+          select: {
+            id: true,
+            prompt: true,
+            type: true,
+            properties: {
+              select: {
+                isRequired: true,
+                placeholder: true,
+                maxCharacters: true,
+                schedulingLink: true,
+                isMaxLengthSpecified: true,
+                isOtherOptionAllowed: true,
+                isMultipleSelectionAllowed: true,
+                order: true,
+              },
+            },
+            options: true,
+          },
+        },
       },
     })
 
@@ -64,15 +60,22 @@ const getQuestionsHandler = async (
       })
     }
 
-    const { spreadsheetId } = form
-    const metadata = await getMetadata({ spreadsheetId, auth })
-    const questions = await getQuestionsBySheetId({ spreadsheetId, auth })
+    // const { spreadsheetId } = form
+    // const metadata = await getMetadata({ spreadsheetId, auth })
+    // const questions = await getQuestionsBySheetId({ spreadsheetId, auth })
 
     return res.status(200).json({
       success: true,
-      metadata,
-      questions,
-      spreadsheetId,
+      data: {
+        ...form,
+        questions: form.questions.reduce(
+          (acc, curr) => ({
+            ...acc,
+            [curr.id]: curr,
+          }),
+          {},
+        ),
+      },
     })
   } catch (error) {
     Sentry.captureException(error)
@@ -84,4 +87,4 @@ const getQuestionsHandler = async (
   }
 }
 
-export default Sentry.withSentry(getQuestionsHandler)
+export default Sentry.withSentry(withSession(getQuestionsHandler))

@@ -1,8 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { google } from 'googleapis'
 import { getSession } from 'next-auth/react'
 import prisma from '@lib/prisma'
-import { updateMetadata } from '@lib/sheets'
 
 type Body = {
   id: string
@@ -32,42 +30,25 @@ const publishFormHandler = async (
       })
     }
 
-    const form = await prisma().form.findUnique({
+    await prisma.form.update({
+      data: {
+        name: title,
+      },
       where: {
         publicId: id,
       },
     })
-    if (!form) {
-      return res.status(404).json({
-        success: false,
-        message: 'Not Found',
-      })
-    }
 
-    const accounts = await prisma()
-      .user.findUnique({
-        where: {
-          email,
-        },
-      })
-      .accounts()
+    //     const auth = new google.auth.OAuth2({
+    //       clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+    //       clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+    //     })
 
-    const account = accounts[0]
-    const refreshToken = account.refresh_token
+    //     auth.setCredentials({
+    //       refresh_token: refreshToken,
+    //     })
 
-    const auth = new google.auth.OAuth2({
-      clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-    })
-
-    auth.setCredentials({
-      refresh_token: refreshToken,
-    })
-
-    const { spreadsheetId } = form
-    const metadata = { title }
-
-    await updateMetadata({ auth, metadata, spreadsheetId })
+    // await updateMetadata({ auth, metadata, spreadsheetId })
 
     return res.status(200).json({
       success: true,

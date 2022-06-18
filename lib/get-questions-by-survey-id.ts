@@ -3,7 +3,7 @@ import { getQuestionsBySheetId } from '@lib/sheets/get-questions-by-sheet-id'
 import { google } from 'googleapis'
 
 export const getFormBySurveyId = async (id: string) => {
-  const form = await prisma().form.findUnique({
+  const form = await prisma.form.findUnique({
     where: {
       publicId: id,
     },
@@ -13,8 +13,8 @@ export const getFormBySurveyId = async (id: string) => {
 }
 
 export const getQuestions = async (form) => {
-  const accounts = await prisma()
-    .user.findUnique({
+  const accounts = await prisma.user
+    .findUnique({
       where: {
         id: form.userId,
       },

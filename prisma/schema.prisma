@@ -56,10 +56,55 @@ model VerificationToken {
 }
 
 model Form {
-  id            String  @id @default(cuid())
-  publicId      String  @unique
+  id            String     @id @default(cuid())
+  publicId      String     @unique
   userId        String
-  spreadsheetId String  @unique
-  name          String? @default("Untitled")
-  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  spreadsheetId String?    @unique
+  webhookUrl    String?
+  redirectUrl   String?
+  name          String
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  responses     Response[]
+  questions     Question[]
+}
+
+model Question {
+  id              String            @id @default(cuid())
+  formId          String
+  prompt          String
+  type            String
+  options         Json?
+  properties      Properties?
+  form            Form              @relation(fields: [formId], references: [id], onDelete: Cascade)
+  responseDetails ResponseDetails[]
+}
+
+model Properties {
+  id                         String   @id @default(cuid())
+  questionId                 String   @unique
+  isRequired                 Boolean
+  placeholder                String
+  order                      Int
+  isMultipleSelectionAllowed Boolean?
+  isOtherOptionAllowed       Boolean?
+  isMaxLengthSpecified       Boolean?
+  maxCharacters              Int?
+  schedulingLink             String?
+  question                   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model Response {
+  id              String            @id @default(cuid())
+  formId          String
+  form            Form              @relation(fields: [formId], references: [id], onDelete: Cascade)
+  responseDetails ResponseDetails[]
+}
+
+model ResponseDetails {
+  id         String   @id @default(cuid())
+  responseId String
+  questionId String
+  value      String
+  response   Response @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
