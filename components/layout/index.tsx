@@ -1,7 +1,6 @@
 import { FC, HTMLAttributes, useEffect } from 'react'
 import { NextSeo } from 'next-seo'
 import { SITE_DATA } from '@constants/site-data'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { ROUTES } from '@constants/routes'
 import toast from 'react-hot-toast'
@@ -31,10 +30,12 @@ const Layout: FC<LayoutProps> = ({
   const { isLoggedOut, isAuthUnknown } = useAuth()
 
   useEffect(() => {
-    if (isLoggedOut) {
-      router.push(ROUTES.AUTHENTICATION)
+    if (isProtected) {
+      if (isLoggedOut) {
+        router.push(ROUTES.CONTINUE)
+      }
     }
-  }, [isLoggedOut, router])
+  }, [isLoggedOut, isProtected, router])
 
   if (isProtected) {
     if (isAuthUnknown) {

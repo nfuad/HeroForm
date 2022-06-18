@@ -10,7 +10,7 @@ type Body = {
 }
 
 const signUpHandler: NextApiHandler = async (req, res) => {
-  const { uid } = req.body as Body
+  const { uid, accessToken } = req.body as Body
 
   if (!uid) {
     return res.status(400).json({

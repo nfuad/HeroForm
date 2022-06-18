@@ -49,7 +49,7 @@ export const UnAuthenticated = ({ handleSignInClick }) => {
         <p>
           {isLoginPage ? "Don't have an account?" : 'Already Have An Account?'}
         </p>
-        <Link href={isLoginPage ? ROUTES.CONTINUE : ROUTES.LOGIN}>
+        <Link href={ROUTES.CONTINUE}>
           <a className="text-blue-500 hover:text-blue-900 transition-all underline">
             {isLoginPage ? 'Sign Up' : 'Log back in'}
           </a>

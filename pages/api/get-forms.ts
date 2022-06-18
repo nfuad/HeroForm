@@ -1,13 +1,15 @@
 import prisma from '@lib/prisma'
-import { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/react'
+import { NextApiHandler } from 'next'
 import * as Sentry from '@sentry/nextjs'
 
-const getFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const session = await getSession({ req })
-    const { email } = session.user || {}
+type Query = {
+  email: string
+}
 
+const getFormsHandler: NextApiHandler = async (req, res) => {
+  try {
+    const { email } = req.query as Query
+    console.log({ email })
     if (!email) {
       return res.status(401).json({
         success: false,
@@ -15,7 +17,7 @@ const getFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       })
     }
 
-    const { forms = [] } = await prisma.user.findUnique({
+    const user = await prisma.user.findUnique({
       where: {
         email,
       },
@@ -35,6 +37,10 @@ const getFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     })
 
+    console.log(user)
+
+    const { forms = [] } = user
+
     // const auth = new google.auth.OAuth2({
     //   clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
     //   clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
@@ -51,7 +57,7 @@ const getFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     //   })),
     // )
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       forms,
     })
@@ -65,4 +71,4 @@ const getFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 }
 
-export default Sentry.withSentry(getFormHandler)
+export default Sentry.withSentry(getFormsHandler)
