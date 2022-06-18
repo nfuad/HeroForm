@@ -5,7 +5,11 @@ export const ROUTES = {
   LOGIN: '/login',
   EDIT: '/edit',
   PREVIEW: '/preview',
+  AUTHENTICATION: '/authentication',
   API: {
+    AUTH: {
+      SIGN_UP: '/api/auth/sign-up',
+    },
     INTEGRATIONS: {
       WEBHOOK: {
         INDEX: '/api/integrations/webhook',

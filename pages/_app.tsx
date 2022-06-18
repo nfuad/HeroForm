@@ -6,14 +6,11 @@ import SEO from '../next-seo.config'
 import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import TrackingScripts from '@components/tracking-scripts'
-import { NextUIProvider } from '@nextui-org/react'
+import { AuthProvider } from '@lib/auth/provider'
 
 const DynamicNextNProgress = dynamic(() => import('nextjs-progressbar'), {})
 const DynamicDefaultSEO = dynamic(() =>
   import('next-seo').then((mod) => mod.DefaultSeo),
-) as any
-const DynamicSessionProvider = dynamic(() =>
-  import('next-auth/react').then((mod) => mod.SessionProvider),
 ) as any
 const DynamicQueryClientProvider = dynamic(
   () => import('@lib/query-client-provider'),
@@ -48,11 +45,9 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
       <DynamicNextNProgress {...PROGRESSBAR_OPTIONS} />
       <DynamicDefaultSEO {...SEO} />
       <DynamicQueryClientProvider>
-        <DynamicSessionProvider session={pageProps.session} refetchInterval={0}>
-          <NextUIProvider>
-            <Component {...pageProps} />
-          </NextUIProvider>
-        </DynamicSessionProvider>
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
       </DynamicQueryClientProvider>
     </>
   )

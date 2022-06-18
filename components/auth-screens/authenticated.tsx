@@ -1,9 +1,17 @@
 import { ChevronRightIcon, LogOutIcon } from '@components/icons'
+import { User } from 'firebase/auth'
+import { FC } from 'react'
 
-export const Authenticated = ({
+type Props = {
+  handleContinueClick: () => void
+  handleSignOutClick: () => void
+  user: User
+}
+
+export const Authenticated: FC<Props> = ({
   handleContinueClick,
-  session,
   handleSignOutClick,
+  user,
 }) => (
   <>
     <h1 className="text-2xl ">{"You're Logged In"}</h1>
@@ -17,12 +25,12 @@ export const Authenticated = ({
           {/* eslint-disable-next-line */}
           <img
             alt="avatar"
-            src={session?.user?.image}
+            src={user?.photoURL}
             className="h-12 border-2 rounded-full border-violet-500"
           />{' '}
           <div className="flex flex-col items-start justify-start text-sm gap-y-1">
-            <p className="font-heading">{session?.user?.name}</p>
-            <p>{session?.user?.email}</p>
+            <p className="font-heading">{user?.displayName}</p>
+            <p>{user?.email}</p>
           </div>
         </div>
         <ChevronRightIcon />

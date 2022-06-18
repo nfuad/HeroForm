@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes } from 'react'
+import { FC, HTMLAttributes, useEffect } from 'react'
 import { NextSeo } from 'next-seo'
 import { SITE_DATA } from '@constants/site-data'
 import { useSession } from 'next-auth/react'
@@ -9,6 +9,7 @@ import { Container } from '@components/auth-screens'
 import { Loader } from '@components/loader'
 import { Header } from './header'
 import { Footer } from './footer'
+import { useAuth } from '@lib/auth/provider'
 
 type Props = {
   title?: string
@@ -27,26 +28,23 @@ const Layout: FC<LayoutProps> = ({
   isProtected = false, // for protected routes like admin
 }) => {
   const router = useRouter()
-  const { status } = useSession({
-    required: isProtected,
-    onUnauthenticated: () => {
-      toast.error('You must be signed in to continue')
-      router.push(ROUTES.CONTINUE)
-    },
-  })
+  const { isLoggedOut, isAuthUnknown } = useAuth()
 
-  const isLoading = status === 'loading'
-  const isUnauthenticated = status === 'unauthenticated'
+  useEffect(() => {
+    if (isLoggedOut) {
+      router.push(ROUTES.AUTHENTICATION)
+    }
+  }, [isLoggedOut, router])
 
   if (isProtected) {
-    if (isLoading) {
+    if (isAuthUnknown) {
       return (
         <Container>
           <Loader />
         </Container>
       )
     }
-    if (isUnauthenticated) return null
+    if (isLoggedOut) return null
   }
 
   const pageTitle = title ? `${title} | ${SITE_DATA.title}` : SITE_DATA.title
