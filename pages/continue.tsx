@@ -1,39 +1,45 @@
-import { signIn, signOut, useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
-import { ROUTES } from '@constants/routes'
+import { auth } from '../lib/init-firebase'
+import { signOut } from 'firebase/auth'
+import { ROUTES } from '../constants/routes'
 import Layout from '@components/layout'
+import { Loader } from '@components/loader'
 import {
-  Container,
   Authenticated,
+  Container,
   UnAuthenticated,
 } from '@components/auth-screens'
-import { Loader } from '@components/loader'
+import { useRouter } from 'next/router'
+import { useAuth } from '@lib/auth/provider'
 
-const ContinuePage = () => {
+const AuthPage = ({}) => {
   const router = useRouter()
-  const { data: session, status } = useSession()
-
-  const isLoading = status === 'loading'
-  const isAuthenticated = status === 'authenticated'
-  const isUnAuthenticated = status === 'unauthenticated'
+  const {
+    user,
+    isAuthUnknown,
+    isLoggedOut,
+    isLoggedIn,
+    authenticateWithGoogle,
+  } = useAuth()
 
   const handleContinueClick = () => router.push(ROUTES.DASHBOARD)
-  const handleSignInClick = () =>
-    signIn('google', { callbackUrl: ROUTES.DASHBOARD })
-  const handleSignOutClick = () => signOut()
+  const handleSignOutClick = () => signOut(auth)
+  const handleSignInClick = async () => {
+    await authenticateWithGoogle()
+    router.push(ROUTES.DASHBOARD)
+  }
 
   return (
     <Layout title="Continue">
       <Container>
-        {isLoading && <Loader />}
-        {isAuthenticated && (
+        {isAuthUnknown && <Loader />}
+        {isLoggedIn && (
           <Authenticated
             handleContinueClick={handleContinueClick}
-            session={session}
             handleSignOutClick={handleSignOutClick}
+            user={user}
           />
         )}
-        {isUnAuthenticated && (
+        {isLoggedOut && (
           <UnAuthenticated handleSignInClick={handleSignInClick} />
         )}
       </Container>
@@ -41,4 +47,4 @@ const ContinuePage = () => {
   )
 }
 
-export default ContinuePage
+export default AuthPage

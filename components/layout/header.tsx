@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { signOut } from 'next-auth/react'
 import { SITE_DATA } from '@constants/site-data'
 import { GetStartedButton } from '@components/common'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { ROUTES } from '@constants/routes'
 import Link from 'next/link'
 import { LogOutIcon, ChevronDownIcon } from '../icons'
+import { useAuth } from '@lib/auth/provider'
+import { signOut } from 'firebase/auth'
+import { auth } from '@lib/init-firebase'
 
 export const Header = () => {
   const router = useRouter()
@@ -30,9 +31,9 @@ export const Header = () => {
             </div>
 
             <div className="flex items-center justify-center gap-x-5">
-              <Link href={ROUTES.LOGIN}>
+              <Link href={ROUTES.CONTINUE}>
                 <a className="hidden text-base transition-all duration-100 sm:block font-body hover:text-gray-500">
-                  {ROUTES.LOGIN}
+                  {ROUTES.CONTINUE}
                 </a>
               </Link>
 
@@ -169,7 +170,7 @@ const JoinGitHubButton = () => {
 
 const DropDown = () => {
   const [open, setOpen] = useState(false)
-  const { data } = useSession()
+  const { user } = useAuth()
 
   return (
     <div className="relative transition-all">
@@ -185,11 +186,11 @@ const DropDown = () => {
             // eslint-disable-next-line
             <img
               alt="avatar"
-              src={data?.user?.image}
+              src={user?.photoURL}
               className="h-6 border-2 rounded-full border-violet-500"
             />
           }
-          <p className="font-heading">{data?.user?.name}</p>
+          <p className="font-heading">{user?.displayName}</p>
           <ChevronDownIcon className="w-5 h-5 ml-2 -mr-1" aria-hidden="true" />
         </div>
       </div>
@@ -202,14 +203,12 @@ const DropDown = () => {
       >
         <div className={'block px-4 py-4 text-sm border-b border-b-gray-200'}>
           <p>Signed in as</p>
-          <p className="tracking-wide break-all font-heading">
-            {data?.user?.email}
-          </p>
+          <p className="tracking-wide break-all font-heading">{user?.email}</p>
         </div>
         <div className={'text-gray-700 block px-4 py-2 text-sm'}>
           <button
             className="flex items-center justify-between w-full"
-            onClick={() => signOut()}
+            onClick={() => signOut(auth)}
           >
             <span>Sign Out</span> <LogOutIcon />
           </button>

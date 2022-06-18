@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import Toast from '@components/toast'
 
-import { useSession } from 'next-auth/react'
 import { ROUTES } from '@constants/routes'
 import { LoadingIcon } from '@components/icons'
 import { useMutation, useQuery } from 'react-query'
@@ -13,11 +12,11 @@ import isEmpty from 'lodash.isempty'
 import Link from 'next/link'
 import { SITE_DATA } from '@constants/site-data'
 import { PlusIcon } from '@components/icons'
+import { useAuth } from '@lib/auth/provider'
 
 const DashboardPage: NextPage = () => {
-  const { data, status } = useSession()
+  const { isLoggedIn, isAuthUnknown, user } = useAuth()
   const router = useRouter()
-  const isAuthenticated = status === 'authenticated'
 
   const {
     isLoading: loadingForms,
@@ -31,8 +30,8 @@ const DashboardPage: NextPage = () => {
     error: Error
     data: { forms: any[] }
     isSuccess: boolean
-  } = useQuery(ROUTES.API.GET_FORMS, {
-    enabled: isAuthenticated,
+  } = useQuery(`${ROUTES.API.GET_FORMS}?email=${user?.email}`, {
+    enabled: isLoggedIn,
     onError: (error) => {
       console.error(error)
       toast.error('Could not get forms')

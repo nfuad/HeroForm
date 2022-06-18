@@ -2,10 +2,8 @@ export const ROUTES = {
   HOME: '/',
   DASHBOARD: '/dashboard',
   CONTINUE: '/continue',
-  LOGIN: '/login',
   EDIT: '/edit',
   PREVIEW: '/preview',
-  AUTHENTICATION: '/authentication',
   API: {
     AUTH: {
       SIGN_UP: '/api/auth/sign-up',

@@ -1,12 +1,13 @@
 import prisma from '@lib/prisma'
 import * as Sentry from '@sentry/nextjs'
-import { ApiHandlerWithSession, withSession } from '@helpers/api/session'
+import { NextApiHandler } from 'next'
+// import { ApiHandlerWithSession, withSession } from '@helpers/api/session'
 
 type Query = {
   id: string
 }
 
-const getQuestionsHandler: ApiHandlerWithSession = async (req, res, _) => {
+const getQuestionsHandler: NextApiHandler = async (req, res) => {
   const { id } = req.query as Query
 
   try {
@@ -87,4 +88,4 @@ const getQuestionsHandler: ApiHandlerWithSession = async (req, res, _) => {
   }
 }
 
-export default Sentry.withSentry(withSession(getQuestionsHandler))
+export default Sentry.withSentry(getQuestionsHandler)

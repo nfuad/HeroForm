@@ -1,15 +1,16 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiHandler } from 'next'
 import prisma from '@lib/prisma'
-import { getSession } from 'next-auth/react'
 import { nanoid } from 'nanoid'
 import * as Sentry from '@sentry/nextjs'
 
 const FORM_ID_LENGTH = 8
 
-const createFormHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+type Body = {
+  email: string
+}
+const createFormHandler: NextApiHandler = async (req, res) => {
   try {
-    const session = await getSession({ req })
-    const { email } = session.user || {}
+    const { email } = req.body as Body
     if (!email) {
       return res.status(401).json({
         success: false,

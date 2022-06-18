@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/react'
 import prisma from '@lib/prisma'
 import * as Sentry from '@sentry/nextjs'
 
@@ -30,12 +29,13 @@ import * as Sentry from '@sentry/nextjs'
 type Body = {
   id: string
   questions: Record<string, any>
+  email: string
 }
 const publishFormHandler = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ) => {
-  const { questions, id: publicId }: Body = req.body
+  const { questions, id: publicId, email }: Body = req.body
 
   if (!questions || !publicId) {
     return res.status(422).json({
@@ -45,9 +45,6 @@ const publishFormHandler = async (
   }
 
   try {
-    const session = await getSession({ req })
-    const { email } = session.user || {}
-
     if (!email) {
       return res.status(401).json({
         success: false,

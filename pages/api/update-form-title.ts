@@ -1,16 +1,13 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import { getSession } from 'next-auth/react'
+import { NextApiHandler } from 'next'
 import prisma from '@lib/prisma'
 
 type Body = {
   id: string
   title: string
+  email: string
 }
-const publishFormHandler = async (
-  req: NextApiRequest,
-  res: NextApiResponse,
-) => {
-  const { title, id }: Body = req.body
+const publishFormHandler: NextApiHandler = async (req, res) => {
+  const { title, id, email }: Body = req.body
 
   if (!title || !id) {
     return res.status(422).json({
@@ -20,9 +17,6 @@ const publishFormHandler = async (
   }
 
   try {
-    const session = await getSession({ req })
-    const { email } = session.user || {}
-
     if (!email) {
       return res.status(401).json({
         success: false,
