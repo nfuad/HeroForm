@@ -19,6 +19,7 @@
     "@calcom/embed-react": "^1.0.5",
     "@next/bundle-analyzer": "^12.1.5",
     "@nextui-org/react": "^1.0.0-beta.9",
+    "@plasmicapp/loader-nextjs": "^1.0.142",
     "@prisma/client": "^3.14.0",
     "@sentry/nextjs": "^6.19.6",
     "@slack/web-api": "^6.7.1",
