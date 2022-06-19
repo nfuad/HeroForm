@@ -10,8 +10,25 @@ import { useRouter } from 'next/router'
 import { ChangeEventHandler, FormEventHandler, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useMutation, useQuery } from 'react-query'
+import Image from 'next/image'
+import BackButton from '@components/back-button'
 
-const DeveloperSettingsPage: NextPage = () => {
+const IntegrationCard = ({ img, title, description, isConnected = false }) => (
+  <div className="w-full border bg-white shadow-sm py-5 justify-between items-center flex px-5 max-w-2xl rounded-md">
+    <Image src={img} width={50} height={50} alt="" />
+    <div>
+      <h4>{title}</h4>
+      <p className="text-sm max-w-sm">{description}</p>
+    </div>
+    {!isConnected && (
+      <Button className="text-xs">
+        <span>Connect</span>
+      </Button>
+    )}
+  </div>
+)
+
+const SettingsPage: NextPage = () => {
   const [redirectUrl, setRedirectUrl] = useState('')
   const [webhookUrl, setWebhookUrl] = useState('')
 
@@ -104,11 +121,29 @@ const DeveloperSettingsPage: NextPage = () => {
                 <BackButton />
               </div>
               <h1 className="flex items-center justify-center text-lg gap-x-2">
-                Developer Settings
+                Settings
               </h1>
             </div>
           </header>
           <div className="mx-auto w-full max-w-7xl pt-16">
+            <h2 className="text-lg mb-3">Integrations</h2>
+            <div className="flex flex-col gap-y-5">
+              <IntegrationCard
+                isConnected={false}
+                title={'Google Sheets'}
+                img="/images/sheets.png"
+                description={`Connect Sheets to collect responses from everyone and send the data straight to your Google Sheets. Results are always synced automatically!`}
+              />
+              <IntegrationCard
+                isConnected={false}
+                title="Slack"
+                img="/images/slack.png"
+                description={`Connect Slack to get notified in a channel or direct message when responses are received.`}
+              />
+            </div>
+          </div>
+          <div className="mx-auto w-full max-w-7xl pt-16">
+            <h2 className="text-lg mb-3">Developer Settings</h2>
             <form
               className="flex flex-col w-full max-w-xl"
               onSubmit={handleSaveURLs}
@@ -143,22 +178,4 @@ const DeveloperSettingsPage: NextPage = () => {
   )
 }
 
-export default DeveloperSettingsPage
-
-const BackButton = () => {
-  const router = useRouter()
-
-  const onClick = () => {
-    const id = router.query.id
-    router.push(`/${id}${ROUTES.EDIT}`)
-  }
-
-  return (
-    <button
-      className="text-gray-900 transition-all duration-75 cursor-pointer hover:text-gray-700"
-      onClick={onClick}
-    >
-      <BackIcon />
-    </button>
-  )
-}
+export default SettingsPage

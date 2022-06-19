@@ -181,7 +181,7 @@ const DropDown = () => {
         onClick={() => setOpen((st) => !st)}
       >
         <div className="flex items-center justify-start gap-x-2">
-          {
+          {user?.photoURL && (
             // have to use <img> tag here because we don't know the google domains :)
             // eslint-disable-next-line
             <img
@@ -189,7 +189,7 @@ const DropDown = () => {
               src={user?.photoURL}
               className="h-6 border-2 rounded-full border-violet-500"
             />
-          }
+          )}
           <p className="font-heading">{user?.displayName}</p>
           <ChevronDownIcon className="w-5 h-5 ml-2 -mr-1" aria-hidden="true" />
         </div>
