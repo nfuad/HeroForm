@@ -12,7 +12,7 @@ type Props = {
 
 const Button: FC<Props> = ({
   onClick,
-  children = null,
+  children = '',
   className = '',
   showIcon = true,
 }) => {

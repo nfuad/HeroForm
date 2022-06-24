@@ -1,4 +1,6 @@
 import { initPlasmicLoader } from '@plasmicapp/loader-nextjs'
+import { SeeDemoButton } from '@components/home'
+import Button from '@components/button'
 
 export const PLASMIC = initPlasmicLoader({
   projects: [
@@ -10,4 +12,19 @@ export const PLASMIC = initPlasmicLoader({
   // Fetches the latest revisions, whether or not they were unpublished!
   // Disable for production to ensure you render only published changes.
   preview: true,
+})
+
+PLASMIC.registerComponent(SeeDemoButton, {
+  name: 'SeeDemoButton',
+  props: {
+    children: 'slot',
+  },
+})
+
+PLASMIC.registerComponent(Button, {
+  name: 'AnimatedButton',
+  props: {
+    children: 'slot',
+    className: 'string',
+  },
 })

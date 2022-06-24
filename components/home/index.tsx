@@ -34,7 +34,10 @@ export const QuickFacts = () => {
   )
 }
 
-export const SeeDemoButton = () => {
+export const SeeDemoButton = ({
+  children = 'Text Here',
+  className = '',
+}: any) => {
   const demoURL = 'https://heroform.io/A6e-FRQ-'
 
   return (
@@ -42,16 +45,15 @@ export const SeeDemoButton = () => {
       target={'_blank'}
       rel={'noopener noreferrer'}
       href={demoURL}
-      className="flex items-center justify-center mx-auto mt-2 text-[28px] sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl xl:leading-[1.1] tracking-wide text-center text-blue-500 hover:text-indigo-900 font-heading group"
+      className="flex items-center font-bold justify-center mx-auto text-[28px] sm:text-4xl md:text-5xl lg:text-6xl xl:text-8xl text-center text-blue-500 hover:text-indigo-900 font-heading group mt-0"
     >
       <span className="transition-all duration-75 group-hover:mr-2 lg:group-hover:mr-4">
-        See It In Action
+        {children}
       </span>
       <ChevronRightIcon
         strokeWidth={4}
-        className={
-          'w-6 h-6 sm:w-7 sm:h-7 md:w-10 md:h-10 lg:w-16 lg:h-16 lg:mt-2 xl:mt-3'
-        }
+        // className={`w-10 h-10 sm:w-15 sm:h-15 md:w-18 md:h-18 lg:w-24 lg:h-24 ${className}`}
+        className={`${className}`}
       />
     </a>
   )
