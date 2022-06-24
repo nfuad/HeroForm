@@ -3,6 +3,12 @@ export enum QuestionType {
   LONG_TEXT = 'long-text',
   MULTI_CHOICE = 'multi-choice',
   SCHEDULING = 'scheduling',
+  YES_NO = 'yes-no',
+  WEBSITE = 'website',
+  PHONE = 'phone',
+  EMAIL = 'email',
+  FILE_UPLOADER = 'file-uploader',
+  NUMBER = 'number',
 }
 
 export type Option = {

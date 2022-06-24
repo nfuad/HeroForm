@@ -12,6 +12,7 @@ import toast from 'react-hot-toast'
 import { useMutation, useQuery } from 'react-query'
 import Image from 'next/image'
 import BackButton from '@components/back-button'
+import { Container } from '@components/auth-screens'
 
 const IntegrationCard = ({ img, title, description, isConnected = false }) => (
   <div className="w-full border bg-white shadow-sm py-5 justify-between items-center flex px-5 max-w-2xl rounded-md">
@@ -108,7 +109,14 @@ const SettingsPage: NextPage = () => {
     })
   }
 
-  if (isFetching) return <Loader />
+  if (isFetching) {
+    return (
+      <Container>
+        <Loader />
+      </Container>
+    )
+  }
+
   if (error) return <p>What a tough luck</p>
 
   return (
