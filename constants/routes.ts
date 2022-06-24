@@ -5,6 +5,8 @@ export const ROUTES = {
   EDIT: '/edit',
   PREVIEW: '/preview',
   SETTINGS: '/settings',
+  INSIGHTS: '/insights',
+  RESPONSES: '/responses',
   API: {
     AUTH: {
       SIGN_UP: '/api/auth/sign-up',

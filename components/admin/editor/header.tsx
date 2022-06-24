@@ -9,6 +9,7 @@ import { PARAMS } from '@constants/params'
 import { BackIcon, SaveIcon, EditIcon } from '@components/icons'
 import { useAuth } from '@lib/auth/provider'
 import Link from 'next/link'
+import BackButton from '@components/back-button'
 
 type Props = {
   handlePublishClick: () => void
@@ -34,8 +35,9 @@ const Header: FC<Props> = ({
         <EditableFormName currentName={formName} />
       </div>
       <div className="flex gap-x-3">
-        <DeveloperSettings />
         <ViewResponses responseCount={responseCount} />
+        <Settings />
+        <Insights />
         <PreviewButton processing={publishFormLoading} />
         <PublishButton
           processing={publishFormLoading}
@@ -49,14 +51,40 @@ const Header: FC<Props> = ({
 
 export default Header
 
-const DeveloperSettings = () => {
+const Insights = () => {
+  const router = useRouter()
+  const href = `/${router.query.id}${ROUTES.INSIGHTS}`
+
+  return (
+    <Link href={href}>
+      <a className="flex items-center justify-center py-0 my-0 mr-2 text-center text-gray-700 transition-all duration-75 cursor-pointer max-h-min hover:text-black font-body hover:border-b-2">
+        Insights
+      </a>
+    </Link>
+  )
+}
+
+const Settings = () => {
   const router = useRouter()
   const href = `/${router.query.id}${ROUTES.SETTINGS}`
 
   return (
     <Link href={href}>
       <a className="flex items-center justify-center py-0 my-0 mr-2 text-center text-gray-700 transition-all duration-75 cursor-pointer max-h-min hover:text-black font-body hover:border-b-2">
-        <span className="text-sm">Developer Settings</span>
+        <span className="text-sm">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </span>
       </a>
     </Link>
   )
@@ -136,10 +164,15 @@ const EditableFormName = ({ currentName }) => {
 }
 
 const ViewResponses = ({ responseCount }) => {
+  const router = useRouter()
+  const href = `/${router.query.id}${ROUTES.RESPONSES}`
+
   return (
-    <p className="flex items-center justify-center py-0 my-0 mr-2 text-center text-gray-700 transition-all duration-75 cursor-pointer max-h-min hover:text-black font-body hover:border-b-2">
-      <span className="text-sm">{responseCount} Responses</span>
-    </p>
+    <Link href={href}>
+      <a className="flex items-center justify-center py-0 my-0 mr-2 text-center text-gray-700 transition-all duration-75 cursor-pointer max-h-min hover:text-black font-body hover:border-b-2">
+        <span className="text-sm">{responseCount} Responses</span>
+      </a>
+    </Link>
   )
 }
 const PreviewButton = ({ processing }) => {
@@ -160,7 +193,19 @@ const PreviewButton = ({ processing }) => {
       }`}
       onClick={handlePreviewClick}
     >
-      Preview
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+        <path
+          fillRule="evenodd"
+          d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+          clipRule="evenodd"
+        />
+      </svg>
     </button>
   )
 }
@@ -188,21 +233,6 @@ const SaveButton = ({ disabled, onClick }) => (
     <SaveIcon />
   </button>
 )
-
-const BackButton = () => {
-  const router = useRouter()
-
-  const onClick = () => router.push(ROUTES.DASHBOARD)
-
-  return (
-    <button
-      className="text-gray-900 transition-all duration-75 cursor-pointer hover:text-gray-700"
-      onClick={onClick}
-    >
-      <BackIcon />
-    </button>
-  )
-}
 
 const EditButton = ({ disabled, onClick }) => (
   <button
