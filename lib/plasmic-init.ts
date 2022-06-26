@@ -1,6 +1,6 @@
 import { initPlasmicLoader } from '@plasmicapp/loader-nextjs'
-import { SeeDemoButton } from '@components/home'
 import Button from '@components/button'
+import Collapsible from '@components/collapsible'
 
 export const PLASMIC = initPlasmicLoader({
   projects: [
@@ -14,10 +14,12 @@ export const PLASMIC = initPlasmicLoader({
   preview: true,
 })
 
-PLASMIC.registerComponent(SeeDemoButton, {
-  name: 'SeeDemoButton',
+PLASMIC.registerComponent(Collapsible, {
+  name: 'Collapsible',
   props: {
     children: 'slot',
+    header: 'slot',
+    open: 'boolean',
   },
 })
 
