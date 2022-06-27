@@ -1,6 +1,8 @@
 import { initPlasmicLoader } from '@plasmicapp/loader-nextjs'
 import Button from '@components/button'
-import Collapsible from '@components/collapsible'
+import Collapsible from '@components/plasmic/collapsible'
+import Image from '@components/plasmic/image'
+import ResponsiveModal from '@components/plasmic/modal'
 
 export const PLASMIC = initPlasmicLoader({
   projects: [
@@ -20,6 +22,24 @@ PLASMIC.registerComponent(Collapsible, {
     children: 'slot',
     header: 'slot',
     open: 'boolean',
+  },
+})
+
+PLASMIC.registerComponent(Image, {
+  name: 'NextImage',
+  props: {
+    src: 'string',
+    alt: 'string',
+    width: 'string',
+    height: 'string',
+    others: 'object',
+  },
+})
+
+PLASMIC.registerComponent(ResponsiveModal, {
+  name: 'CustomModal', // couldn't give responsive modal as a component with the same name exists
+  props: {
+    openButton: 'slot',
   },
 })
 

@@ -43,6 +43,7 @@
     "react-hot-toast": "^2.2.0",
     "react-page-scroller": "^2.2.1",
     "react-query": "^3.34.19",
+    "react-responsive-modal": "^6.2.0",
     "scrollreveal": "^4.0.9",
     "sharp": "^0.30.4"
   },
