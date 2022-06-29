@@ -1,0 +1,12 @@
+/* modal */
+
+.customModal {
+  max-width: 1280px;
+  width: 90%;
+  background: rgb(0 0 0 / 0%) !important;
+  box-shadow: 0 0px 0px 0 rgb(0 0 0 / 0%) !important;
+}
+
+.closeIcon {
+  display: none;
+}

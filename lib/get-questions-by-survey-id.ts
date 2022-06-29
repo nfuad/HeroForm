@@ -13,13 +13,11 @@ export const getFormBySurveyId = async (id: string) => {
 }
 
 export const getQuestions = async (form) => {
-  const accounts = await prisma.user
-    .findUnique({
-      where: {
-        id: form.userId,
-      },
-    })
-    .accounts()
+  const accounts = await prisma.user.findUnique({
+    where: {
+      id: form.userId,
+    },
+  })
 
   const account = accounts[0]
   const refreshToken = account.refresh_token
