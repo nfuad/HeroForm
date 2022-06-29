@@ -1,6 +1,7 @@
 import prisma from '@lib/prisma'
 import { NextApiHandler } from 'next'
 import * as Sentry from '@sentry/nextjs'
+import axios from 'axios'
 
 type Body = {
   id: string
@@ -41,11 +42,20 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
       },
     })
 
-    const { webhookUrl } = await prisma.form.findUnique({
-      where: {
-        publicId: id,
+    const { slackIntegration, name, webhookUrl } = await prisma.form.findUnique(
+      {
+        where: {
+          publicId: id,
+        },
+        include: {
+          slackIntegration: {
+            select: {
+              webhookUrl: true,
+            },
+          },
+        },
       },
-    })
+    )
 
     if (webhookUrl) {
       await fetch(webhookUrl, {
@@ -57,6 +67,53 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
           data: responseDetailsData,
         }),
       })
+    }
+
+    const questions = await prisma.question.findMany({
+      where: {
+        id: {
+          in: Object.keys(responses),
+        },
+      },
+      select: {
+        id: true,
+        prompt: true,
+      },
+    })
+
+    if (slackIntegration) {
+      const questions = await prisma.question.findMany({
+        where: {
+          id: {
+            in: Object.keys(responses),
+          },
+        },
+        select: {
+          id: true,
+          prompt: true,
+        },
+      })
+
+      const blocks = [
+        {
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `Someone just submitted to your form *${name}*`,
+          },
+        },
+        ...questions.map(({ id, prompt }) => ({
+          type: 'section',
+          text: {
+            type: 'mrkdwn',
+            text: `${prompt}\n*${responses[id]}*`,
+          },
+        })),
+      ]
+      const data = {
+        blocks,
+      }
+      await axios.post(slackIntegration.webhookUrl, data)
     }
 
     // const auth = new google.auth.OAuth2({

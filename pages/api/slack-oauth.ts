@@ -1,19 +1,29 @@
 import { SITE_DATA } from '@constants/site-data'
 import * as Sentry from '@sentry/nextjs'
-import { OauthAccessResponse } from '@slack/web-api'
+import { OauthV2AccessResponse } from '@slack/web-api'
 import axios from 'axios'
 import qs from 'qs'
 import { handleRequest } from '@lib/api-handler'
+import prisma from '@lib/prisma'
+import { ROUTES } from '@constants/routes'
+
+type Query = {
+  code: string
+  state: string
+}
 
 const callback = async (req, res) => {
-  const { code, state } = req.query
-  const authenticationData = await exchangeCodeForAccessToken(code)
+  const { code, state } = req.query as Query
+  const publicFormId = state
 
-  await saveToDB(authenticationData)
+  const authenticationData = await exchangeCodeForAccessToken(code)
+  console.log(authenticationData)
+
+  await saveToDB(authenticationData, publicFormId)
 
   await sendGreetingMessageToChannel(authenticationData.incoming_webhook.url)
 
-  return res.redirect(getRedirectURL(state))
+  return res.redirect(getRedirectURL(publicFormId))
 }
 
 const handler = (req, res) => handleRequest(req, res, callback)
@@ -48,7 +58,7 @@ export default Sentry.withSentry(handler)
  */
 const exchangeCodeForAccessToken = async (
   code: string,
-): Promise<OauthAccessResponse> => {
+): Promise<OauthV2AccessResponse> => {
   const config = {
     method: 'POST',
     url: 'https://slack.com/api/oauth.v2.access',
@@ -80,12 +90,46 @@ const sendGreetingMessageToChannel = async (
   await axios.post(webhookURL, data)
 }
 
-const getRedirectURL = (state: string): string => {
+const getRedirectURL = (publicFormId: string): string => {
   // construct proper redirect URL
-  return '/'
+  return `/${publicFormId}${ROUTES.SETTINGS}`
 }
 
 /**
  * @description Save the data to the DB. <write schema structure so it's easy to understand>
  */
-const saveToDB = async (data: OauthAccessResponse): Promise<void> => {}
+const saveToDB = async (
+  data: OauthV2AccessResponse,
+  publicFormId: string,
+): Promise<void> => {
+  const {
+    access_token: accessToken,
+    bot_user_id: botUserId,
+    incoming_webhook: {
+      channel,
+      channel_id: channelId,
+      configuration_url: webhookConfigurationUrl,
+      url: webhookUrl,
+    },
+    scope,
+  } = data
+
+  await prisma.form.update({
+    data: {
+      slackIntegration: {
+        create: {
+          accessToken,
+          botUserId,
+          channel,
+          channelId,
+          scope,
+          webhookConfigurationUrl,
+          webhookUrl,
+        },
+      },
+    },
+    where: {
+      publicId: publicFormId,
+    },
+  })
+}

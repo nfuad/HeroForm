@@ -14,7 +14,13 @@ import Image from 'next/image'
 import BackButton from '@components/back-button'
 import { Container } from '@components/auth-screens'
 
-const IntegrationCard = ({ img, title, description, isConnected = false }) => (
+const IntegrationCard = ({
+  img,
+  title,
+  description,
+  isConnected = false,
+  handleConnect = () => {},
+}) => (
   <div className="w-full border bg-white shadow-sm py-5 justify-between items-center flex px-5 max-w-2xl rounded-md">
     <Image src={img} width={50} height={50} alt="" />
     <div>
@@ -22,12 +28,30 @@ const IntegrationCard = ({ img, title, description, isConnected = false }) => (
       <p className="text-sm max-w-sm">{description}</p>
     </div>
     {!isConnected && (
-      <Button className="text-xs">
+      <Button className="text-xs" onClick={handleConnect}>
         <span>Connect</span>
       </Button>
     )}
   </div>
 )
+
+const SlackIntegrationCard = ({ isConnected = false }) => {
+  const router = useRouter()
+  const id = router.query.id
+  const link = `https://slack.com/oauth/v2/authorize?client_id=3588361248899.3581777432486&scope=incoming-webhook,chat:write&state=${id}`
+
+  const handleConnect = () => (window.location.href = link)
+
+  return (
+    <IntegrationCard
+      isConnected={isConnected}
+      title="Slack"
+      img="/images/slack.png"
+      description={`Connect Slack to get notified in a channel or direct message when responses are received.`}
+      handleConnect={handleConnect}
+    />
+  )
+}
 
 const SettingsPage: NextPage = () => {
   const [redirectUrl, setRedirectUrl] = useState('')
@@ -38,8 +62,7 @@ const SettingsPage: NextPage = () => {
   const { id } = router.query as Record<string, string>
 
   const {
-    isFetching,
-    isError,
+    isFetching: isFetchingDeveloperSettings,
     error,
   }: {
     data: {
@@ -67,10 +90,31 @@ const SettingsPage: NextPage = () => {
   )
 
   const {
-    mutate: saveURLs,
-    isLoading: isSaveURLsLoading,
-    isSuccess: isSaveURLsSuccess,
-  } = useMutation(
+    data: { data: integrationStatus } = {
+      data: {
+        slack: false,
+        sheets: false,
+      },
+    },
+    isFetching: isFetchingIntegrationStatus,
+  }: {
+    data: {
+      data: {
+        slack: boolean
+        sheets: boolean
+      }
+    }
+    isFetching: boolean
+    isError: boolean
+    error: Error
+  } = useQuery(`${ROUTES.API.INTEGRATIONS.STATUS}?publicFormId=${id}`, {
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    retry: false,
+    enabled: !!id,
+  })
+
+  const { mutate: saveURLs } = useMutation(
     ({
       id,
       webhookUrl,
@@ -109,7 +153,7 @@ const SettingsPage: NextPage = () => {
     })
   }
 
-  if (isFetching) {
+  if (isFetchingDeveloperSettings || isFetchingIntegrationStatus) {
     return (
       <Container>
         <Loader />
@@ -137,17 +181,12 @@ const SettingsPage: NextPage = () => {
             <h2 className="text-lg mb-3">Integrations</h2>
             <div className="flex flex-col gap-y-5">
               <IntegrationCard
-                isConnected={false}
+                isConnected={integrationStatus.sheets}
                 title={'Google Sheets'}
                 img="/images/sheets.png"
                 description={`Connect Sheets to collect responses from everyone and send the data straight to your Google Sheets. Results are always synced automatically!`}
               />
-              <IntegrationCard
-                isConnected={false}
-                title="Slack"
-                img="/images/slack.png"
-                description={`Connect Slack to get notified in a channel or direct message when responses are received.`}
-              />
+              <SlackIntegrationCard isConnected={integrationStatus.slack} />
             </div>
           </div>
           <div className="mx-auto w-full max-w-7xl pt-16">

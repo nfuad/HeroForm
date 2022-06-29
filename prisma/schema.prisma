@@ -19,25 +19,31 @@ model User {
   forms         Form[]
 }
 
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
+model Form {
+  id               String            @id @default(cuid())
+  publicId         String            @unique
+  userId           String
+  spreadsheetId    String?           @unique
+  webhookUrl       String?
+  redirectUrl      String?
+  name             String
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  responses        Response[]
+  questions        Question[]
+  slackIntegration SlackIntegration?
 }
 
-model Form {
-  id            String     @id @default(cuid())
-  publicId      String     @unique
-  userId        String
-  spreadsheetId String?    @unique
-  webhookUrl    String?
-  redirectUrl   String?
-  name          String
-  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  responses     Response[]
-  questions     Question[]
+model SlackIntegration {
+  id                      String @id @default(cuid())
+  form                    Form   @relation(fields: [formId], references: [id])
+  formId                  String @unique
+  botUserId               String
+  scope                   String
+  accessToken             String
+  webhookUrl              String
+  webhookConfigurationUrl String
+  channelId               String
+  channel                 String
 }
 
 model Question {
