@@ -13,3 +13,8 @@ export const handleRequest = async (req, res, callback: NextApiHandler) => {
     })
   }
 }
+
+export const withRequest =
+  (callback: NextApiHandler): NextApiHandler =>
+  async (req, res) =>
+    await handleRequest(req, res, callback)

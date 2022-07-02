@@ -20,17 +20,18 @@ model User {
 }
 
 model Form {
-  id               String            @id @default(cuid())
-  publicId         String            @unique
-  userId           String
-  spreadsheetId    String?           @unique
-  webhookUrl       String?
-  redirectUrl      String?
-  name             String
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  responses        Response[]
-  questions        Question[]
-  slackIntegration SlackIntegration?
+  id                String             @id @default(cuid())
+  publicId          String             @unique
+  userId            String
+  spreadsheetId     String?            @unique
+  webhookUrl        String?
+  redirectUrl       String?
+  name              String
+  user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  responses         Response[]
+  questions         Question[]
+  slackIntegration  SlackIntegration?
+  sheetsIntegration SheetsIntegration?
 }
 
 model SlackIntegration {
@@ -44,6 +45,14 @@ model SlackIntegration {
   webhookConfigurationUrl String
   channelId               String
   channel                 String
+}
+
+model SheetsIntegration {
+  id            String @id @default(cuid())
+  form          Form   @relation(fields: [formId], references: [id])
+  formId        String @unique
+  spreadsheetId String
+  refreshToken  String
 }
 
 model Question {

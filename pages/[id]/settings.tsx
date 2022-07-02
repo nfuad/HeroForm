@@ -20,20 +20,63 @@ const IntegrationCard = ({
   description,
   isConnected = false,
   handleConnect = () => {},
-}) => (
-  <div className="w-full border bg-white shadow-sm py-5 justify-between items-center flex px-5 max-w-2xl rounded-md">
-    <Image src={img} width={50} height={50} alt="" />
-    <div>
-      <h4>{title}</h4>
-      <p className="text-sm max-w-sm">{description}</p>
-    </div>
-    {!isConnected && (
-      <Button className="text-xs" onClick={handleConnect}>
-        <span>Connect</span>
+  isLoading = false,
+}) => {
+  const getCta = () => {
+    if (isLoading) return 'Loading...'
+    if (isConnected) return 'Connected'
+    return 'Connect'
+  }
+
+  return (
+    <div className="w-full border bg-white shadow-sm py-5 justify-between items-center flex px-5 max-w-2xl rounded-md">
+      <Image src={img} width={50} height={50} alt="" />
+      <div>
+        <h4>{title}</h4>
+        <p className="text-sm max-w-sm">{description}</p>
+      </div>
+      <Button
+        className="text-xs"
+        onClick={handleConnect}
+        disabled={isLoading || isConnected}
+      >
+        <span>{getCta()}</span>
       </Button>
-    )}
-  </div>
-)
+    </div>
+  )
+}
+
+const SheetsIntegrationCard = ({ isConnected = false }) => {
+  const router = useRouter()
+  const id = router.query.id
+  const { refetch, isLoading } = useQuery<
+    {
+      authUrl: string
+    },
+    Error
+  >(`${ROUTES.API.INTEGRATIONS.SHEETS.LOGIN}?publicFormId=${id}`, {
+    enabled: false,
+  })
+
+  const handleConnect = async () => {
+    const response = await refetch()
+    if (!response.isError) {
+      const { authUrl } = response.data
+      window.location.href = authUrl
+    }
+  }
+
+  return (
+    <IntegrationCard
+      isConnected={isConnected}
+      title={'Google Sheets'}
+      img="/images/sheets.png"
+      description={`Connect Sheets to collect responses from everyone and send the data straight to your Google Sheets. Results are always synced automatically!`}
+      handleConnect={handleConnect}
+      isLoading={isLoading}
+    />
+  )
+}
 
 const SlackIntegrationCard = ({ isConnected = false }) => {
   const router = useRouter()
@@ -57,7 +100,6 @@ const SettingsPage: NextPage = () => {
   const [redirectUrl, setRedirectUrl] = useState('')
   const [webhookUrl, setWebhookUrl] = useState('')
 
-  const { user } = useAuth()
   const router = useRouter()
   const { id } = router.query as Record<string, string>
 
@@ -74,20 +116,17 @@ const SettingsPage: NextPage = () => {
     isFetching: boolean
     isError: boolean
     error: Error
-  } = useQuery(
-    `${ROUTES.API.INTEGRATIONS.WEBHOOK.GET_URLS}?id=${router.query.id}`,
-    {
-      refetchOnReconnect: false,
-      // refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      retry: false,
-      enabled: !!id,
-      onSuccess({ data }) {
-        setRedirectUrl(data?.redirectUrl)
-        setWebhookUrl(data?.webhookUrl)
-      },
+  } = useQuery(`${ROUTES.API.INTEGRATIONS.WEBHOOK.GET_URLS}?id=${id}`, {
+    refetchOnReconnect: false,
+    // refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    retry: false,
+    enabled: !!id,
+    onSuccess({ data }) {
+      setRedirectUrl(data?.redirectUrl)
+      setWebhookUrl(data?.webhookUrl)
     },
-  )
+  })
 
   const {
     data: { data: integrationStatus } = {
@@ -180,12 +219,7 @@ const SettingsPage: NextPage = () => {
           <div className="mx-auto w-full max-w-7xl pt-16">
             <h2 className="text-lg mb-3">Integrations</h2>
             <div className="flex flex-col gap-y-5">
-              <IntegrationCard
-                isConnected={integrationStatus.sheets}
-                title={'Google Sheets'}
-                img="/images/sheets.png"
-                description={`Connect Sheets to collect responses from everyone and send the data straight to your Google Sheets. Results are always synced automatically!`}
-              />
+              <SheetsIntegrationCard isConnected={integrationStatus.sheets} />
               <SlackIntegrationCard isConnected={integrationStatus.slack} />
             </div>
           </div>

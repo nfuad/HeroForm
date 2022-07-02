@@ -2,6 +2,8 @@ import prisma from '@lib/prisma'
 import { NextApiHandler } from 'next'
 import * as Sentry from '@sentry/nextjs'
 import axios from 'axios'
+import { google } from 'googleapis'
+import { createResponse } from '@lib/sheets'
 
 type Body = {
   id: string
@@ -42,8 +44,8 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
       },
     })
 
-    const { slackIntegration, name, webhookUrl } = await prisma.form.findUnique(
-      {
+    const { slackIntegration, sheetsIntegration, name, webhookUrl } =
+      await prisma.form.findUnique({
         where: {
           publicId: id,
         },
@@ -53,9 +55,14 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
               webhookUrl: true,
             },
           },
+          sheetsIntegration: {
+            select: {
+              refreshToken: true,
+              spreadsheetId: true,
+            },
+          },
         },
-      },
-    )
+      })
 
     if (webhookUrl) {
       await fetch(webhookUrl, {
@@ -68,18 +75,6 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
         }),
       })
     }
-
-    const questions = await prisma.question.findMany({
-      where: {
-        id: {
-          in: Object.keys(responses),
-        },
-      },
-      select: {
-        id: true,
-        prompt: true,
-      },
-    })
 
     if (slackIntegration) {
       const questions = await prisma.question.findMany({
@@ -116,24 +111,20 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
       await axios.post(slackIntegration.webhookUrl, data)
     }
 
-    // const auth = new google.auth.OAuth2({
-    //   clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
-    //   clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-    // })
+    if (sheetsIntegration) {
+      const { refreshToken, spreadsheetId } = sheetsIntegration
 
-    // auth.setCredentials({
-    //   refresh_token: refreshToken,
-    // })
+      const auth = new google.auth.OAuth2({
+        clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+      })
 
-    // await createResponse({ auth, spreadsheetId, responses })
-    // const metadata = await getMetadata({ auth, spreadsheetId })
-    // await updateMetadata({
-    //   auth,
-    //   spreadsheetId,
-    //   metadata: {
-    //     responseCount: metadata.responseCount + 1,
-    //   },
-    // })
+      auth.setCredentials({
+        refresh_token: refreshToken,
+      })
+
+      await createResponse({ auth, spreadsheetId, responses })
+    }
 
     return res.status(200).json({
       success: true,

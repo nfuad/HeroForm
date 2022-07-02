@@ -27,19 +27,6 @@ const createFormHandler: NextApiHandler = async (req, res) => {
       },
     })
 
-    // const auth = new google.auth.OAuth2({
-    //   clientId: process.env.GOOGLE_OAUTH_CLIENT_ID,
-    //   clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
-    // })
-
-    // auth.setCredentials({
-    //   refresh_token: refreshToken,
-    // })
-
-    // const response = await initForm({ auth })
-    // const { spreadsheetId } = response.data
-    // await initMetadata({ auth, spreadsheetId })
-
     const publicId = nanoid(FORM_ID_LENGTH)
 
     await prisma.form.create({

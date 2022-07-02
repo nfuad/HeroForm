@@ -1,12 +1,12 @@
-import { handleRequest } from '@lib/api-handler'
 import { NextApiHandler } from 'next'
 import prisma from '@lib/prisma'
+import { withRequest } from '@lib/api-handler'
 
 type Query = {
   publicFormId: string
 }
 
-const callback: NextApiHandler = async (req, res) => {
+const handler: NextApiHandler = async (req, res) => {
   const { publicFormId } = req.query as Query
 
   const form = await prisma.form.findUnique({
@@ -19,6 +19,11 @@ const callback: NextApiHandler = async (req, res) => {
           id: true,
         },
       },
+      sheetsIntegration: {
+        select: {
+          id: true,
+        },
+      },
     },
   })
 
@@ -26,11 +31,9 @@ const callback: NextApiHandler = async (req, res) => {
     success: true,
     data: {
       slack: !!form.slackIntegration,
-      sheets: false,
+      sheets: !!form.sheetsIntegration,
     },
   })
 }
 
-const handler = (req, res) => handleRequest(req, res, callback)
-
-export default handler
+export default withRequest(handler)

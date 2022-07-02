@@ -12,6 +12,9 @@ export const ROUTES = {
       SIGN_UP: '/api/auth/sign-up',
     },
     INTEGRATIONS: {
+      SHEETS: {
+        LOGIN: '/api/integrations/sheets/login',
+      },
       STATUS: '/api/integrations/status',
       WEBHOOK: {
         GET_URLS: '/api/integrations/webhook/get-urls',

@@ -21,17 +21,7 @@ export const initForm = async (
       sheets: [
         {
           properties: {
-            title: 'Questions',
-          },
-        },
-        {
-          properties: {
             title: 'Responses',
-          },
-        },
-        {
-          properties: {
-            title: 'Metadata',
           },
         },
       ],

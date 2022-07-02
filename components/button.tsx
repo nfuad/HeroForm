@@ -8,6 +8,7 @@ type Props = {
   padding?: string
   borderRadius?: string
   showIcon?: boolean
+  disabled?: boolean
 }
 
 const Button: FC<Props> = ({
@@ -15,9 +16,10 @@ const Button: FC<Props> = ({
   children = '',
   className = '',
   showIcon = true,
+  disabled,
 }) => {
   return (
-    <button onClick={onClick} className={`${className}`}>
+    <button onClick={onClick} className={`${className}`} disabled={disabled}>
       <span className="text-xs tracking-wider md:text-sm lg:text-base">
         {children}
       </span>
@@ -88,16 +90,18 @@ const Button: FC<Props> = ({
           }
 
           button:hover::before {
-            transform: translate(5%, 20%);
-            width: 110%;
-            height: 110%;
+            transform: ${disabled ? 'translate(0,0)' : 'translate(5%, 20%)'};
+            width: ${disabled ? '100%' : '110%'};
+            height: ${disabled ? '100%' : '110%'};
           }
 
           button:hover::after {
-            border-radius: 10px;
-            transform: translate(0, 0);
-            width: 100%;
-            height: 100%;
+            border-radius: ${disabled ? '50px' : '10px'};
+            transform: ${disabled
+              ? 'translate(-13.5px, -6px)'
+              : 'translate(0, 0)'};
+            width: ${disabled ? '33px' : '100%'};
+            height: ${disabled ? '33px' : '100%'};
           }
 
           button:active::after {
