@@ -1,3 +1,4 @@
+// @ts-nocheck
 import prisma from '@lib/prisma'
 import { NextApiHandler } from 'next'
 import * as Sentry from '@sentry/nextjs'
@@ -56,7 +57,6 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
               webhookUrl: true,
             },
           },
-          // @ts-ignore
           sheetsIntegration: {
             select: {
               refreshToken: true,
