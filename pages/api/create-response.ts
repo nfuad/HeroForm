@@ -44,6 +44,7 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
       },
     })
 
+    // @ts-ignore
     const { slackIntegration, sheetsIntegration, name, webhookUrl } =
       await prisma.form.findUnique({
         where: {
@@ -55,6 +56,7 @@ const createResponseHandler: NextApiHandler = async (req, res) => {
               webhookUrl: true,
             },
           },
+          // @ts-ignore
           sheetsIntegration: {
             select: {
               refreshToken: true,
