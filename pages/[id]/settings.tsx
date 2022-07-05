@@ -81,7 +81,7 @@ const SheetsIntegrationCard = ({ isConnected = false }) => {
 const SlackIntegrationCard = ({ isConnected = false }) => {
   const router = useRouter()
   const id = router.query.id
-  const link = `https://slack.com/oauth/v2/authorize?client_id=3588361248899.3581777432486&scope=incoming-webhook,chat:write&state=${id}`
+  const link = `https://slack.com/oauth/v2/authorize?client_id=3588361248899.3581777432486&scope=incoming-webhook,chat:write&redirect_uri=https://heroform.io/api/slack-oauth&state=${id}`
 
   const handleConnect = () => (window.location.href = link)
 
