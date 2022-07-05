@@ -12,10 +12,10 @@ datasource db {
 model User {
   id            String  @id @default(cuid())
   name          String?
-  email         String? @unique
+  email         String? @unique @db.VarChar(320)
   emailVerified Boolean
-  image         String?
-  accessToken   String?
+  image         String? @db.Text
+  accessToken   String? @db.Text
   forms         Form[]
 }
 
@@ -24,8 +24,8 @@ model Form {
   publicId          String             @unique
   userId            String
   spreadsheetId     String?            @unique
-  webhookUrl        String?
-  redirectUrl       String?
+  webhookUrl        String?            @db.Text
+  redirectUrl       String?            @db.Text
   name              String
   user              User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   responses         Response[]
@@ -40,9 +40,9 @@ model SlackIntegration {
   formId                  String @unique
   botUserId               String
   scope                   String
-  accessToken             String
-  webhookUrl              String
-  webhookConfigurationUrl String
+  accessToken             String @db.Text
+  webhookUrl              String @db.Text
+  webhookConfigurationUrl String @db.Text
   channelId               String
   channel                 String
 }
@@ -52,13 +52,13 @@ model SheetsIntegration {
   form          Form   @relation(fields: [formId], references: [id])
   formId        String @unique
   spreadsheetId String
-  refreshToken  String
+  refreshToken  String @db.Text
 }
 
 model Question {
   id              String            @id @default(cuid())
   formId          String
-  prompt          String
+  prompt          String            @db.Text
   type            String
   options         Json?
   properties      Properties?
@@ -76,7 +76,7 @@ model Properties {
   isOtherOptionAllowed       Boolean?
   isMaxLengthSpecified       Boolean?
   maxCharacters              Int?
-  schedulingLink             String?
+  schedulingLink             String?  @db.Text
   question                   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
 
@@ -91,7 +91,7 @@ model ResponseDetails {
   id         String   @id @default(cuid())
   responseId String
   questionId String
-  value      String
+  value      String   @db.Text
   response   Response @relation(fields: [responseId], references: [id], onDelete: Cascade)
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
