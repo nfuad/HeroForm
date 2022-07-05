@@ -25,7 +25,6 @@ const AuthPage = ({}) => {
   const handleSignOutClick = () => signOut(auth)
   const handleSignInClick = async () => {
     await authenticateWithGoogle()
-    router.push(ROUTES.DASHBOARD)
   }
 
   return (

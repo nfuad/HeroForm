@@ -8,6 +8,9 @@ import {
 import { createContext, useContext, useEffect, useState } from 'react'
 import { auth } from '../init-firebase'
 import { saveUser } from './helpers/save-user'
+import * as Sentry from '@sentry/nextjs'
+import Router from 'next/router'
+import { ROUTES } from '@constants/routes'
 
 enum AuthStatus {
   LOGGED_IN,
@@ -80,6 +83,7 @@ export const AuthProvider = ({ children }) => {
         isNewUser,
         uid: user.uid,
       })
+      Router.push(ROUTES.DASHBOARD)
     } catch (error) {
       // Handle Errors here.
       //   const errorCode = error.code
@@ -89,6 +93,7 @@ export const AuthProvider = ({ children }) => {
       //   // The AuthCredential type that was used.
       //   const credential = GoogleAuthProvider.credentialFromError(error)
       // ...
+      Sentry.captureException(error)
       console.log({ error })
       setError(error)
       setStatus(AuthStatus.ERROR)
