@@ -23,7 +23,7 @@ const Button: FC<Props> = ({
       <span className="text-xs tracking-wider md:text-sm lg:text-base">
         {children}
       </span>
-      {showIcon && (
+      {showIcon && !disabled && (
         <span className="ml-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +49,7 @@ const Button: FC<Props> = ({
             border: none;
             position: relative;
             color: #f0f0f0;
-            cursor: pointer;
+            cursor: ${disabled ? 'default' : 'pointer'};
             z-index: 1;
             padding: 10px 20px;
             display: flex;
@@ -59,6 +59,7 @@ const Button: FC<Props> = ({
             user-select: none;
             -webkit-user-select: none;
             touch-action: manipulation;
+            opacity: ${disabled ? '0.7' : '1'};
           }
 
           button::after,
@@ -87,6 +88,7 @@ const Button: FC<Props> = ({
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
             border-radius: 50px;
+            opacity: ${disabled ? '0' : '1'};
           }
 
           button:hover::before {

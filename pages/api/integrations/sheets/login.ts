@@ -14,7 +14,7 @@ const sheetsLoginHandler: NextApiHandler = async (req, res) => {
   const { publicFormId } = req.query as Query
 
   const redirectUrl = `${
-    isDevEnv() ? 'http://localhost:3000' : 'https://heroform.io'
+    isDevEnv() ? 'http://localhost:3001' : 'https://heroform.io'
   }/api/integrations/sheets`
   const auth = new google.auth.OAuth2(
     process.env.GOOGLE_OAUTH_CLIENT_ID,
