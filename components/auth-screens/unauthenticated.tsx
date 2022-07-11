@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 export const UnAuthenticated = ({ handleSignInClick }) => {
-  const isLoginPage = useRouter().pathname === '/login'
+  const isLoginPage = useRouter().query.type === 'login'
 
   return (
     <>
