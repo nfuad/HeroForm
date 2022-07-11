@@ -75,7 +75,7 @@ const SurveyPage: NextPage<Props> = ({ redirectUrl, questions = [] }) => {
 
     if (isInitialPage) {
       // @ts-ignore
-      window.plausible(PLAUSIBLE_EVENTS.START_FORM)
+      window?.plausible?.(PLAUSIBLE_EVENTS.START_FORM)
     }
 
     if (!canGoNext) {
