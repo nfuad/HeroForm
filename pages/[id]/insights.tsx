@@ -20,18 +20,16 @@ const InsightsPage = () => {
   const router = useRouter()
   const publicFormId = router.query.id
   const { data, isLoading } = useQuery<{
-    data: {
-      visitors: number
-      visitDuration: number
-      responseCount: number
-      completionRate: number
-    }
+    uniqueVisitors: number
+    visitDuration: number
+    responseCount: number
+    completionRate: number
   }>(`${ROUTES.API.INSIGHTS}?publicFormId=${publicFormId}`, {
     enabled: !!publicFormId,
   })
 
-  const { visitors, responseCount, visitDuration, completionRate } =
-    data?.data || {}
+  const { uniqueVisitors, responseCount, visitDuration, completionRate } =
+    data || {}
 
   if (isLoading) return <Loader />
 
@@ -52,9 +50,9 @@ const InsightsPage = () => {
           <div className="mx-auto w-full max-w-7xl pt-16">
             <h2 className="text-lg mb-3">Integrations</h2>
             <div className="flex w-full gap-x-6">
-              <Card title="Unique Visitors" number={visitors} />
+              <Card title="Unique Visitors" number={uniqueVisitors} />
               <Card title="Total Responses" number={responseCount} />
-              <Card title="Visit Duration" number={visitDuration} unit="s" />
+              <Card title="Visit Duration" number={visitDuration} unit=" sec" />
               <Card title="Completion Rate" number={completionRate} />
             </div>
           </div>

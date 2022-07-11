@@ -3,7 +3,6 @@ import * as Sentry from '@sentry/nextjs'
 import { withRequest } from '@lib/api-handler'
 import axios from 'axios'
 import prisma from '@lib/prisma'
-import { PLAUSIBLE_EVENTS } from '@constants/plausible-events'
 
 type Query = {
   publicFormId: string
