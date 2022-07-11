@@ -3,6 +3,7 @@ import BackButton from '@components/back-button'
 import { useQuery } from 'react-query'
 import { ROUTES } from '@constants/routes'
 import { useRouter } from 'next/router'
+import { Loader } from '@components/loader'
 
 const Card = ({ title, number, unit = '' }) => {
   return (
@@ -23,10 +24,14 @@ const InsightsPage = () => {
       visitors: number
       visitDuration: number
       responseCount: number
+      completionRate: number
     }
   }>(`${ROUTES.API.INSIGHTS}?publicFormId=${publicFormId}`)
 
-  const { visitors, responseCount, visitDuration } = data?.data || {}
+  const { visitors, responseCount, visitDuration, completionRate } =
+    data?.data || {}
+
+  if (isLoading) return <Loader />
 
   return (
     <Layout isProtected title="Analytics">
@@ -48,7 +53,7 @@ const InsightsPage = () => {
               <Card title="Unique Visitors" number={visitors} />
               <Card title="Total Responses" number={responseCount} />
               <Card title="Visit Duration" number={visitDuration} unit="s" />
-              <Card title="Completion Rate" number={1} />
+              <Card title="Completion Rate" number={completionRate} />
             </div>
           </div>
         </div>
