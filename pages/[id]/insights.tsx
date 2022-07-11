@@ -1,21 +1,32 @@
 import Layout from '@components/layout'
 import BackButton from '@components/back-button'
+import { useQuery } from 'react-query'
+import { ROUTES } from '@constants/routes'
+import { useRouter } from 'next/router'
 
-const Card = ({ title, number }) => {
+const Card = ({ title, number, unit = '' }) => {
   return (
     <div className="flex flex-col justify-center items-center text-sm shadow-sm rounded-sm border border-gray-100 py-5 w-full max-w-[220px] bg-white">
-      <p className="text-xl">{number}</p>
+      <p className="text-xl">
+        {number}
+        {unit}
+      </p>
       <h3>{title}</h3>
     </div>
   )
 }
-const InsightsPage = (data) => {
-  const {
-    uniqueVisitors = 1,
-    responseCount = 1,
-    visitDuration = 1,
-    completionRate = 1,
-  } = data
+const InsightsPage = () => {
+  const router = useRouter()
+  const publicFormId = router.query.id
+  const { data, isLoading } = useQuery<{
+    data: {
+      visitors: number
+      visitDuration: number
+      responseCount: number
+    }
+  }>(`${ROUTES.API.INSIGHTS}?publicFormId=${publicFormId}`)
+
+  const { visitors, responseCount, visitDuration } = data?.data || {}
 
   return (
     <Layout isProtected title="Analytics">
@@ -34,10 +45,10 @@ const InsightsPage = (data) => {
           <div className="mx-auto w-full max-w-7xl pt-16">
             <h2 className="text-lg mb-3">Integrations</h2>
             <div className="flex w-full gap-x-6">
-              <Card title="Unique Visitors" number={uniqueVisitors} />
+              <Card title="Unique Visitors" number={visitors} />
               <Card title="Total Responses" number={responseCount} />
-              <Card title="Visit Duration" number={visitDuration} />
-              <Card title="Completion Rate" number={completionRate} />
+              <Card title="Visit Duration" number={visitDuration} unit="s" />
+              <Card title="Completion Rate" number={1} />
             </div>
           </div>
         </div>

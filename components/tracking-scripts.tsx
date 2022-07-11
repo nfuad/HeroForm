@@ -11,6 +11,14 @@ const TrackingScripts = () => (
       data-domain={SITE_DATA.domain}
     />
     <Script
+      defer
+      id="plausible-setup"
+      strategy="afterInteractive"
+      dangerouslySetInnerHTML={{
+        __html: `window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`,
+      }}
+    />
+    <Script
       id="load-posthog"
       strategy="afterInteractive"
       dangerouslySetInnerHTML={{
