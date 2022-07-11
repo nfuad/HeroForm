@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/nextjs'
 import { withRequest } from '@lib/api-handler'
 import axios from 'axios'
 import prisma from '@lib/prisma'
+import { PLAUSIBLE_EVENTS } from '@constants/plausible-events'
 
 type Query = {
   publicFormId: string
@@ -22,6 +23,14 @@ const getFormInsightsHandler: NextApiHandler = async (req, res) => {
         },
       },
     ),
+    // axios.get(
+    //   `https://plausible.naf.is/api/v1/stats/aggregate?site_id=heroform.io&filters=event:page%3D%3D/${publicFormId};event:name%3D%3D${PLAUSIBLE_EVENTS.START_FORM}&metrics=events`,
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${PLAUSIBLE_API_KEY}`,
+    //     },
+    //   },
+    // ),
     prisma.form.findUnique({
       where: {
         publicId: publicFormId,

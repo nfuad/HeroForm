@@ -14,6 +14,7 @@ import {
   PreviewBanner,
 } from '@components/survey'
 import { Loader } from '@components/loader'
+import { PLAUSIBLE_EVENTS } from '@constants/plausible-events'
 
 type Props = {
   redirectUrl?: string
@@ -71,6 +72,11 @@ const SurveyPage: NextPage<Props> = ({ redirectUrl, questions = [] }) => {
     const { id, properties } = currentQuestion || {}
     const { isRequired = false } = properties || {}
     const canGoNext = (!isRequired || responses[id]) && !isLastPage
+
+    if (isInitialPage) {
+      // @ts-ignore
+      window.plausible(PLAUSIBLE_EVENTS.START_FORM)
+    }
 
     if (!canGoNext) {
       alert('This is required. Please answer before proceeding.')

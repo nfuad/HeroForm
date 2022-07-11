@@ -26,7 +26,9 @@ const InsightsPage = () => {
       responseCount: number
       completionRate: number
     }
-  }>(`${ROUTES.API.INSIGHTS}?publicFormId=${publicFormId}`)
+  }>(`${ROUTES.API.INSIGHTS}?publicFormId=${publicFormId}`, {
+    enabled: !!publicFormId,
+  })
 
   const { visitors, responseCount, visitDuration, completionRate } =
     data?.data || {}
