@@ -4,6 +4,9 @@ import Collapsible from '@components/plasmic/collapsible'
 import Image from '@components/plasmic/image'
 import ResponsiveModal from '@components/plasmic/modal'
 
+
+const isProd = process.env.NODE_ENV === 'production'
+
 export const PLASMIC = initPlasmicLoader({
   projects: [
     {
@@ -13,7 +16,7 @@ export const PLASMIC = initPlasmicLoader({
   ],
   // Fetches the latest revisions, whether or not they were unpublished!
   // Disable for production to ensure you render only published changes.
-  preview: true,
+  preview: !isProd,
 })
 
 PLASMIC.registerComponent(Collapsible, {
