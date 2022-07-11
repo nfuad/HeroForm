@@ -1,8 +1,8 @@
 import { ROUTES } from '@constants/routes'
 import { SITE_DATA } from '@constants/site-data'
-import Image from 'next/image'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+
 export const UnAuthenticated = ({ handleSignInClick }) => {
   const isLoginPage = useRouter().pathname === '/login'
 
@@ -14,26 +14,12 @@ export const UnAuthenticated = ({ handleSignInClick }) => {
         </h1>
         {isLoginPage ? (
           <p className="mb-3 text-center text-gray-600 text-md">
-            Click the button below to continue. This will prompt you to give
-            access to{' '}
-            <Image
-              width={20}
-              height={20}
-              src={require('/public/images/sheets.png')}
-              alt="sheets"
-            />{' '}
-            <b>Google Sheets</b> again for security purposes.
+            Click the button below to log in to your account.
           </p>
         ) : (
           <p className="mb-3 text-center text-gray-600 text-md">
-            Click the button below to connect your{' '}
-            <Image
-              width={20}
-              height={20}
-              src={require('/public/images/sheets.png')}
-              alt="sheets"
-            />{' '}
-            <b>Google Sheets</b> &amp; start creating forms/surveys.
+            Click the button below to create your account &amp; start creating
+            forms/surveys.
           </p>
         )}
       </div>
@@ -54,11 +40,6 @@ export const UnAuthenticated = ({ handleSignInClick }) => {
             {isLoginPage ? 'Sign Up' : 'Log back in'}
           </a>
         </Link>
-      </div>
-
-      <div className="block max-w-md px-6 py-3 mt-12 text-sm rounded-lg bg-indigo-50">
-        📌 &nbsp;{SITE_DATA.name} will *only* be able to view the spreadsheets
-        that are going to be created with our tool and nothing else.
       </div>
     </>
   )
