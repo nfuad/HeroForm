@@ -46,7 +46,7 @@ const sheetsIntegrationHandler: NextApiHandler = async (req, res) => {
     clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
   })
 
-  auth.setCredentials({
+  sheetsAuth.setCredentials({
     refresh_token,
   })
 

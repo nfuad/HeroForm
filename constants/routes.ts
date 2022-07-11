@@ -21,6 +21,7 @@ export const ROUTES = {
         UPDATE_URLS: '/api/integrations/webhook/update-urls',
       },
     },
+    INSIGHTS: '/api/insights',
     GET_FORM: '/api/get-form',
     PUBLISH_FORM: '/api/publish-form',
     GET_FORMS: '/api/get-forms',
