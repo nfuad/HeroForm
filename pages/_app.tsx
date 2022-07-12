@@ -36,7 +36,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
       <PlausibleProvider
         customDomain={SITE_DATA.canonical_url}
         domain={SITE_DATA.domain}
-        trackLocalhost
+        trackLocalhost={process.env.NODE_ENV === 'development'}
         selfHosted
         enabled
       >
@@ -51,7 +51,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
     <PlausibleProvider
       customDomain={SITE_DATA.canonical_url}
       domain={SITE_DATA.domain}
-      trackLocalhost
+      trackLocalhost={process.env.NODE_ENV === 'development'}
       selfHosted
       enabled
     >
