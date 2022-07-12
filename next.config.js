@@ -30,18 +30,6 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production', // remove console.log in production
   },
-  async rewrites() {
-    return [
-      {
-        source: '/js/script.js',
-        destination: 'https://plausible.naf.is/js/script.js',
-      },
-      {
-        source: '/api/event', // Or '/api/event/' if you have `trailingSlash: true` in this config
-        destination: 'https://plausible.naf.is/api/event',
-      },
-    ]
-  },
 }
 
 // adding Sentry options should be the last code to run before exporting, to ensure
