@@ -33,11 +33,17 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
 
   if (isSurveyPage) {
     return (
-      <>
+      <PlausibleProvider
+        customDomain={SITE_DATA.canonical_url}
+        domain={SITE_DATA.domain}
+        trackLocalhost
+        selfHosted
+        enabled
+      >
         <TrackingScripts />
         <DynamicDefaultSEO {...SEO} />
         <Component {...pageProps} />
-      </>
+      </PlausibleProvider>
     )
   }
 
