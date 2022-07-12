@@ -14,15 +14,15 @@ type EventOptionsTuple<P extends Props> = P extends never
 type Events = { [K: string]: Props }
 
 export function usePlausible<E extends Events = any>() {
-  try {
-    return useCallback(function <N extends keyof E>(
-      eventName: N,
-      ...rest: EventOptionsTuple<E[N]>
-    ) {
+  return useCallback(function <N extends keyof E>(
+    eventName: N,
+    ...rest: EventOptionsTuple<E[N]>
+  ) {
+    try {
       return (window as any).plausible?.(eventName, rest[0])
-    },
-    [])
-  } catch (error) {
-    console.log(error)
-  }
+    } catch (error) {
+      return () => {} // return empty function if plausible is not available
+    }
+  },
+  [])
 }
