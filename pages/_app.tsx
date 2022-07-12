@@ -43,10 +43,11 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
 
   return (
     <PlausibleProvider
+      customDomain={SITE_DATA.canonical_url}
+      domain={SITE_DATA.domain}
       trackLocalhost
       selfHosted
-      customDomain="https://heroform.io"
-      domain={SITE_DATA.domain}
+      enabled
     >
       <TrackingScripts />
       <DynamicNextNProgress {...PROGRESSBAR_OPTIONS} />
