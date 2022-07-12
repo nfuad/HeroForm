@@ -42,7 +42,12 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   }
 
   return (
-    <PlausibleProvider domain={SITE_DATA.domain}>
+    <PlausibleProvider
+      trackLocalhost
+      selfHosted
+      customDomain="https://plausible.naf.is"
+      domain={SITE_DATA.domain}
+    >
       <TrackingScripts />
       <DynamicNextNProgress {...PROGRESSBAR_OPTIONS} />
       <DynamicDefaultSEO {...SEO} />
