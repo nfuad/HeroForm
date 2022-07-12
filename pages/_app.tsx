@@ -7,8 +7,6 @@ import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import TrackingScripts from '@components/tracking-scripts'
 import { AuthProvider } from '@lib/auth/provider'
-import PlausibleProvider from 'next-plausible'
-import { SITE_DATA } from '@constants/site-data'
 
 const DynamicNextNProgress = dynamic(() => import('nextjs-progressbar'), {})
 const DynamicDefaultSEO = dynamic(() =>
@@ -33,28 +31,16 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
 
   if (isSurveyPage) {
     return (
-      <PlausibleProvider
-        customDomain={'https://plausible.naf.is'}
-        domain={SITE_DATA.domain}
-        trackLocalhost={process.env.NODE_ENV === 'development'}
-        selfHosted
-        enabled
-      >
+      <>
         <TrackingScripts />
         <DynamicDefaultSEO {...SEO} />
         <Component {...pageProps} />
-      </PlausibleProvider>
+      </>
     )
   }
 
   return (
-    <PlausibleProvider
-      customDomain={'https://plausible.naf.is'}
-      domain={SITE_DATA.domain}
-      trackLocalhost={process.env.NODE_ENV === 'development'}
-      selfHosted
-      enabled
-    >
+    <>
       <TrackingScripts />
       <DynamicNextNProgress {...PROGRESSBAR_OPTIONS} />
       <DynamicDefaultSEO {...SEO} />
@@ -63,7 +49,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
           <Component {...pageProps} />
         </AuthProvider>
       </DynamicQueryClientProvider>
-    </PlausibleProvider>
+    </>
   )
 }
 

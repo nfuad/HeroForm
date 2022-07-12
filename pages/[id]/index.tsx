@@ -15,7 +15,6 @@ import {
 } from '@components/survey'
 import { Loader } from '@components/loader'
 import { PLAUSIBLE_EVENTS } from '@constants/plausible-events'
-import { usePlausible } from 'next-plausible'
 
 type Props = {
   redirectUrl?: string
@@ -34,8 +33,6 @@ const SurveyPage: NextPage<Props> = ({ redirectUrl, questions = [] }) => {
     )
   })
   const router = useRouter()
-
-  const plausible = usePlausible()
 
   const createResponse = async (body: any) => {
     try {
@@ -77,7 +74,8 @@ const SurveyPage: NextPage<Props> = ({ redirectUrl, questions = [] }) => {
     const canGoNext = (!isRequired || responses[id]) && !isLastPage
 
     if (isInitialPage) {
-      plausible(PLAUSIBLE_EVENTS.START_FORM)
+      // @ts-ignore
+      window?.plausible?.(PLAUSIBLE_EVENTS.START_FORM)
     }
 
     if (!canGoNext) {
