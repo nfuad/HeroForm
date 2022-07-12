@@ -45,7 +45,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
     <PlausibleProvider
       trackLocalhost
       selfHosted
-      customDomain="https://plausible.naf.is"
+      customDomain="https://heroform.io"
       domain={SITE_DATA.domain}
     >
       <TrackingScripts />
