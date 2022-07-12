@@ -34,7 +34,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   if (isSurveyPage) {
     return (
       <PlausibleProvider
-        customDomain={SITE_DATA.canonical_url}
+        customDomain={'https://plausible.naf.is'}
         domain={SITE_DATA.domain}
         trackLocalhost={process.env.NODE_ENV === 'development'}
         selfHosted
@@ -49,7 +49,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
 
   return (
     <PlausibleProvider
-      customDomain={SITE_DATA.canonical_url}
+      customDomain={'https://plausible.naf.is'}
       domain={SITE_DATA.domain}
       trackLocalhost={process.env.NODE_ENV === 'development'}
       selfHosted
