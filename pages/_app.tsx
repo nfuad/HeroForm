@@ -7,6 +7,8 @@ import { useRouter } from 'next/router'
 import dynamic from 'next/dynamic'
 import TrackingScripts from '@components/tracking-scripts'
 import { AuthProvider } from '@lib/auth/provider'
+import PlausibleProvider from 'next-plausible'
+import { SITE_DATA } from '@constants/site-data'
 
 const DynamicNextNProgress = dynamic(() => import('nextjs-progressbar'), {})
 const DynamicDefaultSEO = dynamic(() =>
@@ -40,7 +42,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
   }
 
   return (
-    <>
+    <PlausibleProvider domain={SITE_DATA.domain}>
       <TrackingScripts />
       <DynamicNextNProgress {...PROGRESSBAR_OPTIONS} />
       <DynamicDefaultSEO {...SEO} />
@@ -49,7 +51,7 @@ const MyApp: FC<AppProps> = ({ Component, pageProps }) => {
           <Component {...pageProps} />
         </AuthProvider>
       </DynamicQueryClientProvider>
-    </>
+    </PlausibleProvider>
   )
 }
 

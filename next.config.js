@@ -4,6 +4,7 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 const { withSentryConfig } = require('@sentry/nextjs')
+const { withPlausibleProxy } = require('next-plausible')
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -29,11 +30,23 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production', // remove console.log in production
   },
+  async rewrites() {
+    return [
+      {
+        source: '/js/script.js',
+        destination: 'https://plausible.naf.is/js/script.js',
+      },
+      {
+        source: '/api/event', // Or '/api/event/' if you have `trailingSlash: true` in this config
+        destination: 'https://plausible.naf.is/api/event',
+      },
+    ]
+  },
 }
 
 // adding Sentry options should be the last code to run before exporting, to ensure
 // that the source maps include changes from all other Webpack plugins
 module.exports = withSentryConfig(
-  withBundleAnalyzer(nextConfig),
+  withBundleAnalyzer(withPlausibleProxy()({ ...nextConfig })),
   sentryWebpackPluginOptions,
 )

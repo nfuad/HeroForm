@@ -1,9 +1,9 @@
 import Script from 'next/script'
-import { SITE_DATA } from '@constants/site-data'
+// import { SITE_DATA } from '@constants/site-data'
 
 const TrackingScripts = () => (
   <>
-    <Script
+    {/* <Script
       defer
       id="plausible"
       strategy="afterInteractive"
@@ -17,7 +17,7 @@ const TrackingScripts = () => (
       dangerouslySetInnerHTML={{
         __html: `window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`,
       }}
-    />
+    /> */}
     <Script
       id="load-posthog"
       strategy="afterInteractive"
