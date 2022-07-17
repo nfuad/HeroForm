@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "@calcom/embed-react": "^1.0.5",
+    "@headlessui/react": "^1.6.6",
+    "@heroicons/react": "^1.0.6",
     "@next/bundle-analyzer": "^12.1.5",
     "@nextui-org/react": "^1.0.0-beta.9",
     "@plasmicapp/loader-nextjs": "^1.0.142",

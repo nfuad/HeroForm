@@ -15,6 +15,7 @@ type Props = {
   showHeader?: boolean
   showFooter?: boolean
   isProtected?: boolean
+  handleNewFormClick?: any
 }
 
 type LayoutProps = Props & HTMLAttributes<HTMLElement>
@@ -25,6 +26,7 @@ const Layout: FC<LayoutProps> = ({
   showHeader = false,
   showFooter = false,
   isProtected = false, // for protected routes like admin
+  handleNewFormClick = () => {},
 }) => {
   const router = useRouter()
   const { isLoggedOut, isAuthUnknown } = useAuth()
@@ -51,7 +53,7 @@ const Layout: FC<LayoutProps> = ({
   const pageTitle = title ? `${title} | ${SITE_DATA.title}` : SITE_DATA.title
 
   return (
-    <>
+    <div className="h-screen">
       <NextSeo
         title={pageTitle}
         canonical={SITE_DATA.canonical_url}
@@ -66,10 +68,10 @@ const Layout: FC<LayoutProps> = ({
           site_name: SITE_DATA.title,
         }}
       />
-      {showHeader && <Header />}
+      {showHeader && <Header handleNewFormClick={handleNewFormClick} />}
       <main>{children}</main>
       {showFooter && <Footer />}
-    </>
+    </div>
   )
 }
 

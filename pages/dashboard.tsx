@@ -13,6 +13,14 @@ import Link from 'next/link'
 import { SITE_DATA } from '@constants/site-data'
 import { PlusIcon } from '@components/icons'
 import { useAuth } from '@lib/auth/provider'
+import {
+  ClipboardCopyIcon,
+  DotsHorizontalIcon,
+  ExternalLinkIcon,
+  TrashIcon,
+} from '@heroicons/react/outline'
+import { Fragment } from 'react'
+import { Popover, Transition } from '@headlessui/react'
 
 const DashboardPage: NextPage = () => {
   const { isLoggedIn, isAuthUnknown, user } = useAuth()
@@ -60,7 +68,11 @@ const DashboardPage: NextPage = () => {
     },
   )
 
-  const handleCreateClick = () => createForm()
+  const handleCreateClick = () => {
+    if (!creatingForm) {
+      createForm()
+    }
+  }
 
   const renderForms = () =>
     formsData?.forms?.map((form) => <Form {...form} key={form.id} />)
@@ -108,9 +120,15 @@ const DashboardPage: NextPage = () => {
   }
 
   return (
-    <Layout showFooter showHeader isProtected title="Dashboard">
-      <div className="flex flex-col items-start justify-start flex-grow w-full px-5 mx-auto my-20 overflow-hidden max-w-7xl">
-        <div className="w-full">
+    <Layout
+      showFooter
+      showHeader
+      isProtected
+      title="Dashboard"
+      handleNewFormClick={handleCreateClick}
+    >
+      <div className="flex flex-col items-start justify-start flex-grow w-full bg-gray-50 px-5 py-10 mx-auto min-h-screen h-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex flex-col items-center max-w-full xl:flex-row xl:justify-between">
             <h3 className="py-2 text-3xl font-heading">
               {getStatusText().heading}
@@ -122,19 +140,19 @@ const DashboardPage: NextPage = () => {
               </div>
             )}
           </div>
-          <div className="flex justify-center w-full h-2 xl:justify-start">
+          <div className="flex justify-center w-full xl:justify-start mb-5">
             <p className="text-sm text-gray-500 font-body">
               {getStatusText().body}
             </p>
           </div>
-          <div className="flex flex-wrap justify-center w-full my-16 xl:justify-start space-evenly gap-x-9 gap-y-9">
-            {renderForms()}
+          <div className="flex flex-wrap gap-5">
             {!loadingForms && (
               <AddFormButton
                 handleCreateClick={handleCreateClick}
                 creatingForm={creatingForm}
               />
             )}
+            {renderForms()}
           </div>
         </div>
       </div>
@@ -145,6 +163,8 @@ const DashboardPage: NextPage = () => {
 
 export default DashboardPage
 
+const truncate = (input) => `${input.substring(0, 60)}...`
+
 const Form = ({ publicId, name, _count: { responses: responseCount } }) => {
   const href = `${publicId}${ROUTES.EDIT}`
   const handleUnSupportedViewportClick = () => {
@@ -154,50 +174,128 @@ const Form = ({ publicId, name, _count: { responses: responseCount } }) => {
         duration: 6000,
       },
     )
+  }
 
+  const copyToClipboard = () => {
     navigator.clipboard
       .writeText(`https://${SITE_DATA.domain}/${publicId}`)
       .then(
         () => {
-          // do nothing on success
+          toast.success('Copied to clipboard!')
         },
         (err) => {
-          // freak out on error
           toast.error('Could not copy to clipboard')
         },
       )
   }
 
+  const router = useRouter()
+
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+  }
+
   return (
-    <>
-      <Link href={href}>
-        <a className="flex-col items-center justify-center hidden w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer lg:flex hover:shadow-xl">
-          <h1>{name}</h1>
-          <p className="mt-2 text-xs text-gray-500">
-            {responseCount} response{responseCount > 1 && 's'}
-          </p>
-        </a>
-      </Link>
+    <div className="flex w-full bg-white max-w-[140px] min-h-[160px] flex-col items-center justify-between text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md hover:shadow-xl">
       <div
-        onClick={handleUnSupportedViewportClick}
-        className="flex flex-col items-center justify-center w-32 h-40 text-sm text-center transition-shadow border border-gray-100 rounded-md shadow-md cursor-pointer hover:shadow-xl lg:hidden"
+        onClick={() => {
+          router.push(href)
+        }}
+        className="h-full flex justify-center items-center hover:cursor-pointer p-2"
       >
-        <h1>{name}</h1>
-        <p className="mt-2 text-xs text-gray-500">
-          {responseCount} response{responseCount > 1 && 's'}
+        <p className="text-clip overflow-hidden">
+          {truncate(`${name} is quite big not sure what to do about this but hey this is a
+          test`)}
         </p>
       </div>
-    </>
+      <div className="border-t border-gray-200 w-full py-3 hover:cursor-default flex justify-between items-center px-2">
+        <p
+          className={`text-xs ${
+            responseCount > 0 ? 'text-gray-500' : 'text-gray-300'
+          }`}
+        >
+          {renderResponseCount(responseCount)}
+        </p>
+        <Popover className="relative">
+          {({ open }) => (
+            <>
+              <Popover.Button
+                className={classNames(
+                  open ? 'text-gray-900' : 'text-gray-500',
+                  'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
+                )}
+              >
+                <DotsHorizontalIcon
+                  className={classNames(
+                    open ? 'text-gray-600' : 'text-gray-400',
+                    'h-5 w-5 group-hover:text-gray-500',
+                  )}
+                  aria-hidden="true"
+                />
+              </Popover.Button>
+
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1"
+              >
+                <Popover.Panel className="absolute z-10 left-1/2 transform -translate-x-1/2 mt-3 px-2 w-screen max-w-[150px] sm:px-0">
+                  <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
+                    <div className="relative grid gap-6 bg-white px-5 py-3 sm:py-4 sm:gap-3 text-sm text-gray-900">
+                      <button
+                        onClick={() => {
+                          window.open(`/${publicId}`, '_blank')
+                        }}
+                        className="flex justify-start items-center hover:text-gray-400 transition-all duration-200 ease-in-out"
+                      >
+                        <span className="mr-2">View</span>{' '}
+                        <ExternalLinkIcon className="w-4 h-4 text-gray-500" />
+                      </button>
+                      <button
+                        onClick={copyToClipboard}
+                        className="flex justify-start items-center hover:text-gray-400 transition-all duration-200 ease-in-out"
+                      >
+                        <span className="mr-2">Copy</span>{' '}
+                        <ClipboardCopyIcon className="w-4 h-4 text-gray-500" />{' '}
+                      </button>
+                      <button
+                        onClick={() => {}}
+                        className=" flex justify-start items-center text-red-600 hover:text-red-800 border-t border-gray-200 pt-3 transition-all duration-200 ease-in-out"
+                      >
+                        <span className="mr-2">Delete</span>{' '}
+                        <TrashIcon className="w-4 h-4" />{' '}
+                      </button>
+                    </div>
+                  </div>
+                </Popover.Panel>
+              </Transition>
+            </>
+          )}
+        </Popover>
+      </div>
+    </div>
   )
+}
+
+const renderResponseCount = (count: number) => {
+  if (count === 0) {
+    return 'No responses'
+  }
+  if (count === 1) {
+    return '1 response'
+  }
+  return `${count} responses`
 }
 
 const AddFormButton = ({ handleCreateClick, creatingForm }) => {
   return (
     <button
-      className={`flex items-center justify-center w-32 h-40 text-indigo-900 transition-all ${
-        creatingForm
-          ? 'bg-gray-300 cursor-not-allowed'
-          : 'bg-gray-100 hover:shadow-xl'
+      className={`flex items-center justify-center max-w-[140px] w-full h-40 bg-white text-indigo-500 transition-all ${
+        creatingForm ? 'cursor-not-allowed' : 'hover:shadow-xl'
       } rounded-md shadow-md text-7xl group`}
       onClick={handleCreateClick}
       disabled={creatingForm}
@@ -205,9 +303,12 @@ const AddFormButton = ({ handleCreateClick, creatingForm }) => {
       {creatingForm ? (
         <LoadingIcon />
       ) : (
-        <span className="transition-all duration-75 group-hover:rotate-12 transform-gpu">
-          <PlusIcon />
-        </span>
+        <div className="flex flex-col justify-center items-center">
+          <span className="transition-all duration-75 group-hover:rotate-12 transform-gpu">
+            <PlusIcon />
+          </span>
+          <p className="text-sm font-bold mt-2">New Form</p>
+        </div>
       )}
     </button>
   )
