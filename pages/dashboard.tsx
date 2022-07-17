@@ -167,14 +167,6 @@ const truncate = (input) => `${input.substring(0, 60)}...`
 
 const Form = ({ publicId, name, _count: { responses: responseCount } }) => {
   const href = `${publicId}${ROUTES.EDIT}`
-  const handleUnSupportedViewportClick = () => {
-    toast(
-      `Editing is not supported on smaller screens. The form URL will be copied to your clipboard: ${SITE_DATA.domain}/${publicId}`,
-      {
-        duration: 6000,
-      },
-    )
-  }
 
   const copyToClipboard = () => {
     navigator.clipboard
@@ -203,10 +195,7 @@ const Form = ({ publicId, name, _count: { responses: responseCount } }) => {
         }}
         className="h-full flex justify-center items-center hover:cursor-pointer p-2"
       >
-        <p className="text-clip overflow-hidden">
-          {truncate(`${name} is quite big not sure what to do about this but hey this is a
-          test`)}
-        </p>
+        <p className="text-clip overflow-hidden">{truncate(name)}</p>
       </div>
       <div className="border-t border-gray-200 w-full py-3 hover:cursor-default flex justify-between items-center px-2">
         <p
