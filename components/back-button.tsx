@@ -1,14 +1,16 @@
 import { useRouter } from 'next/router'
 
-import { ROUTES } from '@constants/routes'
 import { BackIcon } from './icons'
 
-const BackButton = () => {
+const BackButton = ({ route }) => {
   const router = useRouter()
 
   const onClick = () => {
-    const id = router.query.id
-    router.push(`/${id}${ROUTES.EDIT}`)
+    if (route) {
+      router.push(route)
+    } else {
+      router.back()
+    }
   }
 
   return (

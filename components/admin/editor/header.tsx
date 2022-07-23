@@ -90,7 +90,7 @@ const Settings = () => {
   )
 }
 
-const EditableFormName = ({ currentName }) => {
+export const EditableFormName = ({ currentName }) => {
   const { user } = useAuth()
   const [isEditing, setIsEditing] = useState(false)
   const [value, setValue] = useState('')
@@ -135,7 +135,7 @@ const EditableFormName = ({ currentName }) => {
   const handleSaveButtonClick = () => handleSave()
 
   return (
-    <h1 className="flex items-center justify-center text-lg gap-x-2">
+    <h1 className="flex items-center justify-center text-base gap-x-2 mb-[3px]">
       {isEditing ? (
         <>
           <input
